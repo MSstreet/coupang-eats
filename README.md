@@ -1,12 +1,8 @@
 # coupangeats_server_mason_bella
 
-## 2022-11-26
-#### [BELLA]
-- EC2 서버 구축
-- ERD 설계 진행 중
-- 초기 프로젝트 생성
+##  MASON
+### 2022-11-26
 
-#### [MASON]
 - EC2 서버 구축
 - ERD 설계 진행 중
 - 초기 프로젝트 생성
@@ -32,28 +28,8 @@ sudo apt install python-certbot-nginx ->  sudo apt-add-repository -r ppa:certbot
  [https://growingsaja.tistory.com/487](https://growingsaja.tistory.com/487) 인바운드규칙에서 80 포트를 열어주어야함!
 
 
-## 2022-11-27
-#### [BELLA]
-- ERD 설계 완료
-- API 리스트업
-- RDS 데이터베이스 구축
-- dev/prod 서버 구축   
+### 2022-11-27
 
-
-🚨 **[jar 실행 시 port 충돌 에러]**
-
-Web server failed to start. Port 9000 was already in use.
-
-🌟 **실행중인 jar pid kill**
-
-```bash
-ps -ef | grep jar
-# 실행중인 jar pid
-
-kill 20947
-```
-
-#### [MASON]
 - ERD 설계 완료
 - API 리스트업
 - ssl 적용
@@ -69,7 +45,33 @@ git branch 현재 branch 안나옴
 
 main branch로 이동 = git checkout main 
 
+---
 
+## BELLA
 
+### 🗓️ 2022-11-26
+- EC2 서버 구축
+- ERD 설계 진행 중
+- 초기 프로젝트 생성
+
+### 🗓️ 2022-11-27
+- ERD 설계 완료
+- API 리스트업
+- RDS 데이터베이스 구축
+- dev/prod 서버 구축
+
+     🚨 **jar 실행 시 port 충돌 에러**   
+     Web server failed to start. Port 9000 was already in use.
+
+     🌟 **실행중인 jar pid kill**
+     ```bash
+     ps -ef | grep jar
+     # 실행중인 jar pid
+     kill 20947
+     ```
+
+### 🗓️ 2022-11-28
+- ERD 수정
+- USER API 개발 완료 (테스트는 아직)
 
 
