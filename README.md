@@ -64,7 +64,9 @@ git pull이 적용 안되는 오류
 
 #####  1.2 오류 해결
 git remot add origin
+
 git branch 현재 branch 안나옴
+
 main branch로 이동 = git checkout main 
 
 
