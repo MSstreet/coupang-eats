@@ -1,31 +1,36 @@
 # coupangeats_server_mason_bella
 
 ##  MASON
-### 2022-11-26
+## 2022-11-26
 
 - EC2 서버 구축
 - ERD 설계 진행 중
 - 초기 프로젝트 생성
 
-#####  1.1 오류 
+#### ⚠️ 발생한 이슈 및 해결
 
-Certbot nginx plugin 설치 할 때 에러
+1. My sql을 설치하고 새로운 유저 생성 후 외부 접속 권한을 주었지만 외부 접속이 되지 않았음
 
-sudo apt install python-certbot-nginx ->  sudo apt-add-repository -r ppa:certbot/certbot 에러
+⚒️ 해결 방법  
 
-#####  1.2 오류 해결
+- Mysql 설정 파일 경로로 이동 cd /var/www/dev/coupangeats_server_mason_bella/etc/mysql/mysql.conf.d
+- 설정 파일 열기 sudo vim mysqld.cnf
+- bind-address 부분을 0.0.0.0으로 설정을 해서 외부 접속을 허용해준다.
 
-[https://stackoverflow.com/questions/60249177/e-the-repository-http-ppa-launchpad-net-certbot-certbot-ubuntu-focal-release]
+2. Certbot nginx plugin 설치 할 때 에러 발생
 
-우분투 20.04의 경우 sudo apt-get install certbot python3-certbot-nginx 명령어 사용
+⚒️ 해결 방법
 
-#####  2.1 오류 
+- 처음에 Certbot nginx plugin 설치 할 때  명령어를 1. sudo apt install python-certbot-nginx  2. sudo apt-add-repository -r ppa:certbot/certbot 순으로 입력했는데 1번 명령어를 입력했을 때 에러가 발생했고 이후 2번 명령어 역시 에러가 발생하였다.
+- 스텍 오버플로우를 참조하여 에러를 해결하였는데 방법은 우분투 20.04의 경우 위의 1번 명령어를 sudo apt-get install certbot python3-certbot-nginx로 사용해야한다. 즉 python이 아니라 python3로 입력해야 함
 
-인증서 발급 과정 중 에러로 인해 실패
+[https://stackoverflow.com/questions/60249177/e-the-repository-http-ppa-launchpad-net-certbot-certbot-ubuntu-focal-release](https://stackoverflow.com/questions/60249177/e-the-repository-http-ppa-launchpad-net-certbot-certbot-ubuntu-focal-release)
 
-#####  2.2 해결 
+3 . 인증서 발급 과정 중 에러로 인해 실패
 
- [https://growingsaja.tistory.com/487](https://growingsaja.tistory.com/487) 인바운드규칙에서 80 포트를 열어주어야함!
+⚒️ 해결 방법
+
+- [https://growingsaja.tistory.com/487](https://growingsaja.tistory.com/487) 인바운드규칙에서 80 포트를 열어주어야 한다.
 
 
 ### 2022-11-27
@@ -35,15 +40,21 @@ sudo apt install python-certbot-nginx ->  sudo apt-add-repository -r ppa:certbot
 - ssl 적용
 - dev/prod 서버 구축   
 
-#####  1.1 오류
-git pull이 적용 안되는 오류
+⚠️ 발생한 이슈 및 해결
 
-#####  1.2 오류 해결
-git remot add origin
+1. git push를 로컬에서 진행하고 cli에서 git pull 명령어를 입력했을 때 로컬에서 push 했던 수정 내용이 적용 되지 않았다. 
 
-git branch 현재 branch 안나옴
+⚒️ 해결 방법
 
-main branch로 이동 = git checkout main 
+git remote -v 명령어를 입력했을 때 연결된 원격 저장소가 없다는 것을 확인하고 git remote add origin으로 원격 저장소와 연결하였고  git branch checkout main을 통해 main으로 branch를 후 
+
+git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 실행하니 해결되었다.
+
+(정확한 해결방법인지는 모르겠으나 일단 push한 내용이 pull을 했을 경우 적용이 된다.)
+
+### 2022-11-28
+
+- 레스토랑 API 구현 중
 
 ---
 
