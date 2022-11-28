@@ -53,7 +53,8 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 (정확한 해결방법인지는 모르겠으나 일단 push한 내용이 pull을 했을 경우 적용이 된다.)
 
 ### 2022-11-28
-
+- ERD 수정
+- RDS 구축 완료
 - 레스토랑 API 구현 중
 
 ---
