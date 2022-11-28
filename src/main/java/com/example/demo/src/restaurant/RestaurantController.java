@@ -38,16 +38,21 @@ public class RestaurantController {
     public BaseResponse<PostRestaurantRes> createRestaurant(@RequestBody PostRestaurantReq postRestaurantReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
 
-        try{
+//        try{
 //            int userIdxByJwt = jwtService.getUserIdx();
 //
 //            if(userId != userIdxByJwt){
 //                return new BaseResponse<>(INVALID_USER_JWT);
 //            }
 
-            //validation 추가하기
+        //validation 추가하기//
+//        }catch (){
 
-            PostRestaurantRes postRestaurantRes = restaurantService.createRestaurant(postRestaurantReq);
+//        }
+
+        try{
+
+             PostRestaurantRes postRestaurantRes = restaurantService.createRestaurant(postRestaurantReq);
 
             return new BaseResponse<>(postRestaurantRes);
         } catch(BaseException exception){
@@ -55,4 +60,49 @@ public class RestaurantController {
         }
     }
 
+    @ResponseBody
+    @PatchMapping("/{restaurantId}")
+    public BaseResponse<String> modifyRestaurant(@PathVariable("restaurantId") int restaurantId, @RequestBody PostRestaurantReq postRestaurantReq){
+
+//        try {
+//            int userIdxByJwt = jwtService.getUserIdx();
+//
+//            if(userId != userIdxByJwt){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+
+        try{
+            restaurantService.modifyRestaurant(postRestaurantReq, restaurantId);
+
+            String result = "";
+
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/delete/{restaurantId}")
+    public BaseResponse<String> deleteRestaurant(@PathVariable("restaurantId") int restaurantId){
+
+//        try {
+//            int userIdxByJwt = jwtService.getUserIdx();
+//
+//            if(userId != userIdxByJwt){
+//                return new BaseResponse<>(INVALID_USER_JWT);
+//            }
+
+        try{
+            restaurantService.deleteRestaurant(restaurantId);
+
+            String result = "레스토랑을 삭제하였습니다.";
+
+            return new BaseResponse<>(result);
+
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

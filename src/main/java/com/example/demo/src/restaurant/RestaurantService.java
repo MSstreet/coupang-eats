@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
+
 
 @Service
 public class RestaurantService {
@@ -40,5 +41,33 @@ public class RestaurantService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void modifyRestaurant(PostRestaurantReq restaurant, int restaurantId) throws BaseException {
+        try{
+            int result = restaurantDao.modifyRestaurant(restaurant ,restaurantId);
+
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_RESTAURANT);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+    }
+    public void deleteRestaurant(int restaurantId) throws BaseException{
+        try{
+            int result = restaurantDao.deleteRestaurant(restaurantId);
+
+            //System.out.println("ddsfsdasdfasdfasdfasdfasfasdfasdfasdfasdfasdf");
+
+//            if(result == 0){
+//                throw new BaseException(MODIFY_FAIL_RESTAURANT);
+//            }
+
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 }
