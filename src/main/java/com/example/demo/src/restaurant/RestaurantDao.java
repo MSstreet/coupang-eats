@@ -172,4 +172,38 @@ public class RestaurantDao {
                         rs.getString("ORIGIN_INFORMATION")),
                 Param);
     }
+
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantNameReq) {
+
+        String getRestaurantQuery = "select * from RESTAURANT where CATEGORY like ?";
+
+        System.out.println(getRestaurantQuery);
+        System.out.println(searchRestaurantNameReq);
+        String Param = "%" + searchRestaurantNameReq + "%";
+        System.out.println(Param);
+
+
+        return this.jdbcTemplate.query(getRestaurantQuery,
+                (rs,rowNum) -> new GetRestaurantRes(
+                        rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
+                        rs.getString("PHONE_NUMBER"),
+                        rs.getString("OPERATING_TIME"),
+                        rs.getString("INTRODUCTION_BOARD"),
+                        rs.getString("TIP_DELIVERY"),
+                        rs.getString("TIME_DELIVERY"),
+                        rs.getString("BUSINESS_NUMBER"),
+                        rs.getInt("CATEGORY"),
+                        rs.getInt("RESTAURANT_IMAGE"),
+                        rs.getString("MINIMUM_ORDER_PRICE"),
+                        rs.getBoolean("DELETE_YN"),
+                        rs.getBoolean("DELIVERY_YN"),
+                        rs.getBoolean("FAST_DELIVERY_YN"),
+                        rs.getBoolean("PICKUP_YN"),
+                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_DETAIL"),
+                        rs.getString("REPRESENT_NAME"),
+                        rs.getString("ORIGIN_INFORMATION")),
+                Param);
+    }
 }
