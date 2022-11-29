@@ -38,7 +38,25 @@ public enum BaseResponseStatus {
     // [POST] /posts
     POST_POSTS_INVALID_USER(false, 2016, "존재하지 않는 사용자입니다."),
 
+    //주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
+    POST_RESTAURANT_EMPTY_NUMBER(false, 2018, "가게 번호를 입력해주세요."),
 
+    POST_RESTAURANT_EMPTY_REPRESENT(false, 2019, "대표자명 이름을 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_BUSINESS_NUMBER(false, 2020, "사업자 번호를 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_OPERATION(false, 2021, "운영시간을 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_DELIVERY_TIP(false, 2021, "배달 금액을 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE(false, 2022, "최소 주문금액을 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_RESTAURANT_IMAGE(false, 2023, "가게 사진을 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_RESTAURANT_NAME(false, 2027, "가게 이름를 입력해주세요."),
+    POST_RESTAURANT_INVALID_NUMBER(false,2028,"전화번호 형식을 올바르게 입력해주세요."),
+
+    POST_RESTAURANT_EXISTS_BUSINESS_NUMBER(false,2029,"이미 가입된 사업자 번호입니다."),
 
     /**
      * 3000 : Response 오류

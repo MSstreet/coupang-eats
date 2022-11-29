@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import static com.example.demo.config.BaseResponseStatus.*;
 
 
+
 @Service
 public class RestaurantService {
 
@@ -19,23 +20,30 @@ public class RestaurantService {
 
     private final RestaurantDao restaurantDao;
 
+    private final RestaurantProvider restaurantProvider;
+
     private final JwtService jwtService;
 
     @Autowired
-    public RestaurantService(RestaurantDao restaurantDao, JwtService jwtService) {
+    public RestaurantService(RestaurantDao restaurantDao,RestaurantProvider restaurantProvider ,JwtService jwtService) {
         this.restaurantDao = restaurantDao;
+        this.restaurantProvider = restaurantProvider;
         this.jwtService = jwtService;
     }
 
     public PostRestaurantRes createRestaurant(PostRestaurantReq postRestaurantReq) throws BaseException {
 
         try{
+//            if(restaurantProvider.checkBusinessNum(postRestaurantReq.getCompanyRegistrationNumber()) == 1){
+//                throw new BaseException(POST_RESTAURANT_EXISTS_BUSINESS_NUMBER);
+//            }
+
             int restaurantIdx = restaurantDao.createRestaurant(postRestaurantReq);
 
             //jwt 발급.
-            String jwt = jwtService.createJwt(restaurantIdx);
+            //String jwt = jwtService.createJwt(restaurantIdx);
 
-            return new PostRestaurantRes(jwt,restaurantIdx);
+            return new PostRestaurantRes(restaurantIdx);
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
