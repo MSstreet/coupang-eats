@@ -22,6 +22,8 @@ public class UserDao {
     public int createUser(PostUserReq postUserReq) {
         String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, PROFILE_IMAGE, ADDRESS_ID, ADDRESS_DETAIL) values (?,?,?,?,?,?,?,?)";
         Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getPhoneNumber(), postUserReq.getProfileImage(), postUserReq.getAddressId(), postUserReq.getAddressDetail()};
+        
+        System.out.println("확인2");
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);

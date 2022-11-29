@@ -7,9 +7,9 @@ spring:
 
   datasource:
     platform: mysql
-    url: jdbc:mysql://bella-database.cdijsr7vvztw.ap-northeast-2.rds.amazonaws.com/COUPANGEATS?autoReconnect=true
-    # url: jdbc:mysql://database-1.c8jknxzy9gu5.ap-northeast-2.rds.amazonaws.com/Mydb
+    url: jdbc:mysql://database-1.c8jknxzy9gu5.ap-northeast-2.rds.amazonaws.com/Mydb
+    #url: jdbc:mysql://bella-database.cdijsr7vvztw.ap-northeast-2.rds.amazonaws.com/COUPANGEATS?autoReconnect=true
     username: admin # 만약 따로 설정하지 않으셨다면 기본값은 admin 입니다
-    password: bellamason11 # 비밀번호를 입력해주세요!
-    # password: 1217resart!! # 비밀번호를 입력해주세요!
+    password: 1217resart!! # 비밀번호를 입력해주세요!
+    #password: bellamason11 # 비밀번호를 입력해주세요!
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -2,12 +2,15 @@ package com.example.demo.src.restaurant.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostRestaurantReq {
+@NoArgsConstructor
+public class GetRestaurantRes {
+
     // 가게 고유 번호
     private int restaurantId;
 
@@ -42,7 +45,7 @@ public class PostRestaurantReq {
     private String minDeliveryPrice;
 
     // 휴무일
-    private String closedDay;
+    //private String closedDay;
 
     // 배달 지역
     //private String possibleDelivery;
@@ -51,7 +54,7 @@ public class PostRestaurantReq {
     private Boolean deleteFlag;
 
     // 편의시설
-    private String facilities;
+    //private String facilities;
 
     // 배달 가능 여부
     private Boolean deliveryAvlb;
