@@ -57,6 +57,12 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - RDS 구축 완료
 - 레스토랑 API 구현 중
 
+### 2022-11-29
+- 레스토랑 API 
+     - 가게 생성, 가게 수정, 가게 삭제, 가게 전체 검색, 가게 index 검색, 이름으로 검색, 카테고리 검색 구현 
+     - 구현한 부분 API 작성 중
+     - 생성, 수정, 삭제 jwt 적용
+
 ---
 
 ## BELLA
