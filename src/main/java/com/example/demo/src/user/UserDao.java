@@ -20,11 +20,17 @@ public class UserDao {
 
     // 회원가입
     public int createUser(PostUserReq postUserReq) {
-        String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, PROFILE_IMAGE, ADDRESS_ID, ADDRESS_DETAIL) values (?,?,?,?,?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getPhoneNumber(), postUserReq.getProfileImage(), postUserReq.getAddressId(), postUserReq.getAddressDetail()};
+        String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, ADDRESS_ID, ADDRESS_DETAIL) values (?,?,?,?,?,?,?)";
+        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getPhoneNumber(), postUserReq.getAddressId(), postUserReq.getAddressDetail()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
+    // 회원가입 - 프로필 이미지 생성
+    public void createUserImage(int userIdx, PostUserReq postUserReq){
+        String createUserQuery = "insert into IMAGE (IMAGE_PATH, TARGET_ID, TARGET_CODE) values (?,?,'US')";
+        Object[] createUserParams = new Object[]{postUserReq.getProfileImagePath(), userIdx};
+        this.jdbcTemplate.update(createUserQuery, createUserParams);
     }
 
     // 이메일 확인
@@ -37,7 +43,9 @@ public class UserDao {
 
     // 로그인: 해당 email에 해당되는 user 값을 가져온다.
     public User loginUser(PostLoginReq postLoginReq) {
-        String getPwdQuery = "select * from USER where EMAIL = ?";
+        String getPwdQuery = "select USER.*, IMAGE.IMAGE_PATH from USER " +
+                "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US' " +
+                "where USER.EMAIL = ?";
         String getPwdParams = postLoginReq.getEmail();
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
@@ -48,7 +56,7 @@ public class UserDao {
                         rs.getString("PASSWORD"),
                         rs.getString("NICKNAME"),
                         rs.getString("PHONE_NUMBER"),
-                        rs.getInt("PROFILE_IMAGE"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("ADDRESS_ID"),
                         rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
@@ -62,7 +70,8 @@ public class UserDao {
 
     // User 테이블에 존재하는 전체 유저들의 정보 조회
     public List<GetUserRes> getUsers() {
-        String getUsersQuery = "select * from USER"; //User 테이블에 존재하는 모든 회원들의 정보를 조회하는 쿼리
+        String getUsersQuery = "select USER.*, IMAGE.IMAGE_PATH from USER " +
+                "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US'";
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs, rowNum) -> new GetUserRes(
                         rs.getInt("USER_ID"),
@@ -71,7 +80,7 @@ public class UserDao {
                         rs.getString("PASSWORD"),
                         rs.getString("NICKNAME"),
                         rs.getString("PHONE_NUMBER"),
-                        rs.getInt("PROFILE_IMAGE"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("ADDRESS_ID"),
                         rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
@@ -83,7 +92,9 @@ public class UserDao {
 
     // 해당 userIdx를 갖는 유저조회
     public GetUserRes getUser(int userIdx) {
-        String getUserQuery = "select * from USER where USER_ID = ?";
+        String getUserQuery =  "select USER.*, IMAGE.IMAGE_PATH from USER " +
+                "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US' " +
+                "where USER.USER_ID = ?";
         int getUserParams = userIdx;
         return this.jdbcTemplate.queryForObject(getUserQuery,
                 (rs, rowNum) -> new GetUserRes(
@@ -93,7 +104,7 @@ public class UserDao {
                         rs.getString("PASSWORD"),
                         rs.getString("NICKNAME"),
                         rs.getString("PHONE_NUMBER"),
-                        rs.getInt("PROFILE_IMAGE"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("ADDRESS_ID"),
                         rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),

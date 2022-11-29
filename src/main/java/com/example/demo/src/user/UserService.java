@@ -43,6 +43,7 @@ public class UserService {
         }
         try {
             int userIdx = userDao.createUser(postUserReq);
+            userDao.createUserImage(userIdx, postUserReq);
             String jwt = jwtService.createJwt(userIdx);
             return new PostUserRes(userIdx, jwt);
         } catch (Exception exception) {

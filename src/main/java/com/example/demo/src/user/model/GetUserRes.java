@@ -15,7 +15,7 @@ public class GetUserRes {
     private String password;
     private String nickname;
     private String phoneNumber;
-    private int profileImage;
+    private String profileImagePath;
     private int addressId;
     private String addressDetail;
     private boolean deleteYn;
