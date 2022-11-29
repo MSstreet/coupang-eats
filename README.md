@@ -87,4 +87,13 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - USER API 개발 및 테스트 완료
 - USER API 명세서 작성
 
-
+### 🗓️ 2022-11-29
+- USER API 프로필 이미지 반영해서 개발 및 테스트
+- DATABASE 이미지 테이블 수정
+> 1. RESTAURANT USER MENU REVIEW 테이블의 IMAGE 컬럼 삭제
+> 2. IMAGE 테이블에 컬럼 3개 추가
+> - TARGET_ID INT NOT NULL COMMENT '대상 고유 번호'
+> - TARGET_CODE VARCHAR(2) NOT NULL COMMENT 'RS(가게) / MN(메뉴) / US(유저) / RV(리뷰)'
+> - MODIFICATION_DATE TIMESTAMP NULL COMMENT '수정일'
+- USER API 명세서 수정
+- SSL 적용
