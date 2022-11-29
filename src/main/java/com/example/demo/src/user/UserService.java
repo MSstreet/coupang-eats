@@ -58,7 +58,7 @@ public class UserService {
         try {
             int result = userDao.modifyUserNickname(patchUserReq);
             if (result == 0) {
-                throw new BaseException(MODIFY_FAIL);
+                throw new BaseException(FAILED_TO_MODIFY);
             }
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -70,7 +70,7 @@ public class UserService {
         try {
             int result = userDao.deleteUser(userIdx);
             if (result == 0) {
-                throw new BaseException(DELETE_FAIL);
+                throw new BaseException(FAILED_TO_DELETE);
             }
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

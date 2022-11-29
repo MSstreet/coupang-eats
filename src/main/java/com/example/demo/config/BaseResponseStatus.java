@@ -33,11 +33,6 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PHONE(false, 2016, "휴대폰 번호를 입력해주세요."),
     POST_USERS_INVALID_PHONE(false, 2017, "휴대폰 번호를 올바르게 입력해주세요."),
 
-    // [POST] /follows
-    POST_FOLLOWS_INVALID_USER(false, 2016, "존재하지 않는 사용자입니다."),
-    // [POST] /posts
-    POST_POSTS_INVALID_USER(false, 2016, "존재하지 않는 사용자입니다."),
-
     //주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
     POST_RESTAURANT_EMPTY_NUMBER(false, 2018, "가게 번호를 입력해주세요."),
 
@@ -69,9 +64,8 @@ public enum BaseResponseStatus {
     FAILED_TO_LOGIN_DELETE(false,3011,"삭제된 계정입니다."),
 
     //[PATCH]
-    MODIFY_FAIL(false,3015,"수정에 실패하였습니다."),
-    DELETE_FAIL(false,3016,"삭제에 실패하였습니다."),
-    UNFOLLOW_FAIL(false,3017,"팔로우 취소에 실패하였습니다."),
+    FAILED_TO_MODIFY(false,3015,"수정에 실패하였습니다."),
+    FAILED_TO_DELETE(false,3016,"삭제에 실패하였습니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -84,7 +78,7 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
-    MODIFY_FAIL_RESTAURANT(false,4014,"유저정보 수정 실패");
+    MODIFY_FAIL_RESTAURANT(false,4014,"가게 정보 수정 실패");
 
     private final boolean isSuccess;
     private final int code;
