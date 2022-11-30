@@ -5,8 +5,17 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PatchUserReq {
     private int userIdx;
-    private String nickname;
+    private String name;
+    private String email;
+    private String password;
+    private String phoneNumber;
+    private String profileImagePath;
+    private int addressIdx;
+    private String addressDetail;
+    private boolean deleteYn;
+    private boolean marketingAgreeYn;
+    private boolean informNoticeAgreeYn;
+    private boolean orderNoticeAgreeYn;
 }

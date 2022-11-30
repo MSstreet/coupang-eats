@@ -1,6 +1,5 @@
 package com.example.demo.src.user;
 
-
 import com.example.demo.config.BaseException;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
@@ -10,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.jdbc.core.JdbcTemplate;
-import javax.sql.DataSource;
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
@@ -42,10 +39,10 @@ public class UserService {
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
         try {
-
-            System.out.println("확인");
             int userIdx = userDao.createUser(postUserReq);
-            userDao.createUserImage(userIdx, postUserReq);
+            if (postUserReq.getProfileImagePath() != null || postUserReq.getProfileImagePath().isEmpty()){
+                userDao.createUserImage(userIdx, postUserReq);
+            }
             String jwt = jwtService.createJwt(userIdx);
             return new PostUserRes(userIdx, jwt);
         } catch (Exception exception) {
@@ -54,13 +51,15 @@ public class UserService {
     }
 
     // 회원정보 수정(Patch)
-    public void modifyUserNickname(PatchUserReq patchUserReq) throws BaseException {
+    public void modifyUser(PatchUserReq patchUserReq) throws BaseException {
         try {
-            int result = userDao.modifyUserNickname(patchUserReq);
-            if (result == 0) {
+            int resultModifyUser = userDao.modifyUser(patchUserReq);
+            int resultModifyProfileImg = userDao.modifyProfileImg(patchUserReq);
+            if (resultModifyUser == 0 || resultModifyProfileImg == 0) {
                 throw new BaseException(FAILED_TO_MODIFY);
             }
         } catch (Exception exception) {
+            exception.printStackTrace();
             throw new BaseException(DATABASE_ERROR);
         }
     }

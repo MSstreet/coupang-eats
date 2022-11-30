@@ -13,10 +13,10 @@ public class GetUserRes {
     private String name;
     private String email;
     private String password;
-    private String nickname;
     private String phoneNumber;
     private String profileImagePath;
-    private int addressId;
+    private String addressNm;
+    private String roadAddress;
     private String addressDetail;
     private boolean deleteYn;
     private boolean marketingAgreeYn;
