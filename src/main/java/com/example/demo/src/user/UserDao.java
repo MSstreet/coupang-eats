@@ -133,6 +133,8 @@ public class UserDao {
         return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
     }
 
+
+
     // 회원 삭제
     public int deleteUser(int userIdx) {
         String modifyUserNameQuery = "update USER set DELETE_YN = 1 where USER_ID = ? ";

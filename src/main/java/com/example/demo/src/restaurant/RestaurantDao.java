@@ -4,6 +4,7 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.restaurant.model.GetRestaurantRes;
 import com.example.demo.src.restaurant.model.PostRestaurantReq;
+import com.example.demo.src.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -27,14 +28,14 @@ public class RestaurantDao {
 
     public int createRestaurant(PostRestaurantReq postRestaurantReq){
 
-        String createRestaurantQuery = "insert into RESTAURANT (BUSINESS_NAME,REPRESENT_NAME,PHONE_NUMBER,OPERATING_TIME,TIP_DELIVERY,TIME_PICKUP,BUSINESS_NUMBER,CATEGORY,RESTAURANT_IMAGE,MINIMUM_ORDER_PRICE,DELIVERY_YN,ADDRESS_ID) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        String createRestaurantQuery = "insert into RESTAURANT (BUSINESS_NAME, ADDRESS_ID, PHONE_NUMBER, REPRESENT_NAME, BUSINESS_NUMBER, OPERATING_TIME, TIP_DELIVERY, MINIMUM_ORDER_PRICE, CATEGORY, DELIVERY_YN, FAST_DELIVERY_YN, PICKUP_YN,DELETE_YN ) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        Object[] createRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getRepresentName(), postRestaurantReq.getNumber(),postRestaurantReq.getOperationTime()
-                ,postRestaurantReq.getTipDelivery(),postRestaurantReq.getTimeDelivery(),postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getCategories()
-                ,postRestaurantReq.getRestaurantImage(),postRestaurantReq.getMinDeliveryPrice()
-                ,postRestaurantReq.getDeleteFlag()
-                ,postRestaurantReq.getAddressId()};
+        Object[] createRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddressId(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
+                ,postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getOperationTime(),postRestaurantReq.getTipDelivery(),postRestaurantReq.getMinDeliveryPrice()
+                ,postRestaurantReq.getCategories(),postRestaurantReq.getDeliveryAvlb()
+                ,postRestaurantReq.getFastDeliveryAvlb()
+                ,postRestaurantReq.getPickupAvlb(),postRestaurantReq.getDeleteFlag()};
 
         this.jdbcTemplate.update(createRestaurantQuery, createRestaurantParams);
 
@@ -45,16 +46,22 @@ public class RestaurantDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    public void createRestaurantImage(int restaurantIdx, PostRestaurantReq postRestaurantReq){
+        String createRestaurantImageQuery = "insert into IMAGE (IMAGE_PATH, TARGET_ID, TARGET_CODE) values (?,?,'RS')";
+        Object[] createRestaurantImageParams = new Object[]{postRestaurantReq.getRestaurantImage(), restaurantIdx};
+        this.jdbcTemplate.update(createRestaurantImageQuery, createRestaurantImageParams);
+    }
+
     public int modifyRestaurant(PostRestaurantReq postRestaurantReq, int restaurantId){
 
-        String modifyRestaurantQuery = "update RESTAURANT set BUSINESS_NAME = ? ,REPRESENT_NAME = ?, PHONE_NUMBER = ?, OPERATING_TIME = ?, TIP_DELIVERY = ?, TIME_PICKUP = ?, BUSINESS_NUMBER = ?,CATEGORY = ?," +
-                " RESTAURANT_IMAGE = ?,  MINIMUM_ORDER_PRICE = ?,  DELIVERY_YN = ?, ADDRESS_ID =? where RESTAURANT_ID = ?";
+        String modifyRestaurantQuery = "update RESTAURANT set BUSINESS_NAME = ? ,ADDRESS_ID = ?, PHONE_NUMBER = ?, REPRESENT_NAME = ?, BUSINESS_NUMBER = ?, OPERATING_TIME = ?, TIP_DELIVERY = ?,MINIMUM_ORDER_PRICE = ?," +
+                " CATEGORY = ?,  DELIVERY_YN = ?,  FAST_DELIVERY_YN = ?, PICKUP_YN =? , DELETE_YN = ? where RESTAURANT_ID = ?";
 
-        Object[] modifyRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getRepresentName(), postRestaurantReq.getNumber(),postRestaurantReq.getOperationTime()
-                ,postRestaurantReq.getTipDelivery(),postRestaurantReq.getTimeDelivery(),postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getCategories()
-                ,postRestaurantReq.getRestaurantImage(),postRestaurantReq.getMinDeliveryPrice()
-                ,postRestaurantReq.getDeleteFlag()
-                ,postRestaurantReq.getAddressId(),restaurantId};
+        Object[] modifyRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddressId(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
+                ,postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getOperationTime(),postRestaurantReq.getTipDelivery(),postRestaurantReq.getMinDeliveryPrice()
+                ,postRestaurantReq.getCategories(),postRestaurantReq.getDeliveryAvlb()
+                ,postRestaurantReq.getFastDeliveryAvlb()
+                ,postRestaurantReq.getPickupAvlb(),postRestaurantReq.getDeleteFlag(),restaurantId};
 
         for(int i = 0; i < modifyRestaurantParams.length; i++){
             System.out.println(modifyRestaurantParams[i]);
@@ -62,12 +69,26 @@ public class RestaurantDao {
         return this.jdbcTemplate.update(modifyRestaurantQuery,modifyRestaurantParams);
     }
 
-    public int deleteRestaurant(int getRestaurantRes){
-        String deleteRestaurantQuery = "delete from restaurant where restaurant_Id = ?";
+    public int modifyRestaurantImage(PostRestaurantReq postRestaurantReq, int restaurantId){
+        String modifyRestaurantImageQuery = "update IMAGE set IMAGE_PATH = ? where TARGET_ID = ? and TARGET_CODE = 'RS'";
 
-        //int getRestaurantParams = getRestaurantRes.getRestaurantId();
+        Object[] modifyRestaurantImageParams = new Object[]{postRestaurantReq.getRestaurantImage(),restaurantId};
 
-        return this.jdbcTemplate.update(deleteRestaurantQuery,getRestaurantRes);
+        return this.jdbcTemplate.update(modifyRestaurantImageQuery,modifyRestaurantImageParams);
+    }
+
+
+    public int deleteRestaurant(int restaurantId){
+        String deleteRestaurantQuery = "delete from RESTAURANT where RESTAURANT_ID = ? ";
+
+        return this.jdbcTemplate.update(deleteRestaurantQuery,restaurantId);
+    }
+
+    public int deleteRestaurantImage(int restaurantId){
+
+        String deleteRestaurantImageQuery = "delete from IMAGE where TARGET_ID = ? and TARGET_CODE = 'RS'" ;
+        return this.jdbcTemplate.update(deleteRestaurantImageQuery,restaurantId);
+
     }
 
     public int checkBusinessNum(String BusinessNum){
@@ -83,65 +104,67 @@ public class RestaurantDao {
 
     public List<GetRestaurantRes> getAllRestaurants(){
 
-        String getRestaurantQuery = "select * from RESTAURANT";
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH from RESTAURANT " +
+                "join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS'";
 
         return this.jdbcTemplate.query(getRestaurantQuery,
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
+                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_DETAIL"),
                         rs.getString("PHONE_NUMBER"),
+                        rs.getString("REPRESENT_NAME"),
+                        rs.getString("BUSINESS_NUMBER"),
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
-                        rs.getString("TIP_DELIVERY"),
+                        rs.getString("ORIGIN_INFORMATION"),
                         rs.getString("TIME_DELIVERY"),
-                        rs.getString("BUSINESS_NUMBER"),
-                        rs.getInt("CATEGORY"),
-                        rs.getInt("RESTAURANT_IMAGE"),
+                        rs.getString("TIME_PICKUP"),
+                        rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getBoolean("DELETE_YN"),
+                        rs.getInt("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
-                        rs.getInt("ADDRESS_ID"),
-                        rs.getString("ADDRESS_DETAIL"),
-                        rs.getString("REPRESENT_NAME"),
-                        rs.getString("ORIGIN_INFORMATION")));
+                        rs.getBoolean("DELETE_YN"),
+                        rs.getString("IMAGE_PATH")));
     }
 
     public GetRestaurantRes getRestaurantByRestaurantId(int restaurantId) {
 
-        String getRestaurantQuery = "select * from RESTAURANT where RESTAURANT_ID = ?";
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where RESTAURANT_ID = ?";
 
         int getRestaurantParams = restaurantId;
-
 
         return this.jdbcTemplate.queryForObject(getRestaurantQuery,
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
+                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_DETAIL"),
                         rs.getString("PHONE_NUMBER"),
+                        rs.getString("REPRESENT_NAME"),
+                        rs.getString("BUSINESS_NUMBER"),
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
-                        rs.getString("TIP_DELIVERY"),
+                        rs.getString("ORIGIN_INFORMATION"),
                         rs.getString("TIME_DELIVERY"),
-                        rs.getString("BUSINESS_NUMBER"),
-                        rs.getInt("CATEGORY"),
-                        rs.getInt("RESTAURANT_IMAGE"),
+                        rs.getString("TIME_PICKUP"),
+                        rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getBoolean("DELETE_YN"),
+                        rs.getInt("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
-                        rs.getInt("ADDRESS_ID"),
-                        rs.getString("ADDRESS_DETAIL"),
-                        rs.getString("REPRESENT_NAME"),
-                        rs.getString("ORIGIN_INFORMATION")),
+                        rs.getBoolean("DELETE_YN"),
+                        rs.getString("IMAGE_PATH")),
                 getRestaurantParams);
     }
-
+//
     public List<GetRestaurantRes> getRestaurantsByNameSearch(String searchRestaurantNameReq) {
 
-        String getRestaurantQuery = "select * from RESTAURANT where BUSINESS_NAME like ?";
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where BUSINESS_NAME like ?";
 
         System.out.println(getRestaurantQuery);
         System.out.println(searchRestaurantNameReq);
@@ -153,23 +176,59 @@ public class RestaurantDao {
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
+                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_DETAIL"),
                         rs.getString("PHONE_NUMBER"),
+                        rs.getString("REPRESENT_NAME"),
+                        rs.getString("BUSINESS_NUMBER"),
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
-                        rs.getString("TIP_DELIVERY"),
+                        rs.getString("ORIGIN_INFORMATION"),
                         rs.getString("TIME_DELIVERY"),
-                        rs.getString("BUSINESS_NUMBER"),
-                        rs.getInt("CATEGORY"),
-                        rs.getInt("RESTAURANT_IMAGE"),
+                        rs.getString("TIME_PICKUP"),
+                        rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getBoolean("DELETE_YN"),
+                        rs.getInt("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
+                        rs.getBoolean("DELETE_YN"),
+                        rs.getString("IMAGE_PATH")),
+                Param);
+    }
+
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantNameReq) {
+
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where CATEGORY like ?";
+
+        System.out.println(getRestaurantQuery);
+        System.out.println(searchRestaurantNameReq);
+        String Param = "%" + searchRestaurantNameReq + "%";
+        System.out.println(Param);
+
+
+        return this.jdbcTemplate.query(getRestaurantQuery,
+                (rs,rowNum) -> new GetRestaurantRes(
+                        rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
                         rs.getInt("ADDRESS_ID"),
                         rs.getString("ADDRESS_DETAIL"),
+                        rs.getString("PHONE_NUMBER"),
                         rs.getString("REPRESENT_NAME"),
-                        rs.getString("ORIGIN_INFORMATION")),
+                        rs.getString("BUSINESS_NUMBER"),
+                        rs.getString("OPERATING_TIME"),
+                        rs.getString("INTRODUCTION_BOARD"),
+                        rs.getString("ORIGIN_INFORMATION"),
+                        rs.getString("TIME_DELIVERY"),
+                        rs.getString("TIME_PICKUP"),
+                        rs.getString("TIP_DELIVERY"),
+                        rs.getString("MINIMUM_ORDER_PRICE"),
+                        rs.getInt("CATEGORY"),
+                        rs.getBoolean("DELIVERY_YN"),
+                        rs.getBoolean("FAST_DELIVERY_YN"),
+                        rs.getBoolean("PICKUP_YN"),
+                        rs.getBoolean("DELETE_YN"),
+                        rs.getString("IMAGE_PATH")),
                 Param);
     }
 }

@@ -65,4 +65,16 @@ public class RestaurantProvider {
         }
     }
 
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantCategoryReq) throws BaseException {
+
+        try{
+            List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByCategorySearch(searchRestaurantCategoryReq);
+
+            return getRestaurantRes;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

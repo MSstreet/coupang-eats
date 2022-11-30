@@ -40,8 +40,7 @@ public class RestaurantService {
 
             int restaurantIdx = restaurantDao.createRestaurant(postRestaurantReq);
 
-            //jwt 발급.
-            //String jwt = jwtService.createJwt(restaurantIdx);
+            restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq);
 
             return new PostRestaurantRes(restaurantIdx);
 
@@ -52,7 +51,12 @@ public class RestaurantService {
 
     public void modifyRestaurant(PostRestaurantReq restaurant, int restaurantId) throws BaseException {
         try{
+
             int result = restaurantDao.modifyRestaurant(restaurant ,restaurantId);
+
+            System.out.println("확인~!!!");
+
+            restaurantDao.modifyRestaurantImage(restaurant,restaurantId);
 
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_RESTAURANT);
@@ -64,13 +68,9 @@ public class RestaurantService {
     }
     public void deleteRestaurant(int restaurantId) throws BaseException{
         try{
+
             int result = restaurantDao.deleteRestaurant(restaurantId);
-
-            //System.out.println("ddsfsdasdfasdfasdfasdfasfasdfasdfasdfasdfasdf");
-
-//            if(result == 0){
-//                throw new BaseException(MODIFY_FAIL_RESTAURANT);
-//            }
+            restaurantDao.deleteRestaurantImage(restaurantId);
 
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
