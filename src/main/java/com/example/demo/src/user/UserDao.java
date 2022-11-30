@@ -20,8 +20,8 @@ public class UserDao {
 
     // 회원가입
     public int createUser(PostUserReq postUserReq) {
-        String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, NICKNAME, PHONE_NUMBER, ADDRESS_ID, ADDRESS_DETAIL) values (?,?,?,?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getPhoneNumber(), postUserReq.getAddressId(), postUserReq.getAddressDetail()};
+        String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, PHONE_NUMBER, ADDRESS_ID, ADDRESS_DETAIL) values (?,?,?,?,?,?)";
+        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getPhoneNumber(), postUserReq.getAddressId(), postUserReq.getAddressDetail()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
@@ -120,6 +120,8 @@ public class UserDao {
         Object[] modifyUserNameParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getUserIdx()};
         return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
     }
+
+
 
     // 회원 삭제
     public int deleteUser(int userIdx) {

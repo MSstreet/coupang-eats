@@ -36,7 +36,7 @@ public class PostRestaurantReq {
     private int categories;
 
     // 가게 사진
-    private int restaurantImage;
+    private String restaurantImage;
 
     // 최소 주문 비용
     private String minDeliveryPrice;

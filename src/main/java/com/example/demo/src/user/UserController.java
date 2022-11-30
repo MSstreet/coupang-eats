@@ -55,9 +55,7 @@ public class UserController {
         else if (postUserReq.getPassword() == null || postUserReq.getPassword().isEmpty()) {
             return new BaseResponse<>(POST_USERS_EMPTY_PASSWORD);
         }
-        else if (postUserReq.getNickname() == null || postUserReq.getNickname().isEmpty()) {
-            return new BaseResponse<>(POST_USERS_EMPTY_NICKNAME);
-        }
+
         else if (postUserReq.getPhoneNumber() == null || postUserReq.getPhoneNumber().isEmpty()) {
             return new BaseResponse<>(POST_USERS_EMPTY_PHONE);
         }

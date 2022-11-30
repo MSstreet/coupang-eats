@@ -40,6 +40,8 @@ public class RestaurantService {
 
             int restaurantIdx = restaurantDao.createRestaurant(postRestaurantReq);
 
+            restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq);
+
             return new PostRestaurantRes(restaurantIdx);
 
         } catch (Exception exception) {
@@ -49,7 +51,12 @@ public class RestaurantService {
 
     public void modifyRestaurant(PostRestaurantReq restaurant, int restaurantId) throws BaseException {
         try{
+
             int result = restaurantDao.modifyRestaurant(restaurant ,restaurantId);
+
+            System.out.println("확인~!!!");
+
+            restaurantDao.modifyRestaurantImage(restaurant,restaurantId);
 
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_RESTAURANT);
@@ -63,7 +70,7 @@ public class RestaurantService {
         try{
 
             int result = restaurantDao.deleteRestaurant(restaurantId);
-
+            restaurantDao.deleteRestaurantImage(restaurantId);
 
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
