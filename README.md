@@ -63,6 +63,12 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
      - 구현한 부분 API 작성 중
      - 생성, 수정, 삭제 jwt 적용
 
+### 2022-11-30
+ - 레스토랑 API 수정 
+     -  이미지 테이블 변경에 맞춰 레스토랑 API 수정
+     - jwt 적용 해지
+ - 레스토랑 API 명세서 작성
+ - 주소 API 개발 중
 ---
 
 ## BELLA
@@ -103,8 +109,3 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 > - MODIFICATION_DATE TIMESTAMP NULL COMMENT '수정일'
 - USER API 명세서 수정
 - SSL 적용
-
-### 🗓️ 2022-11-30
-- MENU, ORDER 테이블 수정
-- REVIEW API 개발 시작
-- USER API 주소 데이터 받아오게끔 수정
