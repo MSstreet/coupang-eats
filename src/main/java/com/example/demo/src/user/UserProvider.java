@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Objects;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -29,7 +28,12 @@ public class UserProvider {
 
     // 로그인(password 검사)
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
-        User user = userDao.loginUser(postLoginReq);
+        GetUserRes user;
+        try{
+             user = userDao.loginUser(postLoginReq);
+        } catch (Exception exception) {
+            throw new BaseException(FAILED_TO_LOGIN);
+        }
         String password;
         try {
             password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPassword());
@@ -46,6 +50,7 @@ public class UserProvider {
         } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }
+
     }
 
     public int checkEmail(String email) throws BaseException {

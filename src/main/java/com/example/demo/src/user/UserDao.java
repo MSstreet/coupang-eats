@@ -1,6 +1,5 @@
 package com.example.demo.src.user;
 
-
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,22 +41,23 @@ public class UserDao {
     }
 
     // 로그인: 해당 email에 해당되는 user 값을 가져온다.
-    public User loginUser(PostLoginReq postLoginReq) {
-        String getPwdQuery = "select USER.*, IMAGE.IMAGE_PATH from USER " +
+    public GetUserRes loginUser(PostLoginReq postLoginReq) {
+        String getPwdQuery = "select USER.*, IMAGE.IMAGE_PATH, ADDRESS.ADDRESS_NAME, ADDRESS.ROAD_ADDRESS from USER " +
                 "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US' " +
+                "join ADDRESS on USER.ADDRESS_ID = ADDRESS.ADDRESS_ID " +
                 "where USER.EMAIL = ?";
         String getPwdParams = postLoginReq.getEmail();
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
-                (rs, rowNum) -> new User(
+                (rs, rowNum) -> new GetUserRes(
                         rs.getInt("USER_ID"),
                         rs.getString("NAME"),
                         rs.getString("EMAIL"),
                         rs.getString("PASSWORD"),
-                        rs.getString("NICKNAME"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("IMAGE_PATH"),
-                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_NAME"),
+                        rs.getString("ROAD_ADDRESS"),
                         rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getBoolean("MARKETING_AGREE_YN"),
@@ -70,18 +70,19 @@ public class UserDao {
 
     // User 테이블에 존재하는 전체 유저들의 정보 조회
     public List<GetUserRes> getUsers() {
-        String getUsersQuery = "select USER.*, IMAGE.IMAGE_PATH from USER " +
-                "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US'";
+        String getUsersQuery = "select USER.*, IMAGE.IMAGE_PATH, ADDRESS.ADDRESS_NAME,  ADDRESS.ROAD_ADDRESS from USER " +
+                "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US' " +
+                "join ADDRESS on USER.ADDRESS_ID = ADDRESS.ADDRESS_ID";
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs, rowNum) -> new GetUserRes(
                         rs.getInt("USER_ID"),
                         rs.getString("NAME"),
                         rs.getString("EMAIL"),
                         rs.getString("PASSWORD"),
-                        rs.getString("NICKNAME"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("IMAGE_PATH"),
-                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_NAME"),
+                        rs.getString("ROAD_ADDRESS"),
                         rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getBoolean("MARKETING_AGREE_YN"),
@@ -92,8 +93,9 @@ public class UserDao {
 
     // 해당 userIdx를 갖는 유저조회
     public GetUserRes getUser(int userIdx) {
-        String getUserQuery =  "select USER.*, IMAGE.IMAGE_PATH from USER " +
+        String getUserQuery =  "select USER.*, IMAGE.IMAGE_PATH, ADDRESS.ADDRESS_NAME,  ADDRESS.ROAD_ADDRESS from USER " +
                 "join IMAGE on USER.USER_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='US' " +
+                "join ADDRESS on USER.ADDRESS_ID = ADDRESS.ADDRESS_ID " +
                 "where USER.USER_ID = ?";
         int getUserParams = userIdx;
         return this.jdbcTemplate.queryForObject(getUserQuery,
@@ -102,10 +104,10 @@ public class UserDao {
                         rs.getString("NAME"),
                         rs.getString("EMAIL"),
                         rs.getString("PASSWORD"),
-                        rs.getString("NICKNAME"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("IMAGE_PATH"),
-                        rs.getInt("ADDRESS_ID"),
+                        rs.getString("ADDRESS_NAME"),
+                        rs.getString("ROAD_ADDRESS"),
                         rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getBoolean("MARKETING_AGREE_YN"),
@@ -114,10 +116,20 @@ public class UserDao {
                 getUserParams);
     }
 
-    // 회원정보 변경
-    public int modifyUserNickname(PatchUserReq patchUserReq) {
-        String modifyUserNameQuery = "update USER set NICKNAME = ? where USER_ID = ? ";
-        Object[] modifyUserNameParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getUserIdx()};
+    // 회원정보 변경 - 이름, 이메일, 비밀번호, 휴대폰 번호, 주소 고유 번호, 상세 주소, 삭제 여부, 마케팅 동의 여부, 주문 알림 동의 여부
+    public int modifyUser(PatchUserReq patchUserReq) {
+        String modifyUserNameQuery = "update USER set NAME = ?, EMAIL = ?, PASSWORD = ?, PHONE_NUMBER = ?, ADDRESS_DETAIL = ?, " +
+                "ADDRESS_ID = ?, DELETE_YN = ?, MARKETING_AGREE_YN = ?, INFORM_NOTICE_AGREE_YN = ?, ORDER_NOTICE_AGREE_YN = ? where USER_ID = ? ";
+        Object[] modifyUserNameParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPassword(),
+                patchUserReq.getPhoneNumber(), patchUserReq.getAddressDetail(), patchUserReq.getAddressIdx(), patchUserReq.isDeleteYn(), patchUserReq.isMarketingAgreeYn(),
+                patchUserReq.isInformNoticeAgreeYn(), patchUserReq.isOrderNoticeAgreeYn(), patchUserReq.getUserIdx()};
+        return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
+    }
+
+    // 회원정보 변경 - 프로필 이미지
+    public int modifyProfileImg(PatchUserReq patchUserReq) {
+        String modifyUserNameQuery = "update IMAGE set IMAGE_PATH = ? where TARGET_ID = ? and TARGET_CODE = 'US' ";
+        Object[] modifyUserNameParams = new Object[]{patchUserReq.getProfileImagePath(), patchUserReq.getUserIdx()};
         return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
     }
 

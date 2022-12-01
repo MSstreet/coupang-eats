@@ -55,7 +55,6 @@ public class UserController {
         else if (postUserReq.getPassword() == null || postUserReq.getPassword().isEmpty()) {
             return new BaseResponse<>(POST_USERS_EMPTY_PASSWORD);
         }
-
         else if (postUserReq.getPhoneNumber() == null || postUserReq.getPhoneNumber().isEmpty()) {
             return new BaseResponse<>(POST_USERS_EMPTY_PHONE);
         }
@@ -131,14 +130,14 @@ public class UserController {
      */
     @ResponseBody
     @PatchMapping("/{userIdx}")
-    public BaseResponse<PatchUserReq> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
+    public BaseResponse<PatchUserReq> modifyUser(@PathVariable("userIdx") int userIdx, @RequestBody PatchUserReq patchUserReq) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-            PatchUserReq patchUserReq = new PatchUserReq(userIdx, user.getNickname());
-            userService.modifyUserNickname(patchUserReq);
+            patchUserReq.setUserIdx(userIdx);
+            userService.modifyUser(patchUserReq);
             return new BaseResponse<>(patchUserReq);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
