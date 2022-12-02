@@ -10,10 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
-@RequestMapping("/app/menu")
+@RequestMapping("/app/menus")
 public class MenuController {
 
     final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -57,14 +59,12 @@ public class MenuController {
     }
 
     @ResponseBody
-    @PutMapping("/modify/{restaurantId}/{menuId}")
+    @PatchMapping("/modify/{restaurantId}/{menuId}")
     public BaseResponse<PostMenuRes> modifyMenu(@PathVariable("restaurantId") int restaurantId ,@PathVariable("menuId") int menuId, @RequestBody PostMenuReq postMenuReq){
 
         try{
 
             PostMenuRes postMenuRes = menuService.modifyMenu(postMenuReq);
-
-
 
             return new BaseResponse<>(postMenuRes);
 
@@ -89,6 +89,46 @@ public class MenuController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/list") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<PostMenuRes>> getAllMenus(){
 
+        try{
+            List<PostMenuRes> getMenuRes = menuProvider.getAllMenus();
+            return new BaseResponse<>(getMenuRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    @ResponseBody
+    @GetMapping("/menu-id/{menuIdx}") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<PostMenuRes> getMenu(@PathVariable("menuIdx") int menuIdx){
+
+        try{
+            PostMenuRes postMenuRes = menuProvider.getMenuByMenuId(menuIdx);
+
+            return new BaseResponse<>(postMenuRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    @ResponseBody
+    @GetMapping("/res-id/{restaurantId}")
+    public List<PostMenuRes> getRestaurantMenu(@PathVariable ("restaurantId") int restaurantId){
+
+        try{
+            List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantId);
+
+            return postMenuRes;
+        } catch(BaseException exception){
+            return null;
+        }
+    }
 
 }

@@ -34,6 +34,7 @@ public class MenuService {
             int menuId = menuDao.createMenu(postMenuReq);
 
             PostMenuRes postMenuRes = menuDao.getMenuByMenuId(menuId);
+
             return postMenuRes;
 
         } catch (Exception exception) {

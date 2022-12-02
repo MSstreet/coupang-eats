@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class MenuDao {
@@ -81,6 +82,61 @@ public class MenuDao {
                         rs.getInt("REF_ID"),
                         rs.getInt("OPTION_ID")),
                 menuId);
+    }
+
+    public List<PostMenuRes> getAllMenus() {
+
+        String getAllMenusQuery = "select * from MENU";
+
+        return this.jdbcTemplate.query(getAllMenusQuery,
+                (rs,rowNum) -> new PostMenuRes(
+                        rs.getInt("MENU_ID"),
+                        rs.getInt("RESTAURANT_ID"),
+                        rs.getString("GB_CODE"),
+                        rs.getString("NAME"),
+                        rs.getInt("PRICE"),
+                        rs.getString("CONTENT"),
+                        rs.getInt("REF_ID"),
+                        rs.getInt("OPTION_ID")));
+
+    }
+
+    public List<PostMenuRes> getRestaurantMenu(int restaurantId) {
+
+        String getMenusQuery = "select * from MENU where RESTAURANT_ID = ?";
+
+        return this.jdbcTemplate.query(getMenusQuery,
+                (rs,rowNum) -> new PostMenuRes(
+                        rs.getInt("MENU_ID"),
+                        rs.getInt("RESTAURANT_ID"),
+                        rs.getString("GB_CODE"),
+                        rs.getString("NAME"),
+                        rs.getInt("PRICE"),
+                        rs.getString("CONTENT"),
+                        rs.getInt("REF_ID"),
+                        rs.getInt("OPTION_ID"))
+                ,restaurantId);
+
+    }
+
+    public List<PostMenuRes> getMenusByName(String MenuName) {
+
+        String getMenusQuery = "select * from MENU where NAME like ?";
+
+        String Param = "%" + MenuName + "%";
+
+        return this.jdbcTemplate.query(getMenusQuery,
+                (rs,rowNum) -> new PostMenuRes(
+                        rs.getInt("MENU_ID"),
+                        rs.getInt("RESTAURANT_ID"),
+                        rs.getString("GB_CODE"),
+                        rs.getString("NAME"),
+                        rs.getInt("PRICE"),
+                        rs.getString("CONTENT"),
+                        rs.getInt("REF_ID"),
+                        rs.getInt("OPTION_ID"))
+                ,MenuName);
+
     }
 
 

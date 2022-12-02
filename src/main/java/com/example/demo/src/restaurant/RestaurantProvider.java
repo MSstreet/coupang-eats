@@ -1,11 +1,14 @@
 package com.example.demo.src.restaurant;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.menu.MenuDao;
+import com.example.demo.src.menu.model.PostMenuRes;
 import com.example.demo.src.restaurant.model.GetRestaurantRes;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
@@ -13,11 +16,14 @@ import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
 @Service
 public class RestaurantProvider {
     private final RestaurantDao restaurantDao;
+
+    private final MenuDao menuDao;
     private final JwtService jwtService;
 
     @Autowired
-    public RestaurantProvider(RestaurantDao restaurantDao, JwtService jwtService) {
+    public RestaurantProvider(RestaurantDao restaurantDao,MenuDao menuDao, JwtService jwtService) {
         this.restaurantDao = restaurantDao;
+        this.menuDao = menuDao;
         this.jwtService = jwtService;
     }
     public int checkBusinessNum(String BusinessNum) throws BaseException {
@@ -76,5 +82,22 @@ public class RestaurantProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+//    public List<GetRestaurantRes> getRestaurantsByMenuSearch(String searchRestaurantCategoryReq) throws BaseException {
+//
+//        try{
+//            List<GetRestaurantRes> getRestaurantRes = new List<GetRestaurantR;
+//            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(searchRestaurantCategoryReq);
+//
+//            for(int i = 0; i < postMenuRes.size(); i++){
+//
+//            }
+//
+//            return getRestaurantRes;
+//        }
+//        catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
 }

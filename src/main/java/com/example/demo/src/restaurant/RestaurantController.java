@@ -382,4 +382,20 @@ public class RestaurantController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+//    @ResponseBody
+//    @GetMapping("/menu") // (GET) 127.0.0.1:9000/app/users
+//    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByMenuSearch(@RequestParam String searchRestaurantMenuReq) {
+//        try{
+//
+//            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(searchRestaurantMenuReq);
+//            return new BaseResponse<>(getRestaurantRes);
+//
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
+
+
+
 }
