@@ -113,7 +113,7 @@ public class RestaurantController {
 //        }
 
         //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
-        //empty 보류 주소, 사진, 치타, 배달, 포장
+        //empty 보류 : 주소, 사진, 치타, 배달, 포장
         //형식 : 전화번호
         //중복 : 사업자 번호
         try{
@@ -121,7 +121,7 @@ public class RestaurantController {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT_NAME);
             }
 
-            //닉네임 널 여부
+
             if(postRestaurantReq.getNumber() == null || postRestaurantReq.getNumber().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_NUMBER);
             }
@@ -212,6 +212,11 @@ public class RestaurantController {
 //        }
 //    }
 
+
+    //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
+    //empty 보류 : 주소, 사진, 치타, 배달, 포장
+    //형식 : 전화번호
+    //중복 : 사업자 번호
     @ResponseBody
     @PatchMapping("/modify/{restIdx}")
     public BaseResponse<String> modifyRestaurant(@PathVariable("restIdx") int restIdx, @RequestBody PostRestaurantReq postRestaurantReq){
@@ -295,6 +300,8 @@ public class RestaurantController {
 //        }
 //    }
 
+
+    //벨러데이션
     @ResponseBody
     @PatchMapping("/delete/{restiIdx}")
     public BaseResponse<String> deleteRestaurant(@PathVariable("restiIdx") int restiIdx){
@@ -334,6 +341,7 @@ public class RestaurantController {
         }
     }
 
+    //존재하지 않는 레스토랑
     @ResponseBody
     @GetMapping("/{restiIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
     public GetRestaurantRes getRestaurantByRestaurantId(@PathVariable("restiIdx") int restiIdx) {
@@ -347,6 +355,7 @@ public class RestaurantController {
 
     }
 
+    //검색결과가 존재하지 않을 때
     @ResponseBody
     @GetMapping("/name") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<List<GetRestaurantRes>> getRestaurantsByNameSearch(@RequestParam String searchRestaurantNameReq) {
@@ -359,7 +368,8 @@ public class RestaurantController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-//
+
+    //존재하지 않는 카테고리
     @ResponseBody
     @GetMapping("/category") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int searchRestaurantCategoryReq) {
@@ -372,4 +382,20 @@ public class RestaurantController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+//    @ResponseBody
+//    @GetMapping("/menu") // (GET) 127.0.0.1:9000/app/users
+//    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByMenuSearch(@RequestParam String searchRestaurantMenuReq) {
+//        try{
+//
+//            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(searchRestaurantMenuReq);
+//            return new BaseResponse<>(getRestaurantRes);
+//
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
+
+
+
 }

@@ -79,7 +79,7 @@ public class RestaurantDao {
 
 
     public int deleteRestaurant(int restaurantId){
-        String deleteRestaurantQuery = "delete from RESTAURANT where RESTAURANT_ID = ? ";
+        String deleteRestaurantQuery = "update RESTAURANT set DELETE_YN = 1 where RESTAURANT_ID = ? ";
 
         return this.jdbcTemplate.update(deleteRestaurantQuery,restaurantId);
     }
@@ -161,7 +161,7 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH")),
                 getRestaurantParams);
     }
-//
+
     public List<GetRestaurantRes> getRestaurantsByNameSearch(String searchRestaurantNameReq) {
 
         String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where BUSINESS_NAME like ?";

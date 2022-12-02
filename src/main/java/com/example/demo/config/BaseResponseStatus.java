@@ -33,33 +33,36 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_PHONE(false, 2016, "휴대폰 번호를 입력해주세요."),
     POST_USERS_INVALID_PHONE(false, 2017, "휴대폰 번호를 올바르게 입력해주세요."),
 
-    // [POST] /restaurants
-    POST_RESTAURANT_EMPTY_NUMBER(false, 2018, "가게 번호를 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_REPRESENT(false, 2019, "대표자명 이름을 입력해주세요."),
+    //[POST] / RESTAURANT
+    //주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
+    POST_RESTAURANT_EMPTY_NUMBER(false, 2020, "가게 번호를 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_BUSINESS_NUMBER(false, 2020, "사업자 번호를 입력해주세요."),
+    POST_RESTAURANT_EMPTY_REPRESENT(false, 2021, "대표자명 이름을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_OPERATION(false, 2021, "운영시간을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_BUSINESS_NUMBER(false, 2022, "사업자 번호를 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_DELIVERY_TIP(false, 2021, "배달 금액을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_OPERATION(false, 2023, "운영시간을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE(false, 2022, "최소 주문금액을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_DELIVERY_TIP(false, 2024, "배달 금액을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_RESTAURANT_IMAGE(false, 2023, "가게 사진을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE(false, 2025, "최소 주문금액을 입력해주세요."),
+
+    POST_RESTAURANT_EMPTY_RESTAURANT_IMAGE(false, 2026, "가게 사진을 입력해주세요."),
 
     POST_RESTAURANT_EMPTY_RESTAURANT_NAME(false, 2027, "가게 이름를 입력해주세요."),
     POST_RESTAURANT_INVALID_NUMBER(false,2028,"전화번호 형식을 올바르게 입력해주세요."),
 
     POST_RESTAURANT_EXISTS_BUSINESS_NUMBER(false,2029,"이미 가입된 사업자 번호입니다."),
 
+    // [POST] / MENU
 
-    // [POST] /reviews
-    POST_REVIEWS_EMPTY_ORDER(false, 2030, "주문 번호를 확인해주세요."),
-    POST_REVIEWS_INVALID_ORDER(false, 2031, "주문 번호를 확인해주세요."),
-    POST_REVIEWS_EXISTS_ORDER(false, 2032, "해당 주문에는 이미 리뷰가 존재합니다."),
-    POST_REVIEWS_EMPTY_SCORE(false, 2033, "별점 값이 올바른지 확인해주세요."),
-    POST_REVIEWS_INVALID_SCORE(false, 2034, "별점 값이 올바른지 확인해주세요."),
+    POST_MENU_EMPTY_GB_CODE(false, 2024, "값을 입력해주세요."),
+
+    POST_MENU_EMPTY_NAME(false, 2025, "메뉴명을 입력해주세요."),
+
+    POST_MENU_EMPTY_PRICE(false, 2026, "가격을 입력해주세요."),
+
 
     /**
      * 3000 : Response 오류
@@ -74,6 +77,9 @@ public enum BaseResponseStatus {
     //[PATCH]
     FAILED_TO_MODIFY(false,3015,"수정에 실패하였습니다."),
     FAILED_TO_DELETE(false,3016,"삭제에 실패하였습니다."),
+
+
+    // [POST] / menu
 
     /**
      * 4000 : Database, Server 오류

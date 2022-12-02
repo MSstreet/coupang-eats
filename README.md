@@ -69,6 +69,16 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
      - jwt 적용 해지
  - 레스토랑 API 명세서 작성
  - 주소 API 개발 중
+ 
+ 
+### 2022-12-01
+- 주소 API 개발 보류 메뉴 API 개발
+     - 메뉴 API 생성,삭제,수정 개발 (테스트 x, 명세서 작성 x) 
+     
+### 2022-12-02
+- 메뉴 API 개발, 테스트 완료 (명세서 x)
+- 메뉴 옵션 API 개발 완료 (테스트, 명세서 x)
+     
 ---
 
 ## BELLA
