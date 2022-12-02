@@ -116,12 +116,12 @@ public class UserDao {
                 getUserParams);
     }
 
-    // 회원정보 변경 - 이름, 이메일, 비밀번호, 휴대폰 번호, 주소 고유 번호, 상세 주소, 삭제 여부, 마케팅 동의 여부, 주문 알림 동의 여부
+    // 회원정보 변경 - 이름, 이메일, 비밀번호, 휴대폰 번호, 주소 고유 번호, 상세 주소, 마케팅 동의 여부, 주문 알림 동의 여부
     public int modifyUser(PatchUserReq patchUserReq) {
         String modifyUserNameQuery = "update USER set NAME = ?, EMAIL = ?, PASSWORD = ?, PHONE_NUMBER = ?, ADDRESS_DETAIL = ?, " +
-                "ADDRESS_ID = ?, DELETE_YN = ?, MARKETING_AGREE_YN = ?, INFORM_NOTICE_AGREE_YN = ?, ORDER_NOTICE_AGREE_YN = ? where USER_ID = ? ";
+                "ADDRESS_ID = ?, MARKETING_AGREE_YN = ?, INFORM_NOTICE_AGREE_YN = ?, ORDER_NOTICE_AGREE_YN = ? where USER_ID = ? ";
         Object[] modifyUserNameParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPassword(),
-                patchUserReq.getPhoneNumber(), patchUserReq.getAddressDetail(), patchUserReq.getAddressIdx(), patchUserReq.isDeleteYn(), patchUserReq.isMarketingAgreeYn(),
+                patchUserReq.getPhoneNumber(), patchUserReq.getAddressDetail(), patchUserReq.getAddressIdx(), patchUserReq.isMarketingAgreeYn(),
                 patchUserReq.isInformNoticeAgreeYn(), patchUserReq.isOrderNoticeAgreeYn(), patchUserReq.getUserIdx()};
         return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
     }

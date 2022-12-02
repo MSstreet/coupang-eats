@@ -131,6 +131,25 @@ public class UserController {
     @ResponseBody
     @PatchMapping("/{userIdx}")
     public BaseResponse<PatchUserReq> modifyUser(@PathVariable("userIdx") int userIdx, @RequestBody PatchUserReq patchUserReq) {
+        if (patchUserReq.getName() == null || patchUserReq.getName().isEmpty()) {
+            return new BaseResponse<>(PATCH_USERS_EMPTY_NAME);
+        }
+        else if(patchUserReq.getEmail() == null || patchUserReq.getEmail().isEmpty()) {
+            return new BaseResponse<>(PATCH_USERS_EMPTY_EMAIL);
+        }
+        else if (!isRegexEmail(patchUserReq.getEmail())) {
+            return new BaseResponse<>(PATCH_USERS_INVALID_EMAIL);
+        }
+        else if (patchUserReq.getPassword() == null || patchUserReq.getPassword().isEmpty()) {
+            return new BaseResponse<>(PATCH_USERS_EMPTY_PASSWORD);
+        }
+        else if (patchUserReq.getPhoneNumber() == null || patchUserReq.getPhoneNumber().isEmpty()) {
+            return new BaseResponse<>(PATCH_USERS_EMPTY_PHONE);
+        }
+        else if (!isRegexPhone(patchUserReq.getPhoneNumber())) {
+            return new BaseResponse<>(PATCH_USERS_INVALID_PHONE);
+        }
+
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){

@@ -14,7 +14,6 @@ public class PatchUserReq {
     private String profileImagePath;
     private int addressIdx;
     private String addressDetail;
-    private boolean deleteYn;
     private boolean marketingAgreeYn;
     private boolean informNoticeAgreeYn;
     private boolean orderNoticeAgreeYn;
