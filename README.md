@@ -124,3 +124,12 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - MENU, ORDER 테이블 수정
 - REVIEW API 개발 시작
 - USER API 주소 데이터 받아오게끔 수정
+
+### 🗓️ 2022-12-01
+- REVIEW API 개발
+- USER API 수정
+
+### 🗓️ 2022-12-12
+- REVIEW API 개발 및 테스트 완료
+- REVIEW API 명세서 작성
+- ORDER API 개발 시작
