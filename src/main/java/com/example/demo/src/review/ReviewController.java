@@ -114,6 +114,25 @@ public class ReviewController {
     }
 
     /**
+     * 특정 사용자의 리뷰 수 조회 API
+     * [GET] /reviews/users/:userIdx/count
+     */
+    @ResponseBody
+    @GetMapping("/users/{userIdx}/count")
+    public BaseResponse<Integer> getReviewsCountByUser(@PathVariable("userIdx") int userIdx) {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            int count = reviewProvider.getReviewsCountByUser(userIdx);
+            return new BaseResponse<>(count);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
      * 특정 가게의 리뷰 조회 API
      * [GET] /reviews/restaurants/:restIdx
      */
@@ -129,14 +148,29 @@ public class ReviewController {
     }
 
     /**
+     * 특정 가게의 리뷰 수 조회 API
+     * [GET] /reviews/restaurants/:restIdx/count
+     */
+    @ResponseBody
+    @GetMapping("/restaurants/{restIdx}/count")
+    public BaseResponse<Integer> getReviewsCountByRest(@PathVariable("restIdx") int restIdx) {
+        try {
+            int count = reviewProvider.getReviewsCountByRest(restIdx);
+            return new BaseResponse<>(count);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
      * 특정 가게의 별점 조회 API
      * [GET] /reviews/score/:restIdx
      */
     @ResponseBody
     @GetMapping("/score/{restIdx}")
-    public BaseResponse<Float> getScore(@PathVariable("restIdx") int restIdx) {
+    public BaseResponse<Double> getScore(@PathVariable("restIdx") int restIdx) {
         try {
-            float score = reviewProvider.getScore(restIdx);
+            double score = reviewProvider.getScore(restIdx);
             return new BaseResponse<>(score);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

@@ -82,6 +82,16 @@ public class ReviewProvider {
         }
     }
 
+    // 특정 user의 Reviews 수 조회
+    public int getReviewsCountByUser(int userIdx) throws BaseException {
+        try {
+            int count = reviewDao.getReviewsCountByUser(userIdx);
+            return count;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     // 특정 가게의 Reviews 조회
     public List<GetReviewRes> getReviewsByRest(int restIdx) throws BaseException {
         try {
@@ -91,10 +101,21 @@ public class ReviewProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    // 특정 가게의 별점 평균 계산
-    public float getScore(int restIdx) throws BaseException {
+
+    // 특정 가게의 Reviews 수 조회
+    public int getReviewsCountByRest(int restIdx) throws BaseException {
         try {
-            float score = reviewDao.getScore(restIdx);
+            int count = reviewDao.getReviewsCountByRest(restIdx);
+            return count;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 특정 가게의 별점 평균 계산
+    public double getScore(int restIdx) throws BaseException {
+        try {
+            double score = reviewDao.getScore(restIdx);
             return score;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

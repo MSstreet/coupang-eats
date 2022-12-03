@@ -106,9 +106,8 @@ public class ReviewDao {
         String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID from REVIEW " +
                 "join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
-                "where ORDERS.USER_ID = ? " +
+                "where ORDERS.USER_ID = ? and REVIEW.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc";
-        int getReviewsParams = userIdx;
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
                         rs.getInt("REVIEW_ID"),
@@ -122,7 +121,14 @@ public class ReviewDao {
                         rs.getString("OWNER_REPLY"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getString("IMAGE_PATH")),
-                getReviewsParams);
+                userIdx);
+    }
+
+    // 특정 user의 Reviews 수 조회
+    public int getReviewsCountByUser(int userIdx) {
+        String getReviewsQuery =  "select count(REVIEW.*) as COUNT from REVIEW join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "where ORDERS.USER_ID = ? and REVIEW.DELETE_YN = false";
+        return this.jdbcTemplate.query(getReviewsQuery, (rs, rowNum) -> rs.getInt("COUNT"), userIdx).get(0);
     }
 
     // 특정 가게의 Reviews 조회
@@ -130,7 +136,7 @@ public class ReviewDao {
         String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID from REVIEW " +
                 "join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
-                "where ORDERS.RESTAURANT_ID = ? " +
+                "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc";
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
@@ -147,12 +153,20 @@ public class ReviewDao {
                         rs.getString("IMAGE_PATH")),
                 restIdx);
     }
+
+    // 특정 가게의 Reviews 수 조회
+    public int getReviewsCountByRest(int restIdx) {
+        String getReviewsQuery =  "select count(REVIEW.*) as COUNT from REVIEW join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = false";
+        return this.jdbcTemplate.query(getReviewsQuery, (rs, rowNum) -> rs.getInt("COUNT"), restIdx).get(0);
+    }
+
     // 특정 가게의 별점 평균 계산
-    public float getScore(int restIdx){
+    public double getScore(int restIdx){
         String getScoreQuery = "select avg(REVIEW.SCORE) as SCORE from REVIEW " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
                 "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = 0";
-        float score = this.jdbcTemplate.query(getScoreQuery, (rs, rowNum) -> rs.getFloat("SCORE"), restIdx).get(0);
+        double score = this.jdbcTemplate.query(getScoreQuery, (rs, rowNum) -> rs.getFloat("SCORE"), restIdx).get(0);
         return score;
     }
     // 리뷰 변경 - 별점, 내용, 메뉴 공개 여부, 메뉴 추천 여부, 사장님 답글, 삭제 여부
