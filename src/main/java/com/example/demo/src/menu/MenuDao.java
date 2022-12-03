@@ -22,7 +22,7 @@ public class MenuDao {
 
     public int createMenu(PostMenuReq postMenuReq) {
 
-        if(postMenuReq.getGbCode().equals("메뉴")) {
+        if(postMenuReq.getGbCode().equals("M")) {
 
             String createMenuQuery = "insert into MENU (RESTAURANT_ID,GB_CODE,NAME,PRICE,CONTENT) VALUES (?,?,?,?,?)";
 
@@ -35,6 +35,8 @@ public class MenuDao {
 
             return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
         }else{
+
+            System.out.println("==========================================================확인");
 
             String createMenuQuery = "insert into MENU (RESTAURANT_ID,GB_CODE,NAME,PRICE,CONTENT,REF_ID,OPTION_ID) VALUES (?,?,?,?,?,?,?)";
 

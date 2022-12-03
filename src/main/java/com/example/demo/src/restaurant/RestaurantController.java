@@ -303,8 +303,8 @@ public class RestaurantController {
 
     //벨러데이션
     @ResponseBody
-    @PatchMapping("/delete/{restiIdx}")
-    public BaseResponse<String> deleteRestaurant(@PathVariable("restiIdx") int restiIdx){
+    @PatchMapping("/delete/{restIdx}")
+    public BaseResponse<String> deleteRestaurant(@PathVariable("restIdx") int restIdx){
 
 //        try{
 //            int userIdxByJwt = jwtService.getUserIdx();
@@ -317,7 +317,7 @@ public class RestaurantController {
 //        }
 
         try{
-            restaurantService.deleteRestaurant(restiIdx);
+            restaurantService.deleteRestaurant(restIdx);
 
             String result = "레스토랑을 삭제하였습니다.";
 
@@ -343,11 +343,11 @@ public class RestaurantController {
 
     //존재하지 않는 레스토랑
     @ResponseBody
-    @GetMapping("/{restiIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-    public GetRestaurantRes getRestaurantByRestaurantId(@PathVariable("restiIdx") int restiIdx) {
+    @GetMapping("/{restIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
+    public GetRestaurantRes getRestaurantByRestaurantId(@PathVariable("restIdx") int restIdx) {
 
         try{
-            GetRestaurantRes getRestaurantRes = restaurantProvider.getRestaurantByRestaurantId(restiIdx);
+            GetRestaurantRes getRestaurantRes = restaurantProvider.getRestaurantByRestaurantId(restIdx);
             return getRestaurantRes;
         } catch(BaseException exception){
             return null;
@@ -358,10 +358,10 @@ public class RestaurantController {
     //검색결과가 존재하지 않을 때
     @ResponseBody
     @GetMapping("/name") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByNameSearch(@RequestParam String searchRestaurantNameReq) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByNameSearch(@RequestParam String name) {
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByNameSearch(searchRestaurantNameReq);
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByNameSearch(name);
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){
@@ -372,10 +372,10 @@ public class RestaurantController {
     //존재하지 않는 카테고리
     @ResponseBody
     @GetMapping("/category") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int searchRestaurantCategoryReq) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int category) {
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByCategorySearch(searchRestaurantCategoryReq);
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByCategorySearch(category);
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){
@@ -383,18 +383,18 @@ public class RestaurantController {
         }
     }
 
-//    @ResponseBody
-//    @GetMapping("/menu") // (GET) 127.0.0.1:9000/app/users
-//    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByMenuSearch(@RequestParam String searchRestaurantMenuReq) {
-//        try{
-//
-//            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(searchRestaurantMenuReq);
-//            return new BaseResponse<>(getRestaurantRes);
-//
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    @ResponseBody
+    @GetMapping("/menu") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByMenuSearch(@RequestParam String menu) {
+        try{
+
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(menu);
+            return new BaseResponse<>(getRestaurantRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 
 

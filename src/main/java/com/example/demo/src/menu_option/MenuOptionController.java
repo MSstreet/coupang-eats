@@ -37,8 +37,8 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @PostMapping("/{menuId}/join")
-    public BaseResponse<PostMenuOptionRes> createMenuOption(@PathVariable("menuId") int menuId, @RequestBody PostMenuOptionReq postMenuOptionReq) {
+    @PostMapping("/{menuIdx}/join")
+    public BaseResponse<PostMenuOptionRes> createMenuOption(@PathVariable("menuIdx") int menuIdx, @RequestBody PostMenuOptionReq postMenuOptionReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
         try{
 
@@ -51,8 +51,8 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @PutMapping("/modify/{menuOptionId}")
-    public BaseResponse<PostMenuOptionRes> modifyMenuOption(@PathVariable("menuOptionId") int menuOptionId, @RequestBody PostMenuOptionReq postMenuOptionReq){
+    @PutMapping("/modify/{menuOptionIdx}")
+    public BaseResponse<PostMenuOptionRes> modifyMenuOption(@PathVariable("menuOptionIdx") int menuOptionIdx, @RequestBody PostMenuOptionReq postMenuOptionReq){
         try{
 
             PostMenuOptionRes postMenuOptionRes = menuOptionService.modifyMenuOption(postMenuOptionReq);
@@ -65,13 +65,13 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @PatchMapping("/delete/{menuOptionId}")
-    public BaseResponse<Integer> deleteDeleteMenuOption(@PathVariable("menuOptionId") int menuOptionId){
+    @PatchMapping("/delete/{menuOptionIdx}")
+    public BaseResponse<Integer> deleteDeleteMenuOption(@PathVariable("menuOptionIdx") int menuOptionIdx){
         try {
 
-            menuOptionService.deleteMenuOption(menuOptionId);
+            menuOptionService.deleteMenuOption(menuOptionIdx);
 
-            return new BaseResponse<>(menuOptionId);
+            return new BaseResponse<>(menuOptionIdx);
 
         }catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
