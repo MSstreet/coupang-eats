@@ -23,15 +23,28 @@ public enum BaseResponseStatus {
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
 
-    // [POST] /users
+    // [POST], [PATCH] /users
     POST_USERS_EMPTY_NAME(false, 2010, "이름을 입력해주세요."),
+    PATCH_USERS_EMPTY_NAME(false, 2010, "이름을 입력해주세요."),
+
     POST_USERS_EMPTY_EMAIL(false, 2011, "아이디(이메일 주소)를 입력해주세요."),
+    PATCH_USERS_EMPTY_EMAIL(false, 2011, "아이디(이메일 주소)를 입력해주세요."),
+
     POST_USERS_INVALID_EMAIL(false,2012,"아이디(이메일 주소)를 올바르게 입력해주세요."),
+    PATCH_USERS_INVALID_EMAIL(false,2012,"아이디(이메일 주소)를 올바르게 입력해주세요."),
+
     POST_USERS_EXISTS_EMAIL(false,2013,"이미 존재하는 아이디(이메일 주소)입니다."),
+    PATCH_USERS_EXISTS_EMAIL(false,2013,"이미 존재하는 아이디(이메일 주소)입니다."),
+
     POST_USERS_EMPTY_PASSWORD(false, 2014, "비밀번호를 입력해주세요."),
+    PATCH_USERS_EMPTY_PASSWORD(false, 2014, "비밀번호를 입력해주세요."),
     POST_USERS_EMPTY_NICKNAME(false, 2015, "닉네임을 입력해주세요."),
     POST_USERS_EMPTY_PHONE(false, 2016, "휴대폰 번호를 입력해주세요."),
+    PATCH_USERS_EMPTY_PHONE(false, 2016, "휴대폰 번호를 입력해주세요."),
+
     POST_USERS_INVALID_PHONE(false, 2017, "휴대폰 번호를 올바르게 입력해주세요."),
+    PATCH_USERS_INVALID_PHONE(false, 2017, "휴대폰 번호를 올바르게 입력해주세요."),
+
 
 
     //[POST] / RESTAURANT
@@ -63,6 +76,24 @@ public enum BaseResponseStatus {
 
     POST_MENU_EMPTY_PRICE(false, 2026, "가격을 입력해주세요."),
 
+    // [POST] /reviews
+    POST_REVIEWS_EMPTY_ORDER(false, 2030, "주문 번호를 입력해주세요."),
+    POST_REVIEWS_INVALID_ORDER(false, 2031, "유효하지 않은 주문 번호입니다."),
+    POST_REVIEWS_EXISTS_ORDER(false, 2032, "해당 주문에는 이미 리뷰가 존재합니다."),
+    POST_REVIEWS_EMPTY_SCORE(false, 2033, "별점 값을 입력해주세요."),
+    PATCH_REVIEWS_EMPTY_SCORE(false, 2033, "별점 값을 입력해주세요."),
+
+    POST_REVIEWS_INVALID_SCORE(false, 2034, "유효하지 않은 별점 값입니다."),
+    PATCH_REVIEWS_INVALID_SCORE(false, 2034, "유효하지 않은 별점 값입니다."),
+
+
+    // [POST] /orders
+    POST_ORDERS_EMPTY_USER(false, 2035, "주문한 사용자를 입력해주세요."),
+    POST_ORDERS_INVALID_USER(false, 2036, "유효하지 않은 사용자 번호입니다."),
+    POST_ORDERS_EMPTY_RESTAURANT(false, 2037, "주문할 가게를 입력해주세요."),
+    POST_ORDERS_INVALID_RESTAURANT(false, 2038, "유효하지 않은 가게 번호입니다."),
+    POST_ORDERS_EMPTY_PRICE(false, 2039, "가격을 입력해주세요."),
+    POST_ORDERS_EMPTY_MENU(false, 2040, "메뉴를 선택해주세요."),
 
     /**
      * 3000 : Response 오류
@@ -78,16 +109,13 @@ public enum BaseResponseStatus {
     FAILED_TO_MODIFY(false,3015,"수정에 실패하였습니다."),
     FAILED_TO_DELETE(false,3016,"삭제에 실패하였습니다."),
 
-
-    // [POST] / menu
-
     /**
      * 4000 : Database, Server 오류
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
     SERVER_ERROR(false, 4001, "서버와의 연결에 실패하였습니다."),
 
-
+    DATABASE_ERROR_USER_ID(false, 4002, "사용자 ID 조회에 실패하였습니다."),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
