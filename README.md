@@ -135,7 +135,13 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - REVIEW API 개발
 - USER API 수정
 
-### 🗓️ 2022-12-12
+### 🗓️ 2022-12-02
 - REVIEW API 개발 및 테스트 완료
 - REVIEW API 명세서 작성
 - ORDER API 개발 시작
+
+### 🗓️ 2022-12-03
+- 프론트와의 협업 미팅 진행으로 일부 API 및 데이터 수정
+- REVIEW API 수정
+- WISH API 개발 완료
+- USER API 수정
