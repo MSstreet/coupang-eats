@@ -56,12 +56,10 @@ public class MenuOptionDao {
     }
 
     public int deleteMenuOption(int menuOptionId) {
-        String deleteMenuQuery = "update MENU_OPTION set DELETE_YN = 1 where MENU_OPTIN_ID = ? ";
-        Object[] modifyUserNameParams = new Object[]{menuOptionId};
-        return this.jdbcTemplate.update(deleteMenuQuery, modifyUserNameParams);
+        String deleteMenuOptionQuery = "update MENU_OPTION set DELETE_YN = 1 where MENU_OPTION_ID = ? ";
+        Object[] modifyMenuOptionParams = new Object[]{menuOptionId};
+        return this.jdbcTemplate.update(deleteMenuOptionQuery, modifyMenuOptionParams);
     }
-
-
 
 
     public List<PostMenuOptionRes> getAllMenuOptions() {

@@ -78,6 +78,12 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 ### 2022-12-02
 - 메뉴 API 개발, 테스트 완료 (명세서 x)
 - 메뉴 옵션 API 개발 완료 (테스트, 명세서 x)
+
+### 2022-12-03
+- 메뉴 API 완성 (테스트 o, 명세서 o)
+- 메뉴 옵션 API 완성 (테스트 o, 명세서 o)
+- 레스토랑 API 중 메뉴 명으로 레스토랑 검색 추가
+- 회의 진행(클라이언트 요청 사항과 서버 요청 사항 종합 & 변경 사항, 추가 사항 등 종합)
      
 ---
 
@@ -124,3 +130,12 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - MENU, ORDER 테이블 수정
 - REVIEW API 개발 시작
 - USER API 주소 데이터 받아오게끔 수정
+
+### 🗓️ 2022-12-01
+- REVIEW API 개발
+- USER API 수정
+
+### 🗓️ 2022-12-12
+- REVIEW API 개발 및 테스트 완료
+- REVIEW API 명세서 작성
+- ORDER API 개발 시작

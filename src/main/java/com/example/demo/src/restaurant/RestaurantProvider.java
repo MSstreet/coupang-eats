@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
@@ -83,21 +84,27 @@ public class RestaurantProvider {
         }
     }
 
-//    public List<GetRestaurantRes> getRestaurantsByMenuSearch(String searchRestaurantCategoryReq) throws BaseException {
-//
-//        try{
-//            List<GetRestaurantRes> getRestaurantRes = new List<GetRestaurantR;
-//            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(searchRestaurantCategoryReq);
-//
-//            for(int i = 0; i < postMenuRes.size(); i++){
-//
-//            }
-//
-//            return getRestaurantRes;
-//        }
-//        catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    public List<GetRestaurantRes> getRestaurantsByMenuSearch(String menu) throws BaseException {
+
+        try{
+            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(menu);
+
+            List<GetRestaurantRes> getRestaurantRes = new ArrayList<>();
+
+            for(int i = 0; i < postMenuRes.size(); i++){
+                GetRestaurantRes getRestaurantRes1 = restaurantDao.getRestaurantByRestaurantId(postMenuRes.get(i).getRestaurantId());
+                getRestaurantRes.add(getRestaurantRes1);
+            }
+
+            for(int i = 0; i < postMenuRes.size(); i++){
+                System.out.println(getRestaurantRes.get(i));
+            }
+
+            return getRestaurantRes;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 }

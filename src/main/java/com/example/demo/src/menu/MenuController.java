@@ -34,10 +34,12 @@ public class MenuController {
     }
 
     //jwt 적용??
+    //널 값 확인 : 전부 다
+    //가게 고유 번호 존재하는지 확인, D 혹은 M 입력, 내용 길이, 참조 값 존재 확인
     //가격 validation
     @ResponseBody
-    @PostMapping("/{restaurantId}/join")
-    public BaseResponse<PostMenuRes> creatMenuOptionDetail(@PathVariable("restaurantId") int restaurantId, @RequestBody PostMenuReq postMenuReq) {
+    @PostMapping("/{restaurantIdx}/join")
+    public BaseResponse<PostMenuRes> creatMenu(@PathVariable("restaurantIdx") int restaurantIdx, @RequestBody PostMenuReq postMenuReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
 
         try{
@@ -59,8 +61,8 @@ public class MenuController {
     }
 
     @ResponseBody
-    @PatchMapping("/modify/{restaurantId}/{menuId}")
-    public BaseResponse<PostMenuRes> modifyMenu(@PathVariable("restaurantId") int restaurantId ,@PathVariable("menuId") int menuId, @RequestBody PostMenuReq postMenuReq){
+    @PatchMapping("/modify/{restaurantIdx}/{menuIdx}")
+    public BaseResponse<PostMenuRes> modifyMenu(@PathVariable("restaurantIdx") int restaurantIdx ,@PathVariable("menuIdx") int menuIdx, @RequestBody PostMenuReq postMenuReq){
 
         try{
 
@@ -76,14 +78,14 @@ public class MenuController {
     }
 
     @ResponseBody
-    @PatchMapping("/delete/{restaurantId}/{menuId}")
-    public BaseResponse<Integer> deleteMenu(@PathVariable("restaurantId") int restaurantId, @PathVariable("menuId") int menuId){
+    @PatchMapping("/delete/{restaurantIdx}/{menuIdx}")
+    public BaseResponse<Integer> deleteMenu(@PathVariable("restaurantIdx") int restaurantIdx, @PathVariable("menuIdx") int menuIdx){
 
         try {
 
-            menuService.deleteMenu(menuId);
+            menuService.deleteMenu(menuIdx);
 
-            return new BaseResponse<>(menuId);
+            return new BaseResponse<>(menuIdx);
         }catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -119,11 +121,11 @@ public class MenuController {
     }
 
     @ResponseBody
-    @GetMapping("/res-id/{restaurantId}")
-    public List<PostMenuRes> getRestaurantMenu(@PathVariable ("restaurantId") int restaurantId){
+    @GetMapping("/res-id/{restaurantIdx}")
+    public List<PostMenuRes> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx){
 
         try{
-            List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantId);
+            List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantIdx);
 
             return postMenuRes;
         } catch(BaseException exception){
