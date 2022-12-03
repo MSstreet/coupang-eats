@@ -14,7 +14,6 @@ public class GetUserRes {
     private String email;
     private String password;
     private String phoneNumber;
-    private String profileImagePath;
     private String addressNm;
     private String roadAddress;
     private String addressDetail;

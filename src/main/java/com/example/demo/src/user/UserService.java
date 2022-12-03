@@ -40,9 +40,6 @@ public class UserService {
         }
         try {
             int userIdx = userDao.createUser(postUserReq);
-            if (postUserReq.getProfileImagePath() != null || postUserReq.getProfileImagePath().isEmpty()){
-                userDao.createUserImage(userIdx, postUserReq);
-            }
             String jwt = jwtService.createJwt(userIdx);
             return new PostUserRes(userIdx, jwt);
         } catch (Exception exception) {
@@ -54,8 +51,7 @@ public class UserService {
     public void modifyUser(PatchUserReq patchUserReq) throws BaseException {
         try {
             int resultModifyUser = userDao.modifyUser(patchUserReq);
-            int resultModifyProfileImg = userDao.modifyProfileImg(patchUserReq);
-            if (resultModifyUser == 0 || resultModifyProfileImg == 0) {
+            if (resultModifyUser == 0) {
                 throw new BaseException(FAILED_TO_MODIFY);
             }
         } catch (Exception exception) {

@@ -11,7 +11,6 @@ public class PatchUserReq {
     private String email;
     private String password;
     private String phoneNumber;
-    private String profileImagePath;
     private int addressIdx;
     private String addressDetail;
     private boolean marketingAgreeYn;
