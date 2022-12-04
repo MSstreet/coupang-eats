@@ -68,6 +68,11 @@ public enum BaseResponseStatus {
 
     POST_RESTAURANT_EXISTS_BUSINESS_NUMBER(false,2029,"이미 가입된 사업자 번호입니다."),
 
+    POST_RESTAURANT_EMPTY_ADDRESS(false, 2041, "가게 주소를 입력해주세요."),
+
+
+
+
     // [POST] / MENU
 
     POST_MENU_EMPTY_GB_CODE(false, 2024, "값을 입력해주세요."),
@@ -75,6 +80,9 @@ public enum BaseResponseStatus {
     POST_MENU_EMPTY_NAME(false, 2025, "메뉴명을 입력해주세요."),
 
     POST_MENU_EMPTY_PRICE(false, 2026, "가격을 입력해주세요."),
+
+
+
 
     // [POST] /reviews
     POST_REVIEWS_EMPTY_ORDER(false, 2030, "주문 번호를 입력해주세요."),

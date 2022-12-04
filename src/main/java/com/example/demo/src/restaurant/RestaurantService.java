@@ -34,6 +34,7 @@ public class RestaurantService {
     public PostRestaurantRes createRestaurant(PostRestaurantReq postRestaurantReq) throws BaseException {
 
         try{
+
 //            if(restaurantProvider.checkBusinessNum(postRestaurantReq.getCompanyRegistrationNumber()) == 1){
 //                throw new BaseException(POST_RESTAURANT_EXISTS_BUSINESS_NUMBER);
 //            }
@@ -53,8 +54,6 @@ public class RestaurantService {
         try{
 
             int result = restaurantDao.modifyRestaurant(restaurant ,restaurantId);
-
-            System.out.println("확인~!!!");
 
             restaurantDao.modifyRestaurantImage(restaurant,restaurantId);
 

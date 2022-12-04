@@ -1,6 +1,7 @@
 package com.example.demo.src.restaurant;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.src.menu.MenuDao;
 import com.example.demo.src.menu.model.PostMenuRes;
 import com.example.demo.src.restaurant.model.GetRestaurantRes;
@@ -12,7 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class RestaurantProvider {
@@ -28,10 +29,17 @@ public class RestaurantProvider {
         this.jwtService = jwtService;
     }
     public int checkBusinessNum(String BusinessNum) throws BaseException {
+
         try{
 
-            return restaurantDao.checkBusinessNum(BusinessNum);
+            int check = restaurantDao.checkBusinessNum(BusinessNum);
 
+            if(check == 1){
+                System.out.println("확인");
+                throw new BaseException(POST_RESTAURANT_EXISTS_BUSINESS_NUMBER);
+            }
+
+            return check;
 
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
@@ -53,6 +61,7 @@ public class RestaurantProvider {
     public GetRestaurantRes getRestaurantByRestaurantId(int restaurantId) throws BaseException{
         try {
             GetRestaurantRes getRestaurantRes = restaurantDao.getRestaurantByRestaurantId(restaurantId);
+
             return getRestaurantRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

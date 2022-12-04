@@ -11,10 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexPhone;
+import static com.example.demo.utils.ValidationRegex.isRegexRestaurantNumber;
+
 ////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 @RestController
@@ -113,8 +116,7 @@ public class RestaurantController {
 //        }
 
         //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
-        //empty 보류 : 주소, 사진, 치타, 배달, 포장
-        //형식 : 전화번호
+        //empty 보류 : 사진, 치타, 배달, 포장
         //중복 : 사업자 번호
         try{
             if(postRestaurantReq.getName() == null || postRestaurantReq.getName().length() == 0) {
@@ -145,7 +147,11 @@ public class RestaurantController {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE);
             }
 
-            else if (!isRegexPhone(postRestaurantReq.getNumber())) {
+            if(postRestaurantReq.getAddress() == null || postRestaurantReq.getAddress().length() == 0) {
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_ADDRESS);
+            }
+
+            if (!isRegexRestaurantNumber(postRestaurantReq.getNumber())) {
                 return new BaseResponse<>(POST_RESTAURANT_INVALID_NUMBER);
             }
             PostRestaurantRes postRestaurantRes = restaurantService.createRestaurant(postRestaurantReq);
@@ -214,8 +220,7 @@ public class RestaurantController {
 
 
     //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
-    //empty 보류 : 주소, 사진, 치타, 배달, 포장
-    //형식 : 전화번호
+    //널 값 보류 :  사진, 치타, 배달, 포장
     //중복 : 사업자 번호
     @ResponseBody
     @PatchMapping("/modify/{restIdx}")
@@ -236,7 +241,6 @@ public class RestaurantController {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT_NAME);
             }
 
-            //닉네임 널 여부
             if(postRestaurantReq.getNumber() == null || postRestaurantReq.getNumber().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_NUMBER);
             }
@@ -260,9 +264,14 @@ public class RestaurantController {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE);
             }
 
-            else if (!isRegexPhone(postRestaurantReq.getNumber())) {
+            if(postRestaurantReq.getAddress() == null || postRestaurantReq.getAddress().length() == 0) {
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_ADDRESS);
+            }
+
+            if (!isRegexRestaurantNumber(postRestaurantReq.getNumber())) {
                 return new BaseResponse<>(POST_RESTAURANT_INVALID_NUMBER);
             }
+
             restaurantService.modifyRestaurant(postRestaurantReq, restIdx);
 
             String result = "가게 정보를 수정하였습니다.";
@@ -317,6 +326,8 @@ public class RestaurantController {
 //        }
 
         try{
+
+
             restaurantService.deleteRestaurant(restIdx);
 
             String result = "레스토랑을 삭제하였습니다.";
@@ -341,7 +352,7 @@ public class RestaurantController {
         }
     }
 
-    //존재하지 않는 레스토랑
+    //존재하지 않는 레스토랑(필요x)
     @ResponseBody
     @GetMapping("/{restIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
     public GetRestaurantRes getRestaurantByRestaurantId(@PathVariable("restIdx") int restIdx) {
@@ -355,7 +366,7 @@ public class RestaurantController {
 
     }
 
-    //검색결과가 존재하지 않을 때
+    //검색결과가 존재하지 않을 때(필요x)
     @ResponseBody
     @GetMapping("/name") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<List<GetRestaurantRes>> getRestaurantsByNameSearch(@RequestParam String name) {
@@ -369,7 +380,7 @@ public class RestaurantController {
         }
     }
 
-    //존재하지 않는 카테고리
+    //존재하지 않는 카테고리(필요x)
     @ResponseBody
     @GetMapping("/category") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int category) {

@@ -18,10 +18,10 @@ public class GetRestaurantRes {
     private String name;
 
     // 주소 고유 번호
-    private int addressId;
+    private String address;
 
     // 상세 주소
-    private String detailAddress;
+    //private String detailAddress;
 
     // 가게 전화번호
     private String number;

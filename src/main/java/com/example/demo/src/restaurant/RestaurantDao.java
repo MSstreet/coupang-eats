@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+import static com.example.demo.config.BaseResponseStatus.POST_RESTAURANT_EMPTY_ADDRESS;
 
 @Repository
 public class RestaurantDao {
@@ -28,10 +29,10 @@ public class RestaurantDao {
 
     public int createRestaurant(PostRestaurantReq postRestaurantReq){
 
-        String createRestaurantQuery = "insert into RESTAURANT (BUSINESS_NAME, ADDRESS_ID, PHONE_NUMBER, REPRESENT_NAME, BUSINESS_NUMBER, OPERATING_TIME, TIP_DELIVERY, MINIMUM_ORDER_PRICE, CATEGORY, DELIVERY_YN, FAST_DELIVERY_YN, PICKUP_YN,DELETE_YN ) " +
+        String createRestaurantQuery = "insert into RESTAURANT (BUSINESS_NAME, ADDRESS, PHONE_NUMBER, REPRESENT_NAME, BUSINESS_NUMBER, OPERATING_TIME, TIP_DELIVERY, MINIMUM_ORDER_PRICE, CATEGORY, DELIVERY_YN, FAST_DELIVERY_YN, PICKUP_YN,DELETE_YN ) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        Object[] createRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddressId(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
+        Object[] createRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddress(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
                 ,postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getOperationTime(),postRestaurantReq.getTipDelivery(),postRestaurantReq.getMinDeliveryPrice()
                 ,postRestaurantReq.getCategories(),postRestaurantReq.getDeliveryAvlb()
                 ,postRestaurantReq.getFastDeliveryAvlb()
@@ -47,6 +48,7 @@ public class RestaurantDao {
     }
 
     public void createRestaurantImage(int restaurantIdx, PostRestaurantReq postRestaurantReq){
+
         String createRestaurantImageQuery = "insert into IMAGE (IMAGE_PATH, TARGET_ID, TARGET_CODE) values (?,?,'RS')";
         Object[] createRestaurantImageParams = new Object[]{postRestaurantReq.getRestaurantImage(), restaurantIdx};
         this.jdbcTemplate.update(createRestaurantImageQuery, createRestaurantImageParams);
@@ -54,10 +56,10 @@ public class RestaurantDao {
 
     public int modifyRestaurant(PostRestaurantReq postRestaurantReq, int restaurantId){
 
-        String modifyRestaurantQuery = "update RESTAURANT set BUSINESS_NAME = ? ,ADDRESS_ID = ?, PHONE_NUMBER = ?, REPRESENT_NAME = ?, BUSINESS_NUMBER = ?, OPERATING_TIME = ?, TIP_DELIVERY = ?,MINIMUM_ORDER_PRICE = ?," +
+        String modifyRestaurantQuery = "update RESTAURANT set BUSINESS_NAME = ? ,ADDRESS = ?, PHONE_NUMBER = ?, REPRESENT_NAME = ?, BUSINESS_NUMBER = ?, OPERATING_TIME = ?, TIP_DELIVERY = ?,MINIMUM_ORDER_PRICE = ?," +
                 " CATEGORY = ?,  DELIVERY_YN = ?,  FAST_DELIVERY_YN = ?, PICKUP_YN =? , DELETE_YN = ? where RESTAURANT_ID = ?";
 
-        Object[] modifyRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddressId(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
+        Object[] modifyRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddress(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
                 ,postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getOperationTime(),postRestaurantReq.getTipDelivery(),postRestaurantReq.getMinDeliveryPrice()
                 ,postRestaurantReq.getCategories(),postRestaurantReq.getDeliveryAvlb()
                 ,postRestaurantReq.getFastDeliveryAvlb()
@@ -111,8 +113,7 @@ public class RestaurantDao {
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
-                        rs.getInt("ADDRESS_ID"),
-                        rs.getString("ADDRESS_DETAIL"),
+                        rs.getString("ADDRESS"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("REPRESENT_NAME"),
                         rs.getString("BUSINESS_NUMBER"),
@@ -141,8 +142,7 @@ public class RestaurantDao {
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
-                        rs.getInt("ADDRESS_ID"),
-                        rs.getString("ADDRESS_DETAIL"),
+                        rs.getString("ADDRESS"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("REPRESENT_NAME"),
                         rs.getString("BUSINESS_NUMBER"),
@@ -176,8 +176,7 @@ public class RestaurantDao {
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
-                        rs.getInt("ADDRESS_ID"),
-                        rs.getString("ADDRESS_DETAIL"),
+                        rs.getString("ADDRESS"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("REPRESENT_NAME"),
                         rs.getString("BUSINESS_NUMBER"),
@@ -211,8 +210,7 @@ public class RestaurantDao {
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
                         rs.getString("BUSINESS_NAME"),
-                        rs.getInt("ADDRESS_ID"),
-                        rs.getString("ADDRESS_DETAIL"),
+                        rs.getString("ADDRESS"),
                         rs.getString("PHONE_NUMBER"),
                         rs.getString("REPRESENT_NAME"),
                         rs.getString("BUSINESS_NUMBER"),
