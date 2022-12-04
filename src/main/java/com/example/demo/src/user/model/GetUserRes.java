@@ -14,9 +14,6 @@ public class GetUserRes {
     private String email;
     private String password;
     private String phoneNumber;
-    private String addressNm;
-    private String roadAddress;
-    private String addressDetail;
     private boolean deleteYn;
     private boolean marketingAgreeYn;
     private boolean informNoticeAgreeYn;

@@ -11,8 +11,6 @@ public class PatchUserReq {
     private String email;
     private String password;
     private String phoneNumber;
-    private int addressIdx;
-    private String addressDetail;
     private boolean marketingAgreeYn;
     private boolean informNoticeAgreeYn;
     private boolean orderNoticeAgreeYn;
