@@ -12,6 +12,7 @@ public class GetReviewRes {
     private int orderIdx;
     private int userIdx;
     private int restIdx;
+    private String restName;
     private int score;
     private String content;
     private boolean menuPublicYn;

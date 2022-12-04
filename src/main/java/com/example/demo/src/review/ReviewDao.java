@@ -3,7 +3,6 @@ package com.example.demo.src.review;
 
 import com.example.demo.src.review.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -58,9 +57,10 @@ public class ReviewDao {
 
     // Review 테이블에 존재하는 전체 리뷰 정보 조회
     public List<GetReviewRes> getReviews() {
-        String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID from REVIEW " +
+        String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
                 "order by REVIEW.CREATION_DATE desc";
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
@@ -68,6 +68,7 @@ public class ReviewDao {
                         rs.getInt("ORDER_ID"),
                         rs.getInt("USER_ID"),
                         rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
                         rs.getInt("SCORE"),
                         rs.getString("CONTENT"),
                         rs.getBoolean("MENU_PUBLIC_YN"),
@@ -81,9 +82,10 @@ public class ReviewDao {
 
     // review 하나 조회
     public GetReviewRes getReview(int reviewIdx) {
-        String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID from REVIEW " +
+        String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
                 "where REVIEW.REVIEW_ID = ?";
         return this.jdbcTemplate.queryForObject(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
@@ -91,6 +93,7 @@ public class ReviewDao {
                         rs.getInt("ORDER_ID"),
                         rs.getInt("USER_ID"),
                         rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
                         rs.getInt("SCORE"),
                         rs.getString("CONTENT"),
                         rs.getBoolean("MENU_PUBLIC_YN"),
@@ -103,9 +106,10 @@ public class ReviewDao {
 
     // 특정 user의 Reviews 조회
     public List<GetReviewRes> getReviewsByUser(int userIdx) {
-        String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID from REVIEW " +
+        String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
                 "where ORDERS.USER_ID = ? and REVIEW.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc";
         return this.jdbcTemplate.query(getReviewsQuery,
@@ -114,6 +118,7 @@ public class ReviewDao {
                         rs.getInt("ORDER_ID"),
                         rs.getInt("USER_ID"),
                         rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
                         rs.getInt("SCORE"),
                         rs.getString("CONTENT"),
                         rs.getBoolean("MENU_PUBLIC_YN"),
@@ -126,16 +131,17 @@ public class ReviewDao {
 
     // 특정 user의 Reviews 수 조회
     public int getReviewsCountByUser(int userIdx) {
-        String getReviewsQuery =  "select count(REVIEW.*) as COUNT from REVIEW join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+        String getReviewsQuery =  "select count(*) as COUNT from REVIEW join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
                 "where ORDERS.USER_ID = ? and REVIEW.DELETE_YN = false";
         return this.jdbcTemplate.query(getReviewsQuery, (rs, rowNum) -> rs.getInt("COUNT"), userIdx).get(0);
     }
 
     // 특정 가게의 Reviews 조회
     public List<GetReviewRes> getReviewsByRest(int restIdx) {
-        String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID from REVIEW " +
+        String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
                 "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc";
         return this.jdbcTemplate.query(getReviewsQuery,
@@ -144,6 +150,7 @@ public class ReviewDao {
                         rs.getInt("ORDER_ID"),
                         rs.getInt("USER_ID"),
                         rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
                         rs.getInt("SCORE"),
                         rs.getString("CONTENT"),
                         rs.getBoolean("MENU_PUBLIC_YN"),
@@ -156,7 +163,7 @@ public class ReviewDao {
 
     // 특정 가게의 Reviews 수 조회
     public int getReviewsCountByRest(int restIdx) {
-        String getReviewsQuery =  "select count(REVIEW.*) as COUNT from REVIEW join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+        String getReviewsQuery =  "select count(*) as COUNT from REVIEW join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
                 "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = false";
         return this.jdbcTemplate.query(getReviewsQuery, (rs, rowNum) -> rs.getInt("COUNT"), restIdx).get(0);
     }
