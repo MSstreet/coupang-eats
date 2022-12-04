@@ -120,8 +120,8 @@ public class RestaurantDao {
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
                         rs.getString("ORIGIN_INFORMATION"),
-                        rs.getString("TIME_DELIVERY"),
-                        rs.getString("TIME_PICKUP"),
+                        rs.getInt("TIME_DELIVERY"),
+                        rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
                         rs.getInt("CATEGORY"),
@@ -129,7 +129,8 @@ public class RestaurantDao {
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
                         rs.getBoolean("DELETE_YN"),
-                        rs.getString("IMAGE_PATH")));
+                        rs.getString("IMAGE_PATH"),
+                        rs.getDouble("DISTANCE")));
     }
 
     public GetRestaurantRes getRestaurantByRestaurantId(int restaurantId) {
@@ -149,8 +150,8 @@ public class RestaurantDao {
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
                         rs.getString("ORIGIN_INFORMATION"),
-                        rs.getString("TIME_DELIVERY"),
-                        rs.getString("TIME_PICKUP"),
+                        rs.getInt("TIME_DELIVERY"),
+                        rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
                         rs.getInt("CATEGORY"),
@@ -158,7 +159,8 @@ public class RestaurantDao {
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
                         rs.getBoolean("DELETE_YN"),
-                        rs.getString("IMAGE_PATH")),
+                        rs.getString("IMAGE_PATH"),
+                        rs.getDouble("DISTANCE")),
                 getRestaurantParams);
     }
 
@@ -183,8 +185,8 @@ public class RestaurantDao {
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
                         rs.getString("ORIGIN_INFORMATION"),
-                        rs.getString("TIME_DELIVERY"),
-                        rs.getString("TIME_PICKUP"),
+                        rs.getInt("TIME_DELIVERY"),
+                        rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
                         rs.getInt("CATEGORY"),
@@ -192,7 +194,8 @@ public class RestaurantDao {
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
                         rs.getBoolean("DELETE_YN"),
-                        rs.getString("IMAGE_PATH")),
+                        rs.getString("IMAGE_PATH"),
+                        rs.getDouble("DISTANCE")),
                 Param);
     }
 
@@ -217,8 +220,8 @@ public class RestaurantDao {
                         rs.getString("OPERATING_TIME"),
                         rs.getString("INTRODUCTION_BOARD"),
                         rs.getString("ORIGIN_INFORMATION"),
-                        rs.getString("TIME_DELIVERY"),
-                        rs.getString("TIME_PICKUP"),
+                        rs.getInt("TIME_DELIVERY"),
+                        rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
                         rs.getInt("CATEGORY"),
@@ -226,7 +229,8 @@ public class RestaurantDao {
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
                         rs.getBoolean("DELETE_YN"),
-                        rs.getString("IMAGE_PATH")),
+                        rs.getString("IMAGE_PATH"),
+                        rs.getDouble("DISTANCE")),
                 Param);
     }
 }

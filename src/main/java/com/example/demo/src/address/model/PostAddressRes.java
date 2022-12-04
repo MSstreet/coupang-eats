@@ -11,11 +11,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostAddressRes {
     // 주소 고유 번호
-    private Integer addressId;
+    private int addressId;
+
+    private int userId;
 
     // 주소명
     private String addressName;
 
-    // 도로명 주소
-    private String roadAddress;
+    private String detailAddress;
+
+    private boolean addressPick;
 }

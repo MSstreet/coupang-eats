@@ -29,7 +29,9 @@ public class PostRestaurantReq {
     private String tipDelivery;
 
     // 배달시간
-    private String timeDelivery;
+    private int timeDelivery;
+
+    private int timePickup;
 
     // 사업자번호
     private String companyRegistrationNumber;
@@ -73,4 +75,6 @@ public class PostRestaurantReq {
     private String representName;
 
     private String originInfo;
+
+    private double distance;
 }
