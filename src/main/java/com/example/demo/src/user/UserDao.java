@@ -19,8 +19,8 @@ public class UserDao {
 
     // 회원가입
     public int createUser(PostUserReq postUserReq) {
-        String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, PHONE_NUMBER, ADDRESS_ID, ADDRESS_DETAIL) values (?,?,?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getPhoneNumber(), postUserReq.getAddressId(), postUserReq.getAddressDetail()};
+        String createUserQuery = "insert into USER (NAME, EMAIL, PASSWORD, PHONE_NUMBER) values (?,?,?,?)";
+        Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getEmail(), postUserReq.getPassword(), postUserReq.getPhoneNumber()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
@@ -36,8 +36,7 @@ public class UserDao {
 
     // 로그인: 해당 email에 해당되는 user 값을 가져온다.
     public GetUserRes loginUser(PostLoginReq postLoginReq) {
-        String getPwdQuery = "select USER.*, ADDRESS.ADDRESS_NAME, ADDRESS.ROAD_ADDRESS from USER " +
-                "join ADDRESS on USER.ADDRESS_ID = ADDRESS.ADDRESS_ID " +
+        String getPwdQuery = "select USER.* from USER " +
                 "where USER.EMAIL = ?";
         String getPwdParams = postLoginReq.getEmail();
         return this.jdbcTemplate.queryForObject(getPwdQuery,
@@ -47,9 +46,6 @@ public class UserDao {
                         rs.getString("EMAIL"),
                         rs.getString("PASSWORD"),
                         rs.getString("PHONE_NUMBER"),
-                        rs.getString("ADDRESS_NAME"),
-                        rs.getString("ROAD_ADDRESS"),
-                        rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getBoolean("MARKETING_AGREE_YN"),
                         rs.getBoolean("INFORM_NOTICE_AGREE_YN"),
@@ -60,8 +56,7 @@ public class UserDao {
 
     // User 테이블에 존재하는 전체 유저들의 정보 조회
     public List<GetUserRes> getUsers() {
-        String getUsersQuery = "select USER.*, ADDRESS.ADDRESS_NAME,  ADDRESS.ROAD_ADDRESS from USER " +
-                "join ADDRESS on USER.ADDRESS_ID = ADDRESS.ADDRESS_ID";
+        String getUsersQuery = "select USER.* from USER";
         return this.jdbcTemplate.query(getUsersQuery,
                 (rs, rowNum) -> new GetUserRes(
                         rs.getInt("USER_ID"),
@@ -69,9 +64,6 @@ public class UserDao {
                         rs.getString("EMAIL"),
                         rs.getString("PASSWORD"),
                         rs.getString("PHONE_NUMBER"),
-                        rs.getString("ADDRESS_NAME"),
-                        rs.getString("ROAD_ADDRESS"),
-                        rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getBoolean("MARKETING_AGREE_YN"),
                         rs.getBoolean("INFORM_NOTICE_AGREE_YN"),
@@ -81,8 +73,7 @@ public class UserDao {
 
     // 해당 userIdx를 갖는 유저조회
     public GetUserRes getUser(int userIdx) {
-        String getUserQuery =  "select USER.*, ADDRESS.ADDRESS_NAME,  ADDRESS.ROAD_ADDRESS from USER " +
-                "join ADDRESS on USER.ADDRESS_ID = ADDRESS.ADDRESS_ID " +
+        String getUserQuery =  "select USER.* from USER " +
                 "where USER.USER_ID = ?";
         return this.jdbcTemplate.queryForObject(getUserQuery,
                 (rs, rowNum) -> new GetUserRes(
@@ -91,9 +82,6 @@ public class UserDao {
                         rs.getString("EMAIL"),
                         rs.getString("PASSWORD"),
                         rs.getString("PHONE_NUMBER"),
-                        rs.getString("ADDRESS_NAME"),
-                        rs.getString("ROAD_ADDRESS"),
-                        rs.getString("ADDRESS_DETAIL"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getBoolean("MARKETING_AGREE_YN"),
                         rs.getBoolean("INFORM_NOTICE_AGREE_YN"),
@@ -103,11 +91,10 @@ public class UserDao {
 
     // 회원정보 변경 - 이름, 이메일, 비밀번호, 휴대폰 번호, 주소 고유 번호, 상세 주소, 마케팅 동의 여부, 주문 알림 동의 여부
     public int modifyUser(PatchUserReq patchUserReq) {
-        String modifyUserNameQuery = "update USER set NAME = ?, EMAIL = ?, PASSWORD = ?, PHONE_NUMBER = ?, ADDRESS_DETAIL = ?, " +
-                "ADDRESS_ID = ?, MARKETING_AGREE_YN = ?, INFORM_NOTICE_AGREE_YN = ?, ORDER_NOTICE_AGREE_YN = ? where USER_ID = ? ";
-        Object[] modifyUserNameParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPassword(),
-                patchUserReq.getPhoneNumber(), patchUserReq.getAddressDetail(), patchUserReq.getAddressIdx(), patchUserReq.isMarketingAgreeYn(),
-                patchUserReq.isInformNoticeAgreeYn(), patchUserReq.isOrderNoticeAgreeYn(), patchUserReq.getUserIdx()};
+        String modifyUserNameQuery = "update USER set NAME = ?, EMAIL = ?, PASSWORD = ?, PHONE_NUMBER = ?, " +
+                "MARKETING_AGREE_YN = ?, INFORM_NOTICE_AGREE_YN = ?, ORDER_NOTICE_AGREE_YN = ? where USER_ID = ? ";
+        Object[] modifyUserNameParams = new Object[]{patchUserReq.getName(), patchUserReq.getEmail(), patchUserReq.getPassword(), patchUserReq.getPhoneNumber(),
+                patchUserReq.isMarketingAgreeYn(), patchUserReq.isInformNoticeAgreeYn(), patchUserReq.isOrderNoticeAgreeYn(), patchUserReq.getUserIdx()};
         return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
     }
 
