@@ -271,7 +271,7 @@ public class RestaurantController {
             if (!isRegexRestaurantNumber(postRestaurantReq.getNumber())) {
                 return new BaseResponse<>(POST_RESTAURANT_INVALID_NUMBER);
             }
-
+            System.out.println("확인!!!");
             restaurantService.modifyRestaurant(postRestaurantReq, restIdx);
 
             String result = "가게 정보를 수정하였습니다.";
@@ -400,6 +400,19 @@ public class RestaurantController {
         try{
 
             List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(menu);
+            return new BaseResponse<>(getRestaurantRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByAddress(@RequestParam String address) {
+        try{
+
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByAddress(address);
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){

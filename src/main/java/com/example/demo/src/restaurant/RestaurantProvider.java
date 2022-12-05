@@ -81,10 +81,10 @@ public class RestaurantProvider {
         }
     }
 
-    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantCategoryReq) throws BaseException {
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int category) throws BaseException {
 
         try{
-            List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByCategorySearch(searchRestaurantCategoryReq);
+            List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByCategorySearch(category);
 
             return getRestaurantRes;
         }
@@ -115,5 +115,19 @@ public class RestaurantProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<GetRestaurantRes> getRestaurantsByAddress(String address) throws BaseException {
+
+        try{
+
+            List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByAddress(address);
+
+            return getRestaurantRes;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 }

@@ -29,7 +29,9 @@ public class PostRestaurantReq {
     private String tipDelivery;
 
     // 배달시간
-    private String timeDelivery;
+    private int timeDelivery;
+
+    private int timePickup;
 
     // 사업자번호
     private String companyRegistrationNumber;
@@ -39,6 +41,9 @@ public class PostRestaurantReq {
 
     // 가게 사진
     private String restaurantImage;
+    private String restaurantImage1;
+    private String restaurantImage2;
+
 
     // 최소 주문 비용
     private String minDeliveryPrice;
@@ -64,7 +69,7 @@ public class PostRestaurantReq {
     // 포장 가능 여부
     private Boolean pickupAvlb;
 
-    // 주소 고유 번호
+
     private String address;
 
     // 상세 주소
@@ -73,4 +78,6 @@ public class PostRestaurantReq {
     private String representName;
 
     private String originInfo;
+
+    private double distance;
 }

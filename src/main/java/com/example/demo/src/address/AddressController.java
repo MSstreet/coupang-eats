@@ -2,16 +2,18 @@ package com.example.demo.src.address;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.address.model.PostAddressRes;
+
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+import java.util.List;
 
 @RestController
-@RequestMapping("/app/address")
+@RequestMapping("/app/addresses")
 public class AddressController {
 
     @Autowired
@@ -32,19 +34,73 @@ public class AddressController {
         this.jwtService = jwtService;
     }
 
-//    @ResponseBody
-//    @PostMapping("/join")
-//    public BaseResponse<PostAddressRes> creatAddressDetail(@RequestBody PostAddressReq postAddressReq) {
-//        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
-//
-//        try{
-//
-//            PostAddressRes postAddressRes = addressService.createAddress(postAddressReq);
-//
-//            return new BaseResponse<>(postAddressRes);
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    @ResponseBody
+    @PostMapping("/{userIdx}/join")
+    public BaseResponse<PostAddressRes> creatAddress(@PathVariable("userIdx") int userIdx, @RequestBody PostAddressReq postAddressReq) {
+        // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
+
+        try{
+
+            PostAddressRes postAddressRes = addressService.createAddress(postAddressReq);
+
+            return new BaseResponse<>(postAddressRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    //상세 주소 변경
+    @ResponseBody
+    @PatchMapping("/modify/{userIdx}/{addressIdx}")
+    public BaseResponse<PostAddressRes> modifyAddress(@PathVariable("userIdx") int userIdx, @PathVariable("addressIdx") int addressId , @RequestBody PostAddressReq postAddressReq){
+        try{
+
+            PostAddressRes postAddressRes = addressService.modifyAddress(postAddressReq);
+
+            return new BaseResponse<>(postAddressRes);
+
+        }catch(BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/delete/{userIdx}/{addressIdx}")
+    public BaseResponse<Integer> deleteAddress(@PathVariable("userIdx") int userIdx, @PathVariable("addressIdx") int addressId){
+
+        try {
+
+            addressService.deleteAddress(addressId);
+
+            return new BaseResponse<>(addressId);
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/list") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<PostAddressRes>> getAllAddress() {
+        try{
+            List<PostAddressRes> postAddressRes = addressProvider.getAllAddress();
+            return new BaseResponse<>(postAddressRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<PostAddressRes>> getAddressByKeyword(@RequestParam String keyword) {
+        try{
+
+            List<PostAddressRes> postAddressRes = addressProvider.getAddressByKeyword(keyword);
+            return new BaseResponse<>(postAddressRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

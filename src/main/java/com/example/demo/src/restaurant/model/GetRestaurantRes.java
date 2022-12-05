@@ -41,10 +41,9 @@ public class GetRestaurantRes {
 
     private String originInfo;
 
-    // 배달시간
-    private String timeDelivery;
+    private int timeDelivery;
 
-    private String timePick;
+    private int timePickup;
     // 배달비
     private String tipDelivery;
 
@@ -77,6 +76,14 @@ public class GetRestaurantRes {
 
     // 가게 사진
     private String restaurantImage;
+    private String restaurantImage1;
+    private String restaurantImage2;
 
 
+
+    //private double score;
+
+
+
+    private double distance;
 }
