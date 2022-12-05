@@ -34,15 +34,31 @@ public class RestaurantService {
     public PostRestaurantRes createRestaurant(PostRestaurantReq postRestaurantReq) throws BaseException {
 
         try{
-
+              //int check = 0;
 //            if(restaurantProvider.checkBusinessNum(postRestaurantReq.getCompanyRegistrationNumber()) == 1){
 //                throw new BaseException(POST_RESTAURANT_EXISTS_BUSINESS_NUMBER);
 //            }
 
             int restaurantIdx = restaurantDao.createRestaurant(postRestaurantReq);
 
-            restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq);
+            //if(postRestaurantReq.getRestaurantImage() != null & (!(postRestaurantReq.getRestaurantImage().isEmpty()))) {
 
+                restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq);
+
+            //    check += 1;
+            //}
+
+//            if(postRestaurantReq.getRestaurantImage1() != null & (!(postRestaurantReq.getRestaurantImage1().isEmpty()))){
+//                restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq, check);
+//                check += 1;
+//            }
+//
+//            System.out.println("확인 3");
+//
+//            if(postRestaurantReq.getRestaurantImage2() != null & (!(postRestaurantReq.getRestaurantImage2().isEmpty()))){
+//                restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq, check);
+//                check += 1;
+//            }
             return new PostRestaurantRes(restaurantIdx);
 
         } catch (Exception exception) {
@@ -60,6 +76,7 @@ public class RestaurantService {
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_RESTAURANT);
             }
+
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

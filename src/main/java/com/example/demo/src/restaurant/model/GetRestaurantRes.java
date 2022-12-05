@@ -76,6 +76,14 @@ public class GetRestaurantRes {
 
     // 가게 사진
     private String restaurantImage;
+    private String restaurantImage1;
+    private String restaurantImage2;
+
+
+
+    //private double score;
+
+
 
     private double distance;
 }
