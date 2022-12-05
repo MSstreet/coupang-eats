@@ -33,7 +33,10 @@ public class AddressService {
 
         try {
 
+
             int addressId = addressDao.createAddress(postAddressReq);
+            addressDao.setAddressStatusFalseByUserId(postAddressReq.getUserId());
+            addressDao.setAddressStatusTrueByAddressId(addressId);
 
             PostAddressRes postAddressRes = addressDao.getAddressByAddressId(addressId);
 

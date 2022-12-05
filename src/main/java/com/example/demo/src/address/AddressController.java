@@ -5,7 +5,7 @@ import com.example.demo.config.BaseResponse;
 
 import com.example.demo.src.address.model.PostAddressReq;
 import com.example.demo.src.address.model.PostAddressRes;
-import com.example.demo.src.restaurant.model.GetRestaurantRes;
+
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/address")
+@RequestMapping("/app/addresses")
 public class AddressController {
 
     @Autowired
@@ -49,9 +49,10 @@ public class AddressController {
         }
     }
 
+    //상세 주소 변경
     @ResponseBody
-    @PutMapping("/modify/{userIdx}/{addressId}")
-    public BaseResponse<PostAddressRes> modifyMenuOption(@PathVariable("userIdx") int userIdx, @PathVariable("addressId") int addressId, @RequestBody PostAddressReq postAddressReq){
+    @PatchMapping("/modify/{userIdx}/{addressIdx}")
+    public BaseResponse<PostAddressRes> modifyAddress(@PathVariable("userIdx") int userIdx, @PathVariable("addressIdx") int addressId , @RequestBody PostAddressReq postAddressReq){
         try{
 
             PostAddressRes postAddressRes = addressService.modifyAddress(postAddressReq);
@@ -64,14 +65,14 @@ public class AddressController {
     }
 
     @ResponseBody
-    @PatchMapping("/delete/{userIdx}/{addressId}")
-    public BaseResponse<Integer> deleteMenu(@PathVariable("userIdx") int userIdx, @PathVariable("restaurantIdx") int restaurantIdx, @PathVariable("menuIdx") int menuIdx){
+    @PatchMapping("/delete/{userIdx}/{addressIdx}")
+    public BaseResponse<Integer> deleteAddress(@PathVariable("userIdx") int userIdx, @PathVariable("addressIdx") int addressId){
 
         try {
 
-            addressService.deleteAddress(userIdx);
+            addressService.deleteAddress(addressId);
 
-            return new BaseResponse<>(menuIdx);
+            return new BaseResponse<>(addressId);
         }catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -90,7 +91,7 @@ public class AddressController {
     }
 
     @ResponseBody
-    @GetMapping("/keyword") // (GET) 127.0.0.1:9000/app/users
+    @GetMapping("") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<List<PostAddressRes>> getAddressByKeyword(@RequestParam String keyword) {
         try{
 

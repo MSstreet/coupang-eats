@@ -24,7 +24,7 @@ public class AddressDao {
 
         String createAddressQuery = "insert into ADDRESS (USER_ID,ADDRESS_NAME,DETAIL_ADDRESS,ADDRESS_PICK) VALUES (?,?,?,?)";
 
-        Object[] createAddressParams = new Object[]{postAddressReq.getUserId(),postAddressReq.getAddressId(),postAddressReq.getDetailAddress(),postAddressReq.getAddressPick()};
+        Object[] createAddressParams = new Object[]{postAddressReq.getUserId(),postAddressReq.getAddressName(),postAddressReq.getDetailAddress(),postAddressReq.getAddressPick()};
 
         this.jdbcTemplate.update(createAddressQuery, createAddressParams);
 
@@ -51,9 +51,9 @@ public class AddressDao {
 
     public int modifyAddress(PostAddressReq postAddressReq) {
 
-        String modifyAddressQuery = "update ADDRESS set DETAIL_ADDRESS = ?, ADDRESS_PICK = ? where ADDRESS_ID = ?";
+        String modifyAddressQuery = "update ADDRESS set DETAIL_ADDRESS = ? where ADDRESS_ID = ?";
 
-        Object[] modifyAddressParams = new Object[]{postAddressReq.getDetailAddress(), postAddressReq.getAddressPick()};
+        Object[] modifyAddressParams = new Object[]{postAddressReq.getDetailAddress(), postAddressReq.getAddressId()};
 
         return this.jdbcTemplate.update(modifyAddressQuery, modifyAddressParams);
     }
@@ -66,7 +66,7 @@ public class AddressDao {
 
     public List<PostAddressRes> getAllAddress(){
 
-        String getAddressQuery = "select * from ADDRESS";
+        String getAddressQuery = "select * from ADDRESS where DELETE_YN = 0";
 
         return this.jdbcTemplate.query(getAddressQuery,
                 (rs,rowNum) -> new PostAddressRes(
@@ -79,7 +79,7 @@ public class AddressDao {
 
     public List<PostAddressRes> getAddressByKeyword(String keyWord) {
 
-        String getRestaurantQuery = "select * from ADDRESS where ADDRESS_NAME like ?";
+        String getRestaurantQuery = "select * from ADDRESS where ADDRESS_NAME like ? AND DELETE_YN = 0";
 
         System.out.println(getRestaurantQuery);
 
@@ -94,5 +94,18 @@ public class AddressDao {
                         rs.getString("DETAIL_ADDRESS"),
                         rs.getBoolean("ADDRESS_PICK")),
                 Param);
+    }
+
+    public void setAddressStatusTrueByAddressId(int AddressId) {
+        String setAddressQuery = "update ADDRESS set ADDRESS_PICK = 1 where ADDRESS_ID = ? ";
+        Object[] setAddressParams = new Object[]{AddressId};
+
+        jdbcTemplate.update(setAddressQuery, setAddressParams);
+    }
+
+    public void setAddressStatusFalseByUserId(int userId) {
+        String setAddressQuery = "update ADDRESS set ADDRESS_PICK = 0 where USER_ID = ? ";
+        Object[] setAddressParams = new Object[]{userId};
+        jdbcTemplate.update(setAddressQuery, setAddressParams);
     }
 }
