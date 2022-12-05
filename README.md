@@ -150,3 +150,7 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - REVIEW API 수정
 - WISH API 개발 완료
 - USER API 수정
+
+### 🗓️ 2022-12-04
+- ORDER API 개발
+- WISH API 명세서 작성
