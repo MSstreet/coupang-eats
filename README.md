@@ -94,6 +94,11 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - 주소 API 개발 및 테스트
 - 레스토랑 API 개발 및 테스트
 - 명세서 
+
+### 2022-12-05
+- 메뉴, 레스토랑 API 수정
+- 이미지 url 생성, 더미데이터 생성
+- API 명세서 수정
 ---
 
 ## BELLA
