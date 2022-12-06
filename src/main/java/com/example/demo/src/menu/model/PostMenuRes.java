@@ -24,8 +24,10 @@ public class PostMenuRes {
     private String content;
 
     private int refId;
-
+    private String menuImage;
     private int optionId;
+
+
 
 }
 

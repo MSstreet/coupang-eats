@@ -31,18 +31,28 @@ public class MenuService {
 
         try {
 
-            int menuId = menuDao.createMenu(postMenuReq);
+            if(postMenuReq.getGbCode().equals("MN")) {
+                int menuId = menuDao.createMenu(postMenuReq);
 
-            PostMenuRes postMenuRes = menuDao.getMenuByMenuId(menuId);
+                menuDao.createMenuImage(menuId, postMenuReq);
+                System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                PostMenuRes postMenuRes = menuDao.getMenuByMenuId(menuId);
 
-            return postMenuRes;
+                return postMenuRes;
+            }
+
+            else{
+                int menuId = menuDao.createMenuDetailOption(postMenuReq);
+                PostMenuRes postMenuRes = menuDao.getMenuByMenuId(menuId);
+                return postMenuRes;
+            }
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public PostMenuRes modifyMenu(PostMenuReq postMenuReq) throws BaseException {
+    public PostMenuRes modifyMenu(PostMenuReq postMenuReq,int menuIdx) throws BaseException {
 
         try{
             int result = menuDao.modifyMenu(postMenuReq);
@@ -50,6 +60,8 @@ public class MenuService {
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_RESTAURANT);
             }
+
+            menuDao.modifyMenuImage(postMenuReq,menuIdx);
 
             PostMenuRes postMenuRes = menuDao.getMenuByMenuId(postMenuReq.getMenuId());
 
@@ -68,6 +80,8 @@ public class MenuService {
             if(result == 0){
                 throw new BaseException(FAILED_TO_MODIFY);
             }
+
+            menuDao.deleteMenuImage(menuId);
 
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);

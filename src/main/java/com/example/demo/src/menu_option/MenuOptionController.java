@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/menu-options")
@@ -37,12 +37,24 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @PostMapping("/{menuIdx}/join")
-    public BaseResponse<PostMenuOptionRes> createMenuOption(@PathVariable("menuIdx") int menuIdx, @RequestBody PostMenuOptionReq postMenuOptionReq) {
+    @PostMapping("/{userIdx}/{menuIdx}/join")
+    public BaseResponse<PostMenuOptionRes> createMenuOption(@PathVariable("userIdx") int userIdx, @RequestBody PostMenuOptionReq postMenuOptionReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
         try{
+            int userIdxByJwt = jwtService.getUserIdx();
 
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
+        try{
+
+            if(postMenuOptionReq.getOptionName() == null ||postMenuOptionReq.getOptionName().length() == 0) {
+                return new BaseResponse<>(POST_MENU_OPTION_EMPTY_NAME);
+            }
 
             PostMenuOptionRes postMenuOptionRes = menuOptionService.createMenuOption(postMenuOptionReq);
 
@@ -53,9 +65,23 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @PutMapping("/modify/{menuOptionIdx}")
-    public BaseResponse<PostMenuOptionRes> modifyMenuOption(@PathVariable("menuOptionIdx") int menuOptionIdx, @RequestBody PostMenuOptionReq postMenuOptionReq){
+    @PutMapping("/modify/{userIdx}/{menuOptionIdx}")
+    public BaseResponse<PostMenuOptionRes> modifyMenuOption(@PathVariable("userIdx") int userIdx, @PathVariable("menuOptionIdx") int menuOptionIdx, @RequestBody PostMenuOptionReq postMenuOptionReq){
         try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+        try{
+
+            if(postMenuOptionReq.getOptionName() == null ||postMenuOptionReq.getOptionName().length() == 0) {
+                return new BaseResponse<>(POST_MENU_OPTION_EMPTY_NAME);
+            }
 
             PostMenuOptionRes postMenuOptionRes = menuOptionService.modifyMenuOption(postMenuOptionReq);
 
@@ -67,8 +93,19 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @PatchMapping("/delete/{menuOptionIdx}")
-    public BaseResponse<Integer> deleteDeleteMenuOption(@PathVariable("menuOptionIdx") int menuOptionIdx){
+    @PatchMapping("/delete/{userIdx}/{menuOptionIdx}")
+    public BaseResponse<Integer> deleteDeleteMenuOption(@PathVariable("userIdx") int userIdx, @PathVariable("menuOptionIdx") int menuOptionIdx){
+
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
         try {
 
             menuOptionService.deleteMenuOption(menuOptionIdx);

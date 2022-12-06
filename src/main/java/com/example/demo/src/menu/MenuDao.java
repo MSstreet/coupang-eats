@@ -3,6 +3,7 @@ package com.example.demo.src.menu;
 import com.example.demo.src.menu.model.PostMenuReq;
 import com.example.demo.src.menu.model.PostMenuRes;
 import com.example.demo.src.restaurant.model.GetRestaurantRes;
+import com.example.demo.src.restaurant.model.PostRestaurantReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,23 +21,33 @@ public class MenuDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    //메뉴 생성
     public int createMenu(PostMenuReq postMenuReq) {
 
-        if(postMenuReq.getGbCode().equals("M")) {
+        String createMenuQuery = "insert into MENU (RESTAURANT_ID,GB_CODE,NAME,PRICE,CONTENT) VALUES (?,?,?,?,?)";
 
-            String createMenuQuery = "insert into MENU (RESTAURANT_ID,GB_CODE,NAME,PRICE,CONTENT) VALUES (?,?,?,?,?)";
-
-            Object[] createMenuParams = new Object[]{postMenuReq.getRestaurantId(), postMenuReq.getGbCode(), postMenuReq.getName()
+        Object[] createMenuParams = new Object[]{postMenuReq.getRestaurantId(), postMenuReq.getGbCode(), postMenuReq.getName()
                     , postMenuReq.getPrice(), postMenuReq.getContent()};
 
-            this.jdbcTemplate.update(createMenuQuery, createMenuParams);
+        this.jdbcTemplate.update(createMenuQuery, createMenuParams);
 
-            String lastInsertIdQuery = "select last_insert_id()";
+        String lastInsertIdQuery = "select last_insert_id()";
 
-            return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
-        }else{
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
 
-            System.out.println("==========================================================확인");
+    }
+
+    public void createMenuImage(int menuIdx, PostMenuReq postMenuReq){
+
+
+        String createRestaurantImageQuery = "insert into IMAGE (IMAGE_PATH, TARGET_ID, TARGET_CODE) values (?,?,'MN')";
+        Object[] createRestaurantImageParams = new Object[]{postMenuReq.getMenuImage(),menuIdx};
+        this.jdbcTemplate.update(createRestaurantImageQuery, createRestaurantImageParams);
+
+    }
+
+    //상세 메뉴 옵션 생성
+    public int createMenuDetailOption(PostMenuReq postMenuReq){
 
             String createMenuQuery = "insert into MENU (RESTAURANT_ID,GB_CODE,NAME,PRICE,CONTENT,REF_ID,OPTION_ID) VALUES (?,?,?,?,?,?,?)";
 
@@ -48,7 +59,6 @@ public class MenuDao {
             String lastInsertIdQuery = "select last_insert_id()";
 
             return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
-        }
 
     }
 
@@ -62,16 +72,33 @@ public class MenuDao {
         return this.jdbcTemplate.update(modifyMenuQuery, modifyMenuParams);
     }
 
+    public int modifyMenuImage(PostMenuReq postMenuReq, int menuIdx){
+
+        String modifyRestaurantImageQuery = "update IMAGE set IMAGE_PATH = ? where TARGET_ID = ? and TARGET_CODE = 'MN'";
+
+        Object[] modifyRestaurantImageParams = new Object[]{postMenuReq.getMenuImage(),menuIdx};
+
+        return this.jdbcTemplate.update(modifyRestaurantImageQuery,modifyRestaurantImageParams);
+    }
+
+
     public int deleteMenu(int menuId) {
         String deletMenuQuery = "update MENU set DELETE_YN = 1 where MENU_ID = ? ";
         Object[] modifyUserNameParams = new Object[]{menuId};
         return this.jdbcTemplate.update(deletMenuQuery, modifyUserNameParams);
     }
 
+    public int deleteMenuImage(int menuId){
+
+        String deleteMenuImageQuery = "delete from IMAGE where TARGET_ID = ? and TARGET_CODE = 'MN'" ;
+        return this.jdbcTemplate.update(deleteMenuImageQuery,menuId);
+
+    }
+
 
     public PostMenuRes getMenuByMenuId(int menuId) {
 
-        String getMenuQuery = "select * from MENU where MENU_ID = ?";
+        String getMenuQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on  MENU.MENU_ID  = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU_ID = ?";
 
         return this.jdbcTemplate.queryForObject(getMenuQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -82,13 +109,14 @@ public class MenuDao {
                         rs.getInt("PRICE"),
                         rs.getString("CONTENT"),
                         rs.getInt("REF_ID"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID")),
                 menuId);
     }
 
     public List<PostMenuRes> getAllMenus() {
 
-        String getAllMenusQuery = "select * from MENU";
+        String getAllMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on IMAGE.IMAGE_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN'";
 
         return this.jdbcTemplate.query(getAllMenusQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -99,13 +127,14 @@ public class MenuDao {
                         rs.getInt("PRICE"),
                         rs.getString("CONTENT"),
                         rs.getInt("REF_ID"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID")));
 
     }
 
     public List<PostMenuRes> getRestaurantMenu(int restaurantId) {
 
-        String getMenusQuery = "select * from MENU where RESTAURANT_ID = ?";
+        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on IMAGE.IMAGE_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where RESTAURANT_ID = ?";
 
         return this.jdbcTemplate.query(getMenusQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -116,6 +145,7 @@ public class MenuDao {
                         rs.getInt("PRICE"),
                         rs.getString("CONTENT"),
                         rs.getInt("REF_ID"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID"))
                 ,restaurantId);
 
@@ -123,7 +153,7 @@ public class MenuDao {
 
     public List<PostMenuRes> getMenusByName(String MenuName) {
 
-        String getMenusQuery = "select * from MENU where NAME like ?";
+        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on IMAGE.IMAGE_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where NAME like ?";
 
         String Param = "%" + MenuName + "%";
 
@@ -136,6 +166,7 @@ public class MenuDao {
                         rs.getInt("PRICE"),
                         rs.getString("CONTENT"),
                         rs.getInt("REF_ID"),
+                        rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID"))
                 ,MenuName);
 

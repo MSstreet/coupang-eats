@@ -29,11 +29,11 @@ public class RestaurantDao {
 
     public int createRestaurant(PostRestaurantReq postRestaurantReq){
 
-        String createRestaurantQuery = "insert into RESTAURANT (BUSINESS_NAME, ADDRESS, PHONE_NUMBER, REPRESENT_NAME, BUSINESS_NUMBER, OPERATING_TIME, TIP_DELIVERY, MINIMUM_ORDER_PRICE, CATEGORY, DELIVERY_YN, FAST_DELIVERY_YN, PICKUP_YN,DELETE_YN,DISTANCE ) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String createRestaurantQuery = "insert into RESTAURANT (BUSINESS_NAME, ADDRESS, PHONE_NUMBER, REPRESENT_NAME, BUSINESS_NUMBER, OPERATING_TIME, TIP_DELIVERY,TIME_DELIVERY, MINIMUM_ORDER_PRICE, CATEGORY, DELIVERY_YN, FAST_DELIVERY_YN, PICKUP_YN,DELETE_YN,DISTANCE ) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         Object[] createRestaurantParams = new Object[]{postRestaurantReq.getName(),postRestaurantReq.getAddress(), postRestaurantReq.getNumber(),postRestaurantReq.getRepresentName()
-                ,postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getOperationTime(),postRestaurantReq.getTipDelivery(),postRestaurantReq.getMinDeliveryPrice()
+                ,postRestaurantReq.getCompanyRegistrationNumber(),postRestaurantReq.getOperationTime(),postRestaurantReq.getTipDelivery(),postRestaurantReq.getTimeDelivery(),postRestaurantReq.getMinDeliveryPrice()
                 ,postRestaurantReq.getCategories(),postRestaurantReq.getDeliveryAvlb()
                 ,postRestaurantReq.getFastDeliveryAvlb()
                 ,postRestaurantReq.getPickupAvlb(),postRestaurantReq.getDeleteFlag(),postRestaurantReq.getDistance()};
@@ -121,16 +121,7 @@ public class RestaurantDao {
 
     }
 
-    public int checkBusinessNum(String BusinessNum){
-        String checkBusinessNumQuery = "select exists(select BUSINESS_NUMBER from RESTAURANT where BUSINESS_NUMBER = ?)";
-        System.out.println("확인");
-        System.out.println(BusinessNum);
-        System.out.println(checkBusinessNumQuery);
-        return this.jdbcTemplate.queryForObject(checkBusinessNumQuery,
-                int.class,
-                BusinessNum);
 
-    }
 
     public List<GetRestaurantRes> getAllRestaurants(){
 
@@ -306,4 +297,5 @@ public class RestaurantDao {
                         rs.getDouble("DISTANCE")),
                 Param);
     }
+
 }

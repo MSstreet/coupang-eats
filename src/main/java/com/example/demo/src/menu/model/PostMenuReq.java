@@ -25,6 +25,9 @@ public class PostMenuReq {
 
     private int refId;
 
+    private String menuImage;
     private int optionId;
+
+
 
 }

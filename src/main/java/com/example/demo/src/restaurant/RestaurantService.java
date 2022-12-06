@@ -34,31 +34,11 @@ public class RestaurantService {
     public PostRestaurantRes createRestaurant(PostRestaurantReq postRestaurantReq) throws BaseException {
 
         try{
-              //int check = 0;
-//            if(restaurantProvider.checkBusinessNum(postRestaurantReq.getCompanyRegistrationNumber()) == 1){
-//                throw new BaseException(POST_RESTAURANT_EXISTS_BUSINESS_NUMBER);
-//            }
 
             int restaurantIdx = restaurantDao.createRestaurant(postRestaurantReq);
 
-            //if(postRestaurantReq.getRestaurantImage() != null & (!(postRestaurantReq.getRestaurantImage().isEmpty()))) {
-
                 restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq);
 
-            //    check += 1;
-            //}
-
-//            if(postRestaurantReq.getRestaurantImage1() != null & (!(postRestaurantReq.getRestaurantImage1().isEmpty()))){
-//                restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq, check);
-//                check += 1;
-//            }
-//
-//            System.out.println("확인 3");
-//
-//            if(postRestaurantReq.getRestaurantImage2() != null & (!(postRestaurantReq.getRestaurantImage2().isEmpty()))){
-//                restaurantDao.createRestaurantImage(restaurantIdx, postRestaurantReq, check);
-//                check += 1;
-//            }
             return new PostRestaurantRes(restaurantIdx);
 
         } catch (Exception exception) {
@@ -68,6 +48,7 @@ public class RestaurantService {
 
     public void modifyRestaurant(PostRestaurantReq restaurant, int restaurantId) throws BaseException {
         try{
+
 
             int result = restaurantDao.modifyRestaurant(restaurant ,restaurantId);
 
@@ -86,7 +67,14 @@ public class RestaurantService {
         try{
 
             int result = restaurantDao.deleteRestaurant(restaurantId);
+
+            if (result == 0) {
+                throw new BaseException(FAILED_TO_DELETE);
+            }
+
             restaurantDao.deleteRestaurantImage(restaurantId);
+
+
 
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
