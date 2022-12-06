@@ -42,18 +42,18 @@ public class WishController {
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostWishRes> createWish(@RequestBody PostWishReq postWishReq){
-//        if (postWishReq.getUserIdx() == null){
-//            return new BaseResponse<>(POST_WISHS_EMPTY_USER);
-//        }
-//        else if (postWishReq.getUserIdx() < 1) {
-//            return new BaseResponse<>(POST_WISHS_INVALID_USER);
-//        }
-//        else if (postWishReq.getRestIdx() == null) {
-//            return new BaseResponse<>(POST_WISHS_EMPTY_RESTAURANT);
-//        }
-//        else if (postWishReq.getRestIdx() < 1) {
-//            return new BaseResponse<>(POST_WISHS_INVALID_RESTAURANT);
-//        }
+        if (postWishReq.getUserIdx() == null){
+            return new BaseResponse<>(POST_WISHLISTS_EMPTY_USER);
+        }
+        else if (postWishReq.getUserIdx() < 1) {
+            return new BaseResponse<>(POST_WISHLISTS_INVALID_USER);
+        }
+        else if (postWishReq.getRestIdx() == null) {
+            return new BaseResponse<>(POST_WISHLISTS_EMPTY_RESTAURANT);
+        }
+        else if (postWishReq.getRestIdx() < 1) {
+            return new BaseResponse<>(POST_WISHLISTS_INVALID_RESTAURANT);
+        }
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(postWishReq.getUserIdx() != userIdxByJwt){
@@ -129,21 +129,6 @@ public class WishController {
             }
             int count = wishProvider.getWishesCountByUser(userIdx);
             return new BaseResponse<>(count);
-        } catch (BaseException exception) {
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-
-    /**
-     * 특정 가게의 찜 조회 API
-     * [GET] /wishlists/restaurants/:restIdx
-     */
-    @ResponseBody
-    @GetMapping("/restaurants/{restIdx}")
-    public BaseResponse<List<GetWishRes>> getWishesByRest(@PathVariable("restIdx") int restIdx) {
-        try {
-            List<GetWishRes> getWishRes = wishProvider.getWishesByRest(restIdx);
-            return new BaseResponse<>(getWishRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }

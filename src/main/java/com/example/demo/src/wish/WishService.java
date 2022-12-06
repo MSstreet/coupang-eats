@@ -30,7 +30,13 @@ public class WishService {
     // 찜 등록
     public PostWishRes createWish(PostWishReq postWishReq) throws BaseException {
         try {
-            int wishIdx = wishDao.createWish(postWishReq);
+            int wishIdx;
+            if (wishProvider.checkWishIdx(postWishReq.getUserIdx(), postWishReq.getRestIdx()) == 1) {
+                wishIdx = wishDao.reCreateWish(postWishReq.getUserIdx(), postWishReq.getRestIdx());
+            }
+            else {
+                wishIdx = wishDao.createWish(postWishReq);
+            }
             return new PostWishRes(wishIdx);
         } catch (Exception exception) {
             exception.printStackTrace();

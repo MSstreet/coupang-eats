@@ -89,7 +89,11 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - 주소,가게,유저 테이블 수정
 - 주소, 가게 테이블 수정으로 인해 코드 수정
 - 주소 API 개발 완료 (테스트, 명세서 x)
-     
+
+### 2022-12-05
+- 주소 API 개발 및 테스트
+- 레스토랑 API 개발 및 테스트
+- 명세서 
 ---
 
 ## BELLA
@@ -152,5 +156,9 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - USER API 수정
 
 ### 🗓️ 2022-12-04
+- 유저 주소 테이블 조인 삭제
+- 리뷰 조회 api 가게명 추가
+
+### 🗓️ 2022-12-05
 - ORDER API 개발
 - WISH API 명세서 작성

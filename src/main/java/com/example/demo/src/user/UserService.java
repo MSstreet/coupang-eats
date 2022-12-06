@@ -49,6 +49,13 @@ public class UserService {
 
     // 회원정보 수정(Patch)
     public void modifyUser(PatchUserReq patchUserReq) throws BaseException {
+        String pwd;
+        try {
+            pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(patchUserReq.getPassword());
+            patchUserReq.setPassword(pwd);
+        } catch (Exception ignored) {
+            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        }
         try {
             int resultModifyUser = userDao.modifyUser(patchUserReq);
             if (resultModifyUser == 0) {
