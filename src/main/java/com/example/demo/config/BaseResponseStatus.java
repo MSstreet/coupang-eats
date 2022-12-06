@@ -103,6 +103,12 @@ public enum BaseResponseStatus {
     POST_ORDERS_EMPTY_PRICE(false, 2039, "가격을 입력해주세요."),
     POST_ORDERS_EMPTY_MENU(false, 2040, "메뉴를 선택해주세요."),
 
+    // [POST] /wishlists
+    POST_WISHLISTS_EMPTY_USER(false, 2041, "찜한 사용자를 입력해주세요."),
+    POST_WISHLISTS_INVALID_USER(false, 2042, "유효하지 않은 사용자 번호입니다."),
+    POST_WISHLISTS_EMPTY_RESTAURANT(false, 2043, "찜할 가게를 입력해주세요."),
+    POST_WISHLISTS_INVALID_RESTAURANT(false, 2044, "유효하지 않은 가게 번호입니다."),
+
     /**
      * 3000 : Response 오류
      */

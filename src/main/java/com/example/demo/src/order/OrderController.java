@@ -99,6 +99,10 @@ public class OrderController {
     @GetMapping("/users/{userIdx}")
     public BaseResponse<List<GetOrderAll>> getOrdersByUser(@PathVariable("userIdx") int userIdx) {
         try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             List<GetOrderAll> orderAllList = new ArrayList<>();
             List<GetOrderRes> getOrdersRes = orderProvider.getOrdersByUser(userIdx);
             for (GetOrderRes order : getOrdersRes) {
