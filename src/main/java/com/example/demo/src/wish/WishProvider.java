@@ -27,6 +27,15 @@ public class WishProvider {
         this.jwtService = jwtService;
     }
 
+    // 찜이 이미 있는지 확인
+    public int checkWishIdx(int userIdx, int restIdx) throws BaseException {
+        try {
+            return wishDao.checkWishIdx(userIdx, restIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     // Wishes 조회
     public List<GetWishRes> getWishes() throws BaseException {
         try {
@@ -67,16 +76,6 @@ public class WishProvider {
         }
     }
 
-    // 특정 가게의 Wishes 조회
-    public List<GetWishRes> getWishesByRest(int restIdx) throws BaseException {
-        try {
-            List<GetWishRes> getWishRes = wishDao.getWishesByRest(restIdx);
-            return getWishRes;
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
     // 특정 가게의 Wishes 수 조회
     public int getWishesCountByRest(int restIdx) throws BaseException {
         try {
@@ -92,7 +91,7 @@ public class WishProvider {
             int userIdx = wishDao.getUserIdxByWish(wishIdx);
             return userIdx;
         } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(DATABASE_ERROR_USER_ID);
         }
     }
 }
