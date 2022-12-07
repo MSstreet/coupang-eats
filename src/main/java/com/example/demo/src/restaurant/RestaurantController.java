@@ -307,11 +307,10 @@ public class RestaurantController {
     //벨러데이션
     @ResponseBody
     @PatchMapping("/delete/{userIdx}/{restIdx}")
-    public BaseResponse<String> deleteRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx){
+    public BaseResponse<Integer> deleteRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx){
 
         try{
             int userIdxByJwt = jwtService.getUserIdx();
-
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
@@ -319,12 +318,16 @@ public class RestaurantController {
             return new BaseResponse<>((exception.getStatus()));
         }
 
+
         try{
-            restaurantService.deleteRestaurant(restIdx);
 
-            String result = "레스토랑을 삭제하였습니다.";
+            int result = restaurantService.deleteRestaurant(restIdx);
 
-            return new BaseResponse<>(result);
+            if(result == 0){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
+            return new BaseResponse<>(restIdx);
 
 
         }catch (BaseException exception) {
@@ -334,9 +337,14 @@ public class RestaurantController {
 
     @ResponseBody
     @GetMapping("/list") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getAllRestaurants() {
+    public BaseResponse<List<GetRestaurantRes>> getAllRestaurants(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getAllRestaurants();
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getAllRestaurants(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
+
+            if(getRestaurantRes.size() == 0){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){
@@ -347,13 +355,19 @@ public class RestaurantController {
     //존재하지 않는 레스토랑(필요x)
     @ResponseBody
     @GetMapping("/{restIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-    public GetRestaurantRes getRestaurantByRestaurantId(@PathVariable("restIdx") int restIdx) {
+    public BaseResponse<GetRestaurantRes> getRestaurantByRestaurantId(@PathVariable("restIdx") int restIdx) {
 
         try{
             GetRestaurantRes getRestaurantRes = restaurantProvider.getRestaurantByRestaurantId(restIdx);
-            return getRestaurantRes;
+
+            if(getRestaurantRes == null){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
+            return new BaseResponse<>(getRestaurantRes);
+
         } catch(BaseException exception){
-            return null;
+            return new BaseResponse<>((exception.getStatus()));
         }
 
     }
@@ -361,10 +375,15 @@ public class RestaurantController {
     //검색결과가 존재하지 않을 때(필요x)
     @ResponseBody
     @GetMapping("/name") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByNameSearch(@RequestParam String name) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByNameSearch(@RequestParam String name,@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByNameSearch(name);
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByNameSearch(name,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
+
+            if(getRestaurantRes.size() == 0){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){
@@ -375,11 +394,18 @@ public class RestaurantController {
     //존재하지 않는 카테고리(필요x)
     @ResponseBody
     @GetMapping("/category") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int category) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int category,@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByCategorySearch(category);
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByCategorySearch(category,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
+
+            if(getRestaurantRes.size() == 0){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
             return new BaseResponse<>(getRestaurantRes);
+
+
 
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -392,6 +418,11 @@ public class RestaurantController {
         try{
 
             List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(menu);
+
+            if(getRestaurantRes.size() == 0){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){
@@ -405,6 +436,11 @@ public class RestaurantController {
         try{
 
             List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByAddress(address);
+
+            if(getRestaurantRes.size() == 0){
+                return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
+            }
+
             return new BaseResponse<>(getRestaurantRes);
 
         } catch(BaseException exception){

@@ -50,4 +50,16 @@ public class AddressProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<PostAddressRes> getAddressByUserIdx(int userIdx) throws BaseException {
+
+        try{
+            List<PostAddressRes> postAddressRes = addressDao.getAddressByUserIdx(userIdx);
+
+            return postAddressRes;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

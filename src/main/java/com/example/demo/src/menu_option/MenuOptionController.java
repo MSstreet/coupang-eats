@@ -102,14 +102,18 @@ public class MenuOptionController {
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
+
         }catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
 
         try {
 
-            menuOptionService.deleteMenuOption(menuOptionIdx);
+            int result = menuOptionService.deleteMenuOption(menuOptionIdx);
 
+            if(result == 0){
+                return new BaseResponse<>(POST_MENU_OPTION_EMPTY_MENU_OPTION);
+            }
             return new BaseResponse<>(menuOptionIdx);
 
         }catch (BaseException exception) {
@@ -123,6 +127,11 @@ public class MenuOptionController {
 
         try{
             List<PostMenuOptionRes> getMenuOptionRes = menuOptionProvider.getAllMenuOptions();
+
+            if(getMenuOptionRes.size() == 0){
+                return new BaseResponse<>(POST_MENU_OPTION_EMPTY_MENU_OPTION);
+            }
+
             return new BaseResponse<>(getMenuOptionRes);
 
         } catch(BaseException exception){
@@ -138,6 +147,10 @@ public class MenuOptionController {
         try{
             PostMenuOptionRes postMenuOptionRes = menuOptionProvider.getMenuOptionByMenuOptionId(menuOptionIdx);
 
+            if(postMenuOptionRes == null){
+                return new BaseResponse<>(POST_MENU_OPTION_EMPTY_MENU_OPTION);
+            }
+
             return new BaseResponse<>(postMenuOptionRes);
 
         } catch(BaseException exception){
@@ -146,14 +159,19 @@ public class MenuOptionController {
 
     }
 
+////////////////////////////////////////
     @ResponseBody
     @GetMapping("/menu-id/{menuIdx}")
-    public List<PostMenuOptionRes> getMenuOptionByMenuId(@PathVariable ("menuIdx") int menuIdx){
+    public BaseResponse<List<PostMenuOptionRes>> getMenuOptionByMenuId(@PathVariable ("menuIdx") int menuIdx){
 
         try{
             List<PostMenuOptionRes> postMenuOptionRes = menuOptionProvider.getMenuOptionsByMenuId(menuIdx);
 
-            return postMenuOptionRes;
+            if(postMenuOptionRes.size() == 0){
+                return new BaseResponse<>(POST_MENU_OPTION_EMPTY_MENU_OPTION);
+            }
+
+            return new BaseResponse<>(postMenuOptionRes);
         } catch(BaseException exception){
             return null;
         }

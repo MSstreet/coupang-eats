@@ -56,6 +56,7 @@ public class MenuService {
 
         try{
             int result = menuDao.modifyMenu(postMenuReq);
+            System.out.println("확인~!!!!!!!!!!!!!!!!!!!!!!!!");
 
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_RESTAURANT);
@@ -72,17 +73,14 @@ public class MenuService {
         }
     }
 
-    public void deleteMenu(int menuId) throws BaseException{
+    public int deleteMenu(int menuId) throws BaseException{
         try{
 
             int result = menuDao.deleteMenu(menuId);
 
-            if(result == 0){
-                throw new BaseException(FAILED_TO_MODIFY);
-            }
+//            menuDao.deleteMenuImage(menuId);
 
-            menuDao.deleteMenuImage(menuId);
-
+            return result;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

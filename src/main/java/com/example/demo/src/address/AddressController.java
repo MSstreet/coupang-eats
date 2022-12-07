@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
-import static com.example.demo.config.BaseResponseStatus.POST_MENU_EMPTY_GB_CODE;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/addresses")
@@ -108,7 +107,12 @@ public class AddressController {
 
         try {
 
-            addressService.deleteAddress(addressId);
+           int result =  addressService.deleteAddress(addressId);
+
+            if(result == 0){
+                return new BaseResponse<>(POST_ADDRESS_EMPTY_ADDRESS);
+            }
+
 
             return new BaseResponse<>(addressId);
         }catch (BaseException exception) {
@@ -121,6 +125,27 @@ public class AddressController {
     public BaseResponse<List<PostAddressRes>> getAllAddress() {
         try{
             List<PostAddressRes> postAddressRes = addressProvider.getAllAddress();
+
+            if(postAddressRes.size() == 0){
+                return new BaseResponse<>(POST_ADDRESS_EMPTY_ADDRESS);
+            }
+
+            return new BaseResponse<>(postAddressRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/list/{userIdx}") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<PostAddressRes>> getAddressByUserIdx(@PathVariable("userIdx") int userIdx) {
+        try{
+            List<PostAddressRes> postAddressRes = addressProvider.getAddressByUserIdx(userIdx);
+
+            if(postAddressRes.size() == 0){
+                return new BaseResponse<>(POST_ADDRESS_EMPTY_ADDRESS);
+            }
             return new BaseResponse<>(postAddressRes);
 
         } catch(BaseException exception){
@@ -134,6 +159,10 @@ public class AddressController {
         try{
 
             List<PostAddressRes> postAddressRes = addressProvider.getAddressByKeyword(keyword);
+
+            if(postAddressRes.size() == 0){
+                return new BaseResponse<>(POST_ADDRESS_EMPTY_ADDRESS);
+            }
             return new BaseResponse<>(postAddressRes);
 
         } catch(BaseException exception){

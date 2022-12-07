@@ -1,13 +1,17 @@
 package com.example.demo.src.restaurant;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.restaurant.model.GetRestaurantRes;
 import com.example.demo.src.restaurant.model.PostRestaurantReq;
 import com.example.demo.src.restaurant.model.PostRestaurantRes;
+import com.example.demo.src.review.ReviewDao;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -20,13 +24,16 @@ public class RestaurantService {
 
     private final RestaurantDao restaurantDao;
 
+    private final ReviewDao reviewDao;
+
     private final RestaurantProvider restaurantProvider;
 
     private final JwtService jwtService;
 
     @Autowired
-    public RestaurantService(RestaurantDao restaurantDao,RestaurantProvider restaurantProvider ,JwtService jwtService) {
+    public RestaurantService(RestaurantDao restaurantDao,RestaurantProvider restaurantProvider ,ReviewDao reviewDao,JwtService jwtService) {
         this.restaurantDao = restaurantDao;
+        this.reviewDao = reviewDao;
         this.restaurantProvider = restaurantProvider;
         this.jwtService = jwtService;
     }
@@ -63,19 +70,16 @@ public class RestaurantService {
         }
 
     }
-    public void deleteRestaurant(int restaurantId) throws BaseException{
+    public int deleteRestaurant(int restaurantId) throws BaseException{
         try{
+
+            restaurantProvider.getRestaurantByRestaurantId(restaurantId);
 
             int result = restaurantDao.deleteRestaurant(restaurantId);
 
-            if (result == 0) {
-                throw new BaseException(FAILED_TO_DELETE);
-            }
+//            restaurantDao.deleteRestaurantImage(restaurantId);
 
-            restaurantDao.deleteRestaurantImage(restaurantId);
-
-
-
+            return result;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

@@ -47,47 +47,66 @@ public enum BaseResponseStatus {
 
 
 
-    //[POST] / RESTAURANT
+    //[POST] / RESTAURANT (mason)
     //주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
-    POST_RESTAURANT_EMPTY_NUMBER(false, 2020, "가게 번호를 입력해주세요."),
+    POST_RESTAURANT_EMPTY_NUMBER(false, 2101, "가게 번호를 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_REPRESENT(false, 2021, "대표자명 이름을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_REPRESENT(false, 2102 , "대표자명 이름을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_BUSINESS_NUMBER(false, 2022, "사업자 번호를 입력해주세요."),
+    POST_RESTAURANT_EMPTY_BUSINESS_NUMBER(false, 2103, "사업자 번호를 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_OPERATION(false, 2023, "운영시간을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_OPERATION(false, 2104, "운영시간을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_DELIVERY_TIP(false, 2024, "배달 금액을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_DELIVERY_TIP(false, 2105, "배달 금액을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE(false, 2025, "최소 주문금액을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE(false, 2106, "최소 주문금액을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_RESTAURANT_IMAGE(false, 2026, "가게 사진을 입력해주세요."),
+    POST_RESTAURANT_EMPTY_RESTAURANT_IMAGE(false, 2107, "가게 사진을 입력해주세요."),
 
-    POST_RESTAURANT_EMPTY_RESTAURANT_NAME(false, 2027, "가게 이름를 입력해주세요."),
-    POST_RESTAURANT_INVALID_NUMBER(false,2028,"전화번호 형식을 올바르게 입력해주세요."),
+    POST_RESTAURANT_EMPTY_RESTAURANT_NAME(false, 2108, "가게 이름를 입력해주세요."),
+    POST_RESTAURANT_INVALID_NUMBER(false,2109,"전화번호 형식을 올바르게 입력해주세요."),
 
-    POST_RESTAURANT_EXISTS_BUSINESS_NUMBER(false,2029,"이미 가입된 사업자 번호입니다."),
+    POST_RESTAURANT_EXISTS_BUSINESS_NUMBER(false,2110,"이미 가입된 사업자 번호입니다."),
 
-    POST_RESTAURANT_EMPTY_ADDRESS(false, 2041, "가게 주소를 입력해주세요."),
+    POST_RESTAURANT_EMPTY_ADDRESS(false, 2111, "가게 주소를 입력해주세요."),
 
-
+    POST_RESTAURANT_EMPTY_RESTAURANT(false, 2112, "존재하지 않는 가게입니다."),
 
 
     // [POST] / MENU
+    POST_MENU_EMPTY_GB_CODE(false, 2120, "값을 입력해주세요."),
 
-    POST_MENU_EMPTY_GB_CODE(false, 2024, "값을 입력해주세요."),
+    POST_MENU_EMPTY_NAME(false, 2121, "메뉴명을 입력해주세요."),
 
-    POST_MENU_EMPTY_NAME(false, 2025, "메뉴명을 입력해주세요."),
+    POST_MENU_EMPTY_PRICE(false, 2122, "가격을 입력해주세요."),
 
-    POST_MENU_EMPTY_PRICE(false, 2026, "가격을 입력해주세요."),
+    POST_MENU_INVALID_PRICE(false, 2123, "유효하지 않은 가격입니다."),
+    POST_MENU_EMPTY_MENU(false, 2124, "존재하지 않는 메뉴입니다."),
 
-    POST_MENU_INVALID_PRICE(false, 2041, "유효하지 않은 가격입니다."),
+
+    // [POST] / BOARD
+    POST_BOARD_EMPTY_BOARD_TITLE(false, 2130, "게시판 제목을 입력해주세요."),
+
+    POST_BOARD_EMPTY_BOARD_CONTENT(false, 2131, "게시판 내용을 입력해주세요."),
+
+    POST_BOARD_EMPTY_BOARD(false, 2132, "존재하지 않는 게시물입니다."),
+
+    POST_BOARD_EMPTY_BOARDS(false, 2133, "게시물이 존재하지 않습니다."),
+
 
     //[POST] / MENU_OPTION
-    POST_MENU_OPTION_EMPTY_NAME(false, 2042, "메뉴 옵션 이름을 입력해주세요."),
+    POST_MENU_OPTION_EMPTY_NAME(false, 2140, "메뉴 옵션 이름을 입력해주세요."),
+
+    POST_MENU_EMPTY_MENU_OPTION(false, 2141, "존재하지 않는 메뉴 옵션입니다."),
+
+    POST_MENU_OPTION_EMPTY_MENU_OPTION(false, 2142, "존재하지 않는 메뉴입니다."),
 
     // [POST] / ADDRESS
-    POST_MENU_EMPTY_ADDRESS(false, 2043, "주소를 입력해주세요."),
+    POST_MENU_EMPTY_ADDRESS(false, 2150, "주소를 입력해주세요."),
+
+
+    POST_ADDRESS_EMPTY_ADDRESS(false, 2151, "존재하지 않는 주소입니다."),
+
 
 
     // [POST] /reviews
@@ -101,6 +120,8 @@ public enum BaseResponseStatus {
     PATCH_REVIEWS_INVALID_SCORE(false, 2034, "유효하지 않은 별점 값입니다."),
 
 
+
+
     // [POST] /orders
     POST_ORDERS_EMPTY_USER(false, 2035, "주문한 사용자를 입력해주세요."),
     POST_ORDERS_INVALID_USER(false, 2036, "유효하지 않은 사용자 번호입니다."),
@@ -108,6 +129,8 @@ public enum BaseResponseStatus {
     POST_ORDERS_INVALID_RESTAURANT(false, 2038, "유효하지 않은 가게 번호입니다."),
     POST_ORDERS_EMPTY_PRICE(false, 2039, "가격을 입력해주세요."),
     POST_ORDERS_EMPTY_MENU(false, 2040, "메뉴를 선택해주세요."),
+
+
 
     // [POST] /wishlists
     POST_WISHLISTS_EMPTY_USER(false, 2041, "찜한 사용자를 입력해주세요."),

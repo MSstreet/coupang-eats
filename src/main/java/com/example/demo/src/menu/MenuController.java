@@ -71,6 +71,7 @@ public class MenuController {
             PostMenuRes postMenuRes = menuService.createMenu(postMenuReq);
 
             return new BaseResponse<>(postMenuRes);
+
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -130,8 +131,11 @@ public class MenuController {
         }
 
         try {
+            int result = menuService.deleteMenu(menuIdx);
 
-            menuService.deleteMenu(menuIdx);
+            if(result == 0){
+                return new BaseResponse<>(POST_MENU_EMPTY_MENU);
+            }
 
             return new BaseResponse<>(menuIdx);
         }catch (BaseException exception) {
@@ -145,6 +149,11 @@ public class MenuController {
 
         try{
             List<PostMenuRes> getMenuRes = menuProvider.getAllMenus();
+
+            if(getMenuRes.size() == 0){
+                return new BaseResponse<>(POST_MENU_EMPTY_MENU);
+            }
+
             return new BaseResponse<>(getMenuRes);
 
         } catch(BaseException exception){
@@ -155,10 +164,14 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/menu-id/{menuIdx}") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<PostMenuRes> getMenu(@PathVariable("menuIdx") int menuIdx){
+    public BaseResponse<PostMenuRes> getMenuByMenuId(@PathVariable("menuIdx") int menuIdx){
 
         try{
             PostMenuRes postMenuRes = menuProvider.getMenuByMenuId(menuIdx);
+
+            if(postMenuRes == null){
+                return new BaseResponse<>(POST_MENU_EMPTY_MENU);
+            }
 
             return new BaseResponse<>(postMenuRes);
 
@@ -170,14 +183,36 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/res-id/{restaurantIdx}")
-    public List<PostMenuRes> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx){
+    public BaseResponse<List<PostMenuRes>> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx){
 
         try{
             List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantIdx);
 
-            return postMenuRes;
+            if(postMenuRes.size() == 0){
+                return new BaseResponse<>(POST_MENU_EMPTY_MENU);
+            }
+
+            return new BaseResponse<>(postMenuRes);
         } catch(BaseException exception){
             return null;
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("") // (GET) 127.0.0.1:9000/app/users
+    public BaseResponse<List<PostMenuRes>> getMenusByNameSearch(@RequestParam String menu) {
+        try{
+
+            List<PostMenuRes> postMenuRes = menuProvider.getMenusByMenuName(menu);
+
+            if(postMenuRes.size() == 0){
+                return new BaseResponse<>(POST_MENU_EMPTY_MENU);
+            }
+
+            return new BaseResponse<>(postMenuRes);
+
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
 

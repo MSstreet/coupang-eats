@@ -64,7 +64,7 @@ public class MenuDao {
 
     public int modifyMenu(PostMenuReq postMenuReq) {
 
-        String modifyMenuQuery = "update MENU set NAME = ?, PRICE = ?, CONTENT = ? where menu_Id = ?";
+        String modifyMenuQuery = "update MENU set NAME = ?, PRICE = ?, CONTENT = ? where MENU_ID = ?";
 
         Object[] modifyMenuParams = new Object[]{postMenuReq.getName(), postMenuReq.getPrice(), postMenuReq.getContent()
                 ,postMenuReq.getMenuId()};
@@ -88,17 +88,17 @@ public class MenuDao {
         return this.jdbcTemplate.update(deletMenuQuery, modifyUserNameParams);
     }
 
-    public int deleteMenuImage(int menuId){
-
-        String deleteMenuImageQuery = "delete from IMAGE where TARGET_ID = ? and TARGET_CODE = 'MN'" ;
-        return this.jdbcTemplate.update(deleteMenuImageQuery,menuId);
-
-    }
+//    public int deleteMenuImage(int menuId){
+//
+//        String deleteMenuImageQuery = "delete from IMAGE where TARGET_ID = ? and TARGET_CODE = 'MN'" ;
+//        return this.jdbcTemplate.update(deleteMenuImageQuery,menuId);
+//
+//    }
 
 
     public PostMenuRes getMenuByMenuId(int menuId) {
 
-        String getMenuQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on  MENU.MENU_ID  = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU_ID = ?";
+        String getMenuQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU_ID = ?";
 
         return this.jdbcTemplate.queryForObject(getMenuQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -116,7 +116,7 @@ public class MenuDao {
 
     public List<PostMenuRes> getAllMenus() {
 
-        String getAllMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on IMAGE.IMAGE_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN'";
+        String getAllMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN'";
 
         return this.jdbcTemplate.query(getAllMenusQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -134,7 +134,7 @@ public class MenuDao {
 
     public List<PostMenuRes> getRestaurantMenu(int restaurantId) {
 
-        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on IMAGE.IMAGE_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where RESTAURANT_ID = ?";
+        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where RESTAURANT_ID = ?";
 
         return this.jdbcTemplate.query(getMenusQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -153,7 +153,7 @@ public class MenuDao {
 
     public List<PostMenuRes> getMenusByName(String MenuName) {
 
-        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on IMAGE.IMAGE_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where NAME like ?";
+        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU.NAME like ?";
 
         String Param = "%" + MenuName + "%";
 
@@ -168,9 +168,8 @@ public class MenuDao {
                         rs.getInt("REF_ID"),
                         rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID"))
-                ,MenuName);
+                ,Param);
 
     }
-
 
 }

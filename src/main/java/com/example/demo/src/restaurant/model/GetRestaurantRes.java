@@ -84,6 +84,6 @@ public class GetRestaurantRes {
     //private double score;
 
 
-
+    private double score;
     private double distance;
 }

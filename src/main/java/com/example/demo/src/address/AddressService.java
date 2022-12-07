@@ -65,7 +65,7 @@ public class AddressService {
         }
     }
 
-    public void deleteAddress(int AddressId) throws BaseException{
+    public int deleteAddress(int AddressId) throws BaseException{
         try{
 
             int result = addressDao.deleteAddress(AddressId);
@@ -74,6 +74,8 @@ public class AddressService {
                 throw new BaseException(FAILED_TO_MODIFY);
             }
 
+
+            return result;
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }

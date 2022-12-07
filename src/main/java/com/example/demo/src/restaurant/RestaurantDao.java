@@ -6,6 +6,7 @@ import com.example.demo.src.restaurant.model.GetRestaurantRes;
 import com.example.demo.src.restaurant.model.PostRestaurantReq;
 import com.example.demo.src.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,7 @@ import javax.sql.DataSource;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
-import static com.example.demo.config.BaseResponseStatus.POST_RESTAURANT_EMPTY_ADDRESS;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Repository
 public class RestaurantDao {
@@ -114,20 +114,19 @@ public class RestaurantDao {
         return this.jdbcTemplate.update(deleteRestaurantQuery,restaurantId);
     }
 
-    public int deleteRestaurantImage(int restaurantId){
+//    public int deleteRestaurantImage(int restaurantId){
+//
+//        String deleteRestaurantImageQuery = "delete from IMAGE where TARGET_ID = ? and TARGET_CODE = 'RS'" ;
+//        return this.jdbcTemplate.update(deleteRestaurantImageQuery,restaurantId);
+//
+//    }
 
-        String deleteRestaurantImageQuery = "delete from IMAGE where TARGET_ID = ? and TARGET_CODE = 'RS'" ;
-        return this.jdbcTemplate.update(deleteRestaurantImageQuery,restaurantId);
-
-    }
 
 
-
-    public List<GetRestaurantRes> getAllRestaurants(){
+    public List<GetRestaurantRes> getAllRestaurants(int offset, int limit){
 
         String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT " +
-                "join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS'";
-
+                "join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' order by RESTAURANT.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getRestaurantQuery,
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
@@ -151,52 +150,57 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH"),
                         rs.getString("IMAGE_PATH2"),
                         rs.getString("IMAGE_PATH3"),
-                        rs.getDouble("DISTANCE")));
-    }
-
-    public GetRestaurantRes getRestaurantByRestaurantId(int restaurantId) {
-
-        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where RESTAURANT_ID = ?";
-
-        int getRestaurantParams = restaurantId;
-
-        return this.jdbcTemplate.queryForObject(getRestaurantQuery,
-                (rs,rowNum) -> new GetRestaurantRes(
-                        rs.getInt("RESTAURANT_ID"),
-                        rs.getString("BUSINESS_NAME"),
-                        rs.getString("ADDRESS"),
-                        rs.getString("PHONE_NUMBER"),
-                        rs.getString("REPRESENT_NAME"),
-                        rs.getString("BUSINESS_NUMBER"),
-                        rs.getString("OPERATING_TIME"),
-                        rs.getString("INTRODUCTION_BOARD"),
-                        rs.getString("ORIGIN_INFORMATION"),
-                        rs.getInt("TIME_DELIVERY"),
-                        rs.getInt("TIME_PICKUP"),
-                        rs.getString("TIP_DELIVERY"),
-                        rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getInt("CATEGORY"),
-                        rs.getBoolean("DELIVERY_YN"),
-                        rs.getBoolean("FAST_DELIVERY_YN"),
-                        rs.getBoolean("PICKUP_YN"),
-                        rs.getBoolean("DELETE_YN"),
-                        rs.getString("IMAGE_PATH"),
-                        rs.getString("IMAGE_PATH2"),
-                        rs.getString("IMAGE_PATH3"),
+                        rs.getDouble("SCORE"),
                         rs.getDouble("DISTANCE")),
-                getRestaurantParams);
+                offset, limit);
     }
 
-    public List<GetRestaurantRes> getRestaurantsByNameSearch(String searchRestaurantNameReq) {
+    public GetRestaurantRes getRestaurantByRestaurantId(int restaurantId) throws Exception {
+        try {
+            String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where RESTAURANT_ID = ?";
 
-        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where BUSINESS_NAME like ?";
+            int getRestaurantParams = restaurantId;
+
+            return this.jdbcTemplate.queryForObject(getRestaurantQuery,
+                    (rs, rowNum) -> new GetRestaurantRes(
+                            rs.getInt("RESTAURANT_ID"),
+                            rs.getString("BUSINESS_NAME"),
+                            rs.getString("ADDRESS"),
+                            rs.getString("PHONE_NUMBER"),
+                            rs.getString("REPRESENT_NAME"),
+                            rs.getString("BUSINESS_NUMBER"),
+                            rs.getString("OPERATING_TIME"),
+                            rs.getString("INTRODUCTION_BOARD"),
+                            rs.getString("ORIGIN_INFORMATION"),
+                            rs.getInt("TIME_DELIVERY"),
+                            rs.getInt("TIME_PICKUP"),
+                            rs.getString("TIP_DELIVERY"),
+                            rs.getString("MINIMUM_ORDER_PRICE"),
+                            rs.getInt("CATEGORY"),
+                            rs.getBoolean("DELIVERY_YN"),
+                            rs.getBoolean("FAST_DELIVERY_YN"),
+                            rs.getBoolean("PICKUP_YN"),
+                            rs.getBoolean("DELETE_YN"),
+                            rs.getString("IMAGE_PATH"),
+                            rs.getString("IMAGE_PATH2"),
+                            rs.getString("IMAGE_PATH3"),
+                            rs.getDouble("SCORE"),
+                            rs.getDouble("DISTANCE")),
+                    getRestaurantParams);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
+    }
+
+    public List<GetRestaurantRes> getRestaurantsByNameSearch(String searchRestaurantNameReq,int offset, int limit) {
+
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where BUSINESS_NAME like ? order by RESTAURANT.CREATION_DATE desc limit ?,?";
 
         System.out.println(getRestaurantQuery);
         System.out.println(searchRestaurantNameReq);
         String Param = "%" + searchRestaurantNameReq + "%";
         System.out.println(Param);
 
-
         return this.jdbcTemplate.query(getRestaurantQuery,
                 (rs,rowNum) -> new GetRestaurantRes(
                         rs.getInt("RESTAURANT_ID"),
@@ -220,11 +224,12 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH"),
                         rs.getString("IMAGE_PATH2"),
                         rs.getString("IMAGE_PATH3"),
+                        rs.getDouble("SCORE"),
                         rs.getDouble("DISTANCE")),
-                Param);
+                Param,offset,limit);
     }
 
-    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantNameReq) {
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantNameReq,int offset, int limit) {
 
         String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where CATEGORY like ?";
 
@@ -257,8 +262,9 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH"),
                         rs.getString("IMAGE_PATH2"),
                         rs.getString("IMAGE_PATH3"),
+                        rs.getDouble("SCORE"),
                         rs.getDouble("DISTANCE")),
-                Param);
+                Param,offset,limit);
     }
 
 
@@ -294,8 +300,11 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH"),
                         rs.getString("IMAGE_PATH2"),
                         rs.getString("IMAGE_PATH3"),
+                        rs.getDouble("SCORE"),
                         rs.getDouble("DISTANCE")),
                 Param);
     }
+
+
 
 }

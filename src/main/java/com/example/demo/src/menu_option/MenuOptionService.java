@@ -58,7 +58,7 @@ public class MenuOptionService {
         }
     }
 
-    public void deleteMenuOption(int menuOptionId) throws BaseException{
+    public int deleteMenuOption(int menuOptionId) throws BaseException{
         try{
 
             int result = menuOptionDao.deleteMenuOption(menuOptionId);
@@ -66,6 +66,8 @@ public class MenuOptionService {
             if(result == 0){
                 throw new BaseException(FAILED_TO_MODIFY);
             }
+
+            return result;
 
         } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);

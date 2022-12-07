@@ -96,6 +96,20 @@ public class AddressDao {
                 Param);
     }
 
+    public List<PostAddressRes> getAddressByUserIdx(int userIdx) {
+
+        String getRestaurantQuery = "select * from ADDRESS where USER_ID = ? AND DELETE_YN = 0";
+
+        return this.jdbcTemplate.query(getRestaurantQuery,
+                (rs,rowNum) -> new PostAddressRes(
+                        rs.getInt("ADDRESS_ID"),
+                        rs.getInt("USER_ID"),
+                        rs.getString("ADDRESS_NAME"),
+                        rs.getString("DETAIL_ADDRESS"),
+                        rs.getBoolean("ADDRESS_PICK")),
+                userIdx);
+    }
+
     public void setAddressStatusTrueByAddressId(int AddressId) {
         String setAddressQuery = "update ADDRESS set ADDRESS_PICK = 1 where ADDRESS_ID = ? ";
         Object[] setAddressParams = new Object[]{AddressId};
