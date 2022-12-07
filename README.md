@@ -185,3 +185,6 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - ORDER API 수정 : 인덱스로 주문 조회 API 추가
 - REVIEW API 수정 : 리뷰가 0개일 경우 평균 별점 3.0으로 초기화
 - API 27개 개발 테스트 완료 및 서버 반영
+- USER, ORDER, REVIEW, WISH 더미 데이터 생성
+- SEARCH API 개발 완료
+- 페이징 기법 적용
