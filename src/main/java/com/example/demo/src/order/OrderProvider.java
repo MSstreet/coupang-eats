@@ -36,6 +36,16 @@ public class OrderProvider {
         }
     }
 
+    // Order 조회
+    public GetOrderRes getOrder(int orderIdx) throws BaseException {
+        try {
+            GetOrderRes getOrderRes = orderDao.getOrder(orderIdx);
+            return getOrderRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
     // Orders Menu 조회
     public List<GetOrderMenu> getOrderMenus(int orderIdx) throws BaseException {
         try {

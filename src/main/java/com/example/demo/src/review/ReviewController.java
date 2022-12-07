@@ -170,8 +170,14 @@ public class ReviewController {
     @GetMapping("/score/{restIdx}")
     public BaseResponse<Double> getScore(@PathVariable("restIdx") int restIdx) {
         try {
-            double score = reviewProvider.getScore(restIdx);
-            return new BaseResponse<>(score);
+            int count = reviewProvider.getReviewsCountByRest(restIdx);
+            if(count == 0){
+                return new BaseResponse<>(3.0);
+            }
+            else {
+                double score = reviewProvider.getScore(restIdx);
+                return new BaseResponse<>(score);
+            }
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }

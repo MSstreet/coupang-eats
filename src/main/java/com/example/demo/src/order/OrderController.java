@@ -92,6 +92,24 @@ public class OrderController {
     }
 
     /**
+     * 인덱스로 주문 조회 API
+     * [GET] /orders/:orderIdx
+     */
+    @ResponseBody
+    @GetMapping("/{orderIdx}")
+    public BaseResponse<GetOrderAll> getOrder(@PathVariable("orderIdx") int orderIdx) {
+        try {
+            GetOrderRes getOrderRes = orderProvider.getOrder(orderIdx);
+            List<GetOrderMenu> getOrderMenus = orderProvider.getOrderMenus(orderIdx);
+            GetOrderAll getOrderAll = new GetOrderAll(getOrderRes, getOrderMenus);
+
+            return new BaseResponse<>(getOrderAll);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
      * 특정 사용자의 주문 조회 API
      * [GET] /orders/users/:userIdx
      */

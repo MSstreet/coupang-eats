@@ -41,8 +41,8 @@ public class WishDao {
         String getWishesQuery = "select WISH.*, R.BUSINESS_NAME as REST_NAME, I.IMAGE_PATH as REST_IMAGE_PATH, " +
                 "R.DISTANCE, R.TIME_DELIVERY, R.TIP_DELIVERY " +
                 "from WISH " +
-                "join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
-                "join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
+                "left join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
+                "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
                 "where WISH.ACTIVE_YN = true";
         return this.jdbcTemplate.query(getWishesQuery,
                 (rs, rowNum) -> new GetWishRes(
@@ -66,8 +66,8 @@ public class WishDao {
         String getWishesQuery = "select WISH.*, R.BUSINESS_NAME as REST_NAME, I.IMAGE_PATH as REST_IMAGE_PATH, " +
                 "R.DISTANCE, R.TIME_DELIVERY, R.TIP_DELIVERY " +
                 "from WISH " +
-                "join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
-                "join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
+                "left join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
+                "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
                 "where WISH.ACTIVE_YN = true and WISH.WISH_ID = ?";
         return this.jdbcTemplate.queryForObject(getWishesQuery,
                 (rs, rowNum) -> new GetWishRes(
@@ -90,8 +90,8 @@ public class WishDao {
         String getWishesQuery =  "select WISH.*, R.BUSINESS_NAME as REST_NAME, I.IMAGE_PATH as REST_IMAGE_PATH, " +
                 "R.DISTANCE, R.TIME_DELIVERY, R.TIP_DELIVERY " +
                 "from WISH " +
-                "join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
-                "join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
+                "left join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
+                "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
                 "where WISH.ACTIVE_YN = true and WISH.USER_ID = ?";
         return this.jdbcTemplate.query(getWishesQuery,
                 (rs, rowNum) -> new GetWishRes(

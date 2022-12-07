@@ -56,7 +56,7 @@ public class OrderDao {
                 "M5.NAME as OPTION4_NAME, M5.PRICE as OPTION4_PRICE, " +
                 "M6.NAME as OPTION5_NAME, M6.PRICE as OPTION5_PRICE " +
                 "from ORDER_MENU OM " +
-                "join MENU M1 on OM.MENU_ID = M1.MENU_ID and M1.GB_CODE = 'MN' " +
+                "left join MENU M1 on OM.MENU_ID = M1.MENU_ID and M1.GB_CODE = 'MN' " +
                 "left join MENU M2 on OM.OPTION_1 = M2.MENU_ID and M2.GB_CODE = 'OP' " +
                 "left join MENU M3 on OM.OPTION_2 = M2.MENU_ID and M2.GB_CODE = 'OP' " +
                 "left join MENU M4 on OM.OPTION_3 = M2.MENU_ID and M2.GB_CODE = 'OP' " +
@@ -87,7 +87,7 @@ public class OrderDao {
     // Order 테이블에 존재하는 전체 주문 정보 조회
     public List<GetOrderRes> getOrders() {
         String getOrdersQuery = "select ORDERS.*, R.BUSINESS_NAME, I.IMAGE_PATH, R2.SCORE from ORDERS " +
-                "join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
+                "left join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
                 "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
                 "left join REVIEW R2 on ORDERS.ORDER_ID = R2.ORDER_ID and R2.DELETE_YN = false";
         return this.jdbcTemplate.query(getOrdersQuery,
@@ -109,10 +109,36 @@ public class OrderDao {
         );
     }
 
+    // Order 테이블에 존재하는 전체 주문 정보 조회
+    public GetOrderRes getOrder(int orderIdx) {
+        String getOrdersQuery = "select ORDERS.*, R.BUSINESS_NAME, I.IMAGE_PATH, R2.SCORE from ORDERS " +
+                "left join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
+                "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
+                "left join REVIEW R2 on ORDERS.ORDER_ID = R2.ORDER_ID and R2.DELETE_YN = false "+
+                "where ORDERS.ORDER_ID = ?";
+        return this.jdbcTemplate.queryForObject(getOrdersQuery,
+                (rs, rowNum) -> new GetOrderRes(
+                        rs.getInt("ORDER_ID"),
+                        rs.getInt("USER_ID"),
+                        rs.getInt("RESTAURANT_ID"),
+                        rs.getString("BUSINESS_NAME"),
+                        rs.getString("IMAGE_PATH"),
+                        rs.getInt("PRICE"),
+                        rs.getString("STATUS"),
+                        rs.getInt("SCORE"),
+                        rs.getString("MSG_TO_OWNER"),
+                        rs.getString("MSG_TO_DELIVERYMAN"),
+                        rs.getBoolean("DISPOSABLE_YN"),
+                        rs.getBoolean("PICKUP_YN"),
+                        rs.getTimestamp("CREATION_DATE")),
+                orderIdx
+        );
+    }
+
     // (특정 유저의) Order 테이블에 존재하는 전체 주문 정보 조회
     public List<GetOrderRes> getOrdersByUser(int userIdx) {
         String getOrdersQuery = "select ORDERS.*, R.BUSINESS_NAME, I.IMAGE_PATH, R2.SCORE from ORDERS " +
-                "join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
+                "left join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
                 "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
                 "left join REVIEW R2 on ORDERS.ORDER_ID = R2.ORDER_ID and R2.DELETE_YN = false " +
                 "where ORDERS.USER_ID = ? order by ORDERS.CREATION_DATE desc";
