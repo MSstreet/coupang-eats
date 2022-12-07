@@ -167,3 +167,14 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 ### 🗓️ 2022-12-05
 - ORDER API 개발
 - WISH API 명세서 작성
+
+### 🗓️ 2022-12-06
+- USER API 수정 : 회원정보 수정 시 비밀번호 암호화 처리
+- ORDER API 수정 : 주문 VALIDATION 체크 추가
+- WISH API 수정 : 이미지 테이블 JOIN
+- API 명세서 작성 완료 및 수정사항 반영해서 개발서버 재가동
+
+### 🗓️ 2022-12-07
+- ORDER API 수정 : 인덱스로 주문 조회 API 추가
+- REVIEW API 수정 : 리뷰가 0개일 경우 평균 별점 3.0으로 초기화
+- API 27개 개발 테스트 완료 및 서버 반영
