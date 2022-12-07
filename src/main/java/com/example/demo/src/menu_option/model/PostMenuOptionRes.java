@@ -16,4 +16,5 @@ public class PostMenuOptionRes {
     private int menuId;
 
     private String optionName;
+
 }

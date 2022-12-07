@@ -38,19 +38,35 @@ public class MenuController {
     //가게 고유 번호 존재하는지 확인, D 혹은 M 입력, 내용 길이, 참조 값 존재 확인
     //가격 validation
     @ResponseBody
-    @PostMapping("/{restaurantIdx}/join")
-    public BaseResponse<PostMenuRes> creatMenu(@PathVariable("restaurantIdx") int restaurantIdx, @RequestBody PostMenuReq postMenuReq) {
+    @PostMapping("/{userIdx}/{restaurantIdx}/join")
+    public BaseResponse<PostMenuRes> creatMenu(@PathVariable("userIdx") int userIdx, @PathVariable("restaurantIdx") int restaurantIdx, @RequestBody PostMenuReq postMenuReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
+
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
         try{
 
             if(postMenuReq.getGbCode() == null || postMenuReq.getGbCode().length() == 0) {
-                return new BaseResponse<>(POST_MENU_EMPTY_NAME);
+                return new BaseResponse<>(POST_MENU_EMPTY_GB_CODE);
             }
 
             if(postMenuReq.getName() == null || postMenuReq.getName().length() == 0) {
                 return new BaseResponse<>(POST_MENU_EMPTY_NAME);
             }
+
+            if(postMenuReq.getPrice() < 100){
+                return new BaseResponse<>(POST_MENU_INVALID_PRICE);
+            }
+
+
 
             PostMenuRes postMenuRes = menuService.createMenu(postMenuReq);
 
@@ -61,12 +77,34 @@ public class MenuController {
     }
 
     @ResponseBody
-    @PatchMapping("/modify/{restaurantIdx}/{menuIdx}")
-    public BaseResponse<PostMenuRes> modifyMenu(@PathVariable("restaurantIdx") int restaurantIdx ,@PathVariable("menuIdx") int menuIdx, @RequestBody PostMenuReq postMenuReq){
+    @PatchMapping("/modify/{userIdx}/{restaurantIdx}/{menuIdx}")
+    public BaseResponse<PostMenuRes> modifyMenu(@PathVariable("userIdx") int userIdx, @PathVariable("restaurantIdx") int restaurantIdx ,@PathVariable("menuIdx") int menuIdx, @RequestBody PostMenuReq postMenuReq){
+
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
         try{
 
-            PostMenuRes postMenuRes = menuService.modifyMenu(postMenuReq);
+            if(postMenuReq.getGbCode() == null || postMenuReq.getGbCode().length() == 0) {
+                return new BaseResponse<>(POST_MENU_EMPTY_GB_CODE);
+            }
+
+            if(postMenuReq.getName() == null || postMenuReq.getName().length() == 0) {
+                return new BaseResponse<>(POST_MENU_EMPTY_NAME);
+            }
+
+            if(postMenuReq.getPrice() < 100){
+                return new BaseResponse<>(POST_MENU_INVALID_PRICE);
+            }
+
+            PostMenuRes postMenuRes = menuService.modifyMenu(postMenuReq,menuIdx);
 
             return new BaseResponse<>(postMenuRes);
 
@@ -78,8 +116,18 @@ public class MenuController {
     }
 
     @ResponseBody
-    @PatchMapping("/delete/{restaurantIdx}/{menuIdx}")
-    public BaseResponse<Integer> deleteMenu(@PathVariable("restaurantIdx") int restaurantIdx, @PathVariable("menuIdx") int menuIdx){
+    @PatchMapping("/delete/{userIdx}/{restaurantIdx}/{menuIdx}")
+    public BaseResponse<Integer> deleteMenu(@PathVariable("userIdx") int userIdx, @PathVariable("restaurantIdx") int restaurantIdx, @PathVariable("menuIdx") int menuIdx){
+
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
         try {
 

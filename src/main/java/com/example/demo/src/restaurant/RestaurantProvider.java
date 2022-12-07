@@ -28,23 +28,7 @@ public class RestaurantProvider {
         this.menuDao = menuDao;
         this.jwtService = jwtService;
     }
-    public int checkBusinessNum(String BusinessNum) throws BaseException {
 
-        try{
-
-            int check = restaurantDao.checkBusinessNum(BusinessNum);
-
-            if(check == 1){
-                System.out.println("확인");
-                throw new BaseException(POST_RESTAURANT_EXISTS_BUSINESS_NUMBER);
-            }
-
-            return check;
-
-        } catch (Exception exception){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
 
     public List<GetRestaurantRes> getAllRestaurants() throws BaseException {
 
@@ -128,6 +112,5 @@ public class RestaurantProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
 
 }

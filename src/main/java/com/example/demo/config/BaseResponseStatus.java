@@ -81,7 +81,13 @@ public enum BaseResponseStatus {
 
     POST_MENU_EMPTY_PRICE(false, 2026, "가격을 입력해주세요."),
 
+    POST_MENU_INVALID_PRICE(false, 2041, "유효하지 않은 가격입니다."),
 
+    //[POST] / MENU_OPTION
+    POST_MENU_OPTION_EMPTY_NAME(false, 2042, "메뉴 옵션 이름을 입력해주세요."),
+
+    // [POST] / ADDRESS
+    POST_MENU_EMPTY_ADDRESS(false, 2043, "주소를 입력해주세요."),
 
 
     // [POST] /reviews

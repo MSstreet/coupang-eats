@@ -15,11 +15,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
-import static com.example.demo.utils.ValidationRegex.isRegexPhone;
 import static com.example.demo.utils.ValidationRegex.isRegexRestaurantNumber;
 
-////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
 @RestController
 @RequestMapping("/app/restaurants")
 public class RestaurantController {
@@ -101,23 +98,22 @@ public class RestaurantController {
 //    }
 
     @ResponseBody
-    @PostMapping("/join")
-    public BaseResponse<PostRestaurantRes> createRestaurant(@RequestBody PostRestaurantReq postRestaurantReq) {
+    @PostMapping("/{userIdx}/join")
+    public BaseResponse<PostRestaurantRes> createRestaurant(@PathVariable("userIdx") int userIdx, @RequestBody PostRestaurantReq postRestaurantReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
 
-//        try{
-//            int userIdxByJwt = jwtService.getUserIdx();
-//
-//            if(userId != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//        }catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
         //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
-        //empty 보류 : 사진, 치타, 배달, 포장
-        //중복 : 사업자 번호
+
         try{
             if(postRestaurantReq.getName() == null || postRestaurantReq.getName().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT_NAME);
@@ -139,10 +135,10 @@ public class RestaurantController {
             if(postRestaurantReq.getOperationTime() == null || postRestaurantReq.getOperationTime().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_OPERATION);
             }
-
-            if(postRestaurantReq.getTipDelivery() == null || postRestaurantReq.getTipDelivery().length() == 0) {
-                return new BaseResponse<>(POST_RESTAURANT_EMPTY_DELIVERY_TIP);
-            }
+            ////////////////////////////////////
+//            if(postRestaurantReq.getTipDelivery() == null || postRestaurantReq.getTipDelivery().length() == 0) {
+//                return new BaseResponse<>(POST_RESTAURANT_EMPTY_DELIVERY_TIP);
+//            }
             if(postRestaurantReq.getMinDeliveryPrice() == null || postRestaurantReq.getMinDeliveryPrice().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_MINIMUM_ORDER_PRICE);
             }
@@ -220,21 +216,19 @@ public class RestaurantController {
 
 
     //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
-    //널 값 보류 :  사진, 치타, 배달, 포장
-    //중복 : 사업자 번호
     @ResponseBody
-    @PatchMapping("/modify/{restIdx}")
-    public BaseResponse<String> modifyRestaurant(@PathVariable("restIdx") int restIdx, @RequestBody PostRestaurantReq postRestaurantReq){
+    @PatchMapping("/modify/{userIdx}/{restIdx}")
+    public BaseResponse<String> modifyRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx, @RequestBody PostRestaurantReq postRestaurantReq){
 
-//        try{
-//            int userIdxByJwt = jwtService.getUserIdx();
-//
-//            if(userId != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//        }catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
         try{
             if(postRestaurantReq.getName() == null || postRestaurantReq.getName().length() == 0) {
@@ -256,7 +250,7 @@ public class RestaurantController {
             if(postRestaurantReq.getOperationTime() == null || postRestaurantReq.getOperationTime().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_OPERATION);
             }
-
+            //////////////////////////
             if(postRestaurantReq.getTipDelivery() == null || postRestaurantReq.getTipDelivery().length() == 0) {
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_DELIVERY_TIP);
             }
@@ -312,22 +306,20 @@ public class RestaurantController {
 
     //벨러데이션
     @ResponseBody
-    @PatchMapping("/delete/{restIdx}")
-    public BaseResponse<String> deleteRestaurant(@PathVariable("restIdx") int restIdx){
-
-//        try{
-//            int userIdxByJwt = jwtService.getUserIdx();
-//
-//            if(userId != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//        }catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
+    @PatchMapping("/delete/{userIdx}/{restIdx}")
+    public BaseResponse<String> deleteRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx){
 
         try{
+            int userIdxByJwt = jwtService.getUserIdx();
 
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+        }catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
 
+        try{
             restaurantService.deleteRestaurant(restIdx);
 
             String result = "레스토랑을 삭제하였습니다.";
