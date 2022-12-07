@@ -27,9 +27,9 @@ public class OrderProvider {
     }
 
     // Orders 조회
-    public List<GetOrderRes> getOrders() throws BaseException {
+    public List<GetOrderRes> getOrders(int offset, int limit) throws BaseException {
         try {
-            List<GetOrderRes> getOrderRes = orderDao.getOrders();
+            List<GetOrderRes> getOrderRes = orderDao.getOrders(offset, limit);
             return getOrderRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -57,9 +57,9 @@ public class OrderProvider {
     }
 
     // 특정 user의 Orders 조회
-    public List<GetOrderRes> getOrdersByUser(int userIdx) throws BaseException {
+    public List<GetOrderRes> getOrdersByUser(int userIdx, int offset, int limit) throws BaseException {
         try {
-            List<GetOrderRes> getOrderRes = orderDao.getOrdersByUser(userIdx);
+            List<GetOrderRes> getOrderRes = orderDao.getOrdersByUser(userIdx, offset, limit);
             return getOrderRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

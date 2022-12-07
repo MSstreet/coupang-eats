@@ -85,11 +85,12 @@ public class OrderDao {
     }
 
     // Order 테이블에 존재하는 전체 주문 정보 조회
-    public List<GetOrderRes> getOrders() {
+    public List<GetOrderRes> getOrders(int offset, int limit) {
         String getOrdersQuery = "select ORDERS.*, R.BUSINESS_NAME, I.IMAGE_PATH, R2.SCORE from ORDERS " +
                 "left join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
                 "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
-                "left join REVIEW R2 on ORDERS.ORDER_ID = R2.ORDER_ID and R2.DELETE_YN = false";
+                "left join REVIEW R2 on ORDERS.ORDER_ID = R2.ORDER_ID and R2.DELETE_YN = false " +
+                "order by ORDERS.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getOrdersQuery,
                 (rs, rowNum) -> new GetOrderRes(
                         rs.getInt("ORDER_ID"),
@@ -105,11 +106,11 @@ public class OrderDao {
                         rs.getBoolean("DISPOSABLE_YN"),
                         rs.getBoolean("PICKUP_YN"),
                         rs.getTimestamp("CREATION_DATE")
-                )
+                ),offset, limit
         );
     }
 
-    // Order 테이블에 존재하는 전체 주문 정보 조회
+    // 주문 하나 조회
     public GetOrderRes getOrder(int orderIdx) {
         String getOrdersQuery = "select ORDERS.*, R.BUSINESS_NAME, I.IMAGE_PATH, R2.SCORE from ORDERS " +
                 "left join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
@@ -136,12 +137,12 @@ public class OrderDao {
     }
 
     // (특정 유저의) Order 테이블에 존재하는 전체 주문 정보 조회
-    public List<GetOrderRes> getOrdersByUser(int userIdx) {
+    public List<GetOrderRes> getOrdersByUser(int userIdx, int offset, int limit) {
         String getOrdersQuery = "select ORDERS.*, R.BUSINESS_NAME, I.IMAGE_PATH, R2.SCORE from ORDERS " +
                 "left join RESTAURANT R on ORDERS.RESTAURANT_ID = R.RESTAURANT_ID " +
                 "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
                 "left join REVIEW R2 on ORDERS.ORDER_ID = R2.ORDER_ID and R2.DELETE_YN = false " +
-                "where ORDERS.USER_ID = ? order by ORDERS.CREATION_DATE desc";
+                "where ORDERS.USER_ID = ? order by ORDERS.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getOrdersQuery,
                 (rs, rowNum) -> new GetOrderRes(
                         rs.getInt("ORDER_ID"),
@@ -157,7 +158,7 @@ public class OrderDao {
                         rs.getBoolean("DISPOSABLE_YN"),
                         rs.getBoolean("PICKUP_YN"),
                         rs.getTimestamp("CREATION_DATE")
-                ), userIdx
+                ), userIdx, offset, limit
         );
     }
 }

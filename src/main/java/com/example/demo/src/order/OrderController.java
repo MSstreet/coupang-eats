@@ -73,13 +73,14 @@ public class OrderController {
     /**
      * 모든 주문들 조회 API
      * [GET] /orders
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetOrderAll>> getOrders() {
+    public BaseResponse<List<GetOrderAll>> getOrders(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
             List<GetOrderAll> orderAllList = new ArrayList<>();
-            List<GetOrderRes> getOrdersRes = orderProvider.getOrders();
+            List<GetOrderRes> getOrdersRes = orderProvider.getOrders(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             for (GetOrderRes order : getOrdersRes) {
                 List<GetOrderMenu> getOrderMenus = orderProvider.getOrderMenus(order.getOrderIdx());
                 GetOrderAll getOrderAll = new GetOrderAll(order, getOrderMenus);
@@ -112,17 +113,18 @@ public class OrderController {
     /**
      * 특정 사용자의 주문 조회 API
      * [GET] /orders/users/:userIdx
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("/users/{userIdx}")
-    public BaseResponse<List<GetOrderAll>> getOrdersByUser(@PathVariable("userIdx") int userIdx) {
+    public BaseResponse<List<GetOrderAll>> getOrdersByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
             List<GetOrderAll> orderAllList = new ArrayList<>();
-            List<GetOrderRes> getOrdersRes = orderProvider.getOrdersByUser(userIdx);
+            List<GetOrderRes> getOrdersRes = orderProvider.getOrdersByUser(userIdx, Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             for (GetOrderRes order : getOrdersRes) {
                 List<GetOrderMenu> getOrderMenus = orderProvider.getOrderMenus(order.getOrderIdx());
                 GetOrderAll getOrderAll = new GetOrderAll(order, getOrderMenus);

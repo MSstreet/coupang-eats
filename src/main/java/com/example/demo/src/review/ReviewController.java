@@ -67,12 +67,13 @@ public class ReviewController {
     /**
      * 모든 리뷰들 조회 API
      * [GET] /reviews
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetReviewRes>> getReviews() {
+    public BaseResponse<List<GetReviewRes>> getReviews(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
-            List<GetReviewRes> getReviewsRes = reviewProvider.getReviews();
+            List<GetReviewRes> getReviewsRes = reviewProvider.getReviews(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getReviewsRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -97,16 +98,17 @@ public class ReviewController {
     /**
      * 특정 사용자의 리뷰 조회 API
      * [GET] /reviews/users/:userIdx
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("/users/{userIdx}")
-    public BaseResponse<List<GetReviewRes>> getReviewsByUser(@PathVariable("userIdx") int userIdx) {
+    public BaseResponse<List<GetReviewRes>> getReviewsByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-            List<GetReviewRes> getReviewRes = reviewProvider.getReviewsByUser(userIdx);
+            List<GetReviewRes> getReviewRes = reviewProvider.getReviewsByUser(userIdx, Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getReviewRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -135,12 +137,13 @@ public class ReviewController {
     /**
      * 특정 가게의 리뷰 조회 API
      * [GET] /reviews/restaurants/:restIdx
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("/restaurants/{restIdx}")
-    public BaseResponse<List<GetReviewRes>> getReviewsByRest(@PathVariable("restIdx") int restIdx) {
+    public BaseResponse<List<GetReviewRes>> getReviewsByRest(@PathVariable("restIdx") int restIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
-            List<GetReviewRes> getReviewRes = reviewProvider.getReviewsByRest(restIdx);
+            List<GetReviewRes> getReviewRes = reviewProvider.getReviewsByRest(restIdx, Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getReviewRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

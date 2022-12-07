@@ -56,12 +56,12 @@ public class ReviewDao {
     }
 
     // Review 테이블에 존재하는 전체 리뷰 정보 조회
-    public List<GetReviewRes> getReviews() {
+    public List<GetReviewRes> getReviews(int offset, int limit) {
         String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
                 "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
-                "order by REVIEW.CREATION_DATE desc";
+                "order by REVIEW.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
                         rs.getInt("REVIEW_ID"),
@@ -76,7 +76,7 @@ public class ReviewDao {
                         rs.getString("OWNER_REPLY"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getString("IMAGE_PATH")
-                )
+                ),offset, limit
         );
     }
 
@@ -105,13 +105,13 @@ public class ReviewDao {
     }
 
     // 특정 user의 Reviews 조회
-    public List<GetReviewRes> getReviewsByUser(int userIdx) {
+    public List<GetReviewRes> getReviewsByUser(int userIdx, int offset, int limit) {
         String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
                 "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
                 "where ORDERS.USER_ID = ? and REVIEW.DELETE_YN = false " +
-                "order by REVIEW.CREATION_DATE desc";
+                "order by REVIEW.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
                         rs.getInt("REVIEW_ID"),
@@ -126,7 +126,7 @@ public class ReviewDao {
                         rs.getString("OWNER_REPLY"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getString("IMAGE_PATH")),
-                userIdx);
+                userIdx, offset, limit);
     }
 
     // 특정 user의 Reviews 수 조회
@@ -137,13 +137,13 @@ public class ReviewDao {
     }
 
     // 특정 가게의 Reviews 조회
-    public List<GetReviewRes> getReviewsByRest(int restIdx) {
+    public List<GetReviewRes> getReviewsByRest(int restIdx, int offset, int limit) {
         String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
                 "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
                 "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
                 "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = false " +
-                "order by REVIEW.CREATION_DATE desc";
+                "order by REVIEW.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
                         rs.getInt("REVIEW_ID"),
@@ -158,7 +158,7 @@ public class ReviewDao {
                         rs.getString("OWNER_REPLY"),
                         rs.getBoolean("DELETE_YN"),
                         rs.getString("IMAGE_PATH")),
-                restIdx);
+                restIdx, offset, limit);
     }
 
     // 특정 가게의 Reviews 수 조회

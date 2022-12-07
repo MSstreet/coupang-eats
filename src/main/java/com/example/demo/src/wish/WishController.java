@@ -69,12 +69,13 @@ public class WishController {
     /**
      * 모든 찜들 조회 API
      * [GET] /wishlists
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetWishRes>> getWishes() {
+    public BaseResponse<List<GetWishRes>> getWishes(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
-            List<GetWishRes> getWishRes = wishProvider.getWishes();
+            List<GetWishRes> getWishRes = wishProvider.getWishes(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getWishRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
@@ -99,16 +100,17 @@ public class WishController {
     /**
      * 특정 사용자의 찜 조회 API
      * [GET] /wishlists/users/:userIdx
+     * paging : ?pageNum={pageNum}&count={count}
      */
     @ResponseBody
     @GetMapping("/users/{userIdx}")
-    public BaseResponse<List<GetWishRes>> getWishesByUser(@PathVariable("userIdx") int userIdx) {
+    public BaseResponse<List<GetWishRes>> getWishesByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-            List<GetWishRes> getWishRes = wishProvider.getWishesByUser(userIdx);
+            List<GetWishRes> getWishRes = wishProvider.getWishesByUser(userIdx, Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getWishRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));

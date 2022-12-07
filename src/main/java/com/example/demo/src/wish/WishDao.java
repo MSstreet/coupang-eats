@@ -37,13 +37,13 @@ public class WishDao {
     }
 
     // Wish 테이블에 존재하는 전체 찜 정보 조회
-    public List<GetWishRes> getWishes() {
+    public List<GetWishRes> getWishes(int offset, int limit) {
         String getWishesQuery = "select WISH.*, R.BUSINESS_NAME as REST_NAME, I.IMAGE_PATH as REST_IMAGE_PATH, " +
                 "R.DISTANCE, R.TIME_DELIVERY, R.TIP_DELIVERY " +
                 "from WISH " +
                 "left join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
                 "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
-                "where WISH.ACTIVE_YN = true";
+                "where WISH.ACTIVE_YN = true order by WISH.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getWishesQuery,
                 (rs, rowNum) -> new GetWishRes(
                         rs.getInt("WISH_ID"),
@@ -57,7 +57,7 @@ public class WishDao {
                         rs.getInt("TIME_DELIVERY"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getBoolean("ACTIVE_YN")
-                )
+                ), offset, limit
         );
     }
 
@@ -86,13 +86,13 @@ public class WishDao {
     }
 
     // 특정 user의 Wishes 조회
-    public List<GetWishRes> getWishesByUser(int userIdx) {
+    public List<GetWishRes> getWishesByUser(int userIdx, int offset, int limit) {
         String getWishesQuery =  "select WISH.*, R.BUSINESS_NAME as REST_NAME, I.IMAGE_PATH as REST_IMAGE_PATH, " +
                 "R.DISTANCE, R.TIME_DELIVERY, R.TIP_DELIVERY " +
                 "from WISH " +
                 "left join RESTAURANT R on WISH.RESTAURANT_ID = R.RESTAURANT_ID " +
                 "left join IMAGE I on R.RESTAURANT_ID = I.TARGET_ID and I.TARGET_CODE = 'RS' " +
-                "where WISH.ACTIVE_YN = true and WISH.USER_ID = ?";
+                "where WISH.ACTIVE_YN = true and WISH.USER_ID = ? order by WISH.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getWishesQuery,
                 (rs, rowNum) -> new GetWishRes(
                         rs.getInt("WISH_ID"),
@@ -106,7 +106,7 @@ public class WishDao {
                         rs.getInt("TIME_DELIVERY"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getBoolean("ACTIVE_YN")),
-                userIdx);
+                userIdx, offset, limit);
     }
 
     // 특정 user의 Wishes 수 조회

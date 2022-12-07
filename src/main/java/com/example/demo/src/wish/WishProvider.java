@@ -37,9 +37,9 @@ public class WishProvider {
     }
 
     // Wishes 조회
-    public List<GetWishRes> getWishes() throws BaseException {
+    public List<GetWishRes> getWishes(int offset, int limit) throws BaseException {
         try {
-            List<GetWishRes> getWishRes = wishDao.getWishes();
+            List<GetWishRes> getWishRes = wishDao.getWishes(offset, limit);
             return getWishRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -57,9 +57,9 @@ public class WishProvider {
     }
 
     // 특정 user의 Wishes 조회
-    public List<GetWishRes> getWishesByUser(int userIdx) throws BaseException {
+    public List<GetWishRes> getWishesByUser(int userIdx, int offset, int limit) throws BaseException {
         try {
-            List<GetWishRes> getWishRes = wishDao.getWishesByUser(userIdx);
+            List<GetWishRes> getWishRes = wishDao.getWishesByUser(userIdx, offset, limit);
             return getWishRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

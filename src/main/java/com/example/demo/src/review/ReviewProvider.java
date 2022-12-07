@@ -53,9 +53,9 @@ public class ReviewProvider {
     }
 
     // Reviews 조회
-    public List<GetReviewRes> getReviews() throws BaseException {
+    public List<GetReviewRes> getReviews(int offset, int limit) throws BaseException {
         try {
-            List<GetReviewRes> getReviewRes = reviewDao.getReviews();
+            List<GetReviewRes> getReviewRes = reviewDao.getReviews(offset, limit);
             return getReviewRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -73,9 +73,9 @@ public class ReviewProvider {
     }
 
     // 특정 user의 Reviews 조회
-    public List<GetReviewRes> getReviewsByUser(int userIdx) throws BaseException {
+    public List<GetReviewRes> getReviewsByUser(int userIdx, int offset, int limit) throws BaseException {
         try {
-            List<GetReviewRes> getReviewRes = reviewDao.getReviewsByUser(userIdx);
+            List<GetReviewRes> getReviewRes = reviewDao.getReviewsByUser(userIdx, offset, limit);
             return getReviewRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -93,9 +93,9 @@ public class ReviewProvider {
     }
 
     // 특정 가게의 Reviews 조회
-    public List<GetReviewRes> getReviewsByRest(int restIdx) throws BaseException {
+    public List<GetReviewRes> getReviewsByRest(int restIdx, int offset, int limit) throws BaseException {
         try {
-            List<GetReviewRes> getReviewRes = reviewDao.getReviewsByRest(restIdx);
+            List<GetReviewRes> getReviewRes = reviewDao.getReviewsByRest(restIdx,offset, limit);
             return getReviewRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
