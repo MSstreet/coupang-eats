@@ -145,7 +145,7 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/list") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<PostMenuRes>> getAllMenus(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count){
+    public BaseResponse<List<PostMenuRes>> getAllMenus(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count){
 
         try{
             List<PostMenuRes> getMenuRes = menuProvider.getAllMenus(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
@@ -183,7 +183,7 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/res-id/{restaurantIdx}")
-    public BaseResponse<List<PostMenuRes>> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count){
+    public BaseResponse<List<PostMenuRes>> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count){
 
         try{
             List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantIdx,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
@@ -200,7 +200,7 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<PostMenuRes>> getMenusByNameSearch(@RequestParam String menu, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<PostMenuRes>> getMenusByNameSearch(@RequestParam String menu, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try{
 
             List<PostMenuRes> postMenuRes = menuProvider.getMenusByMenuName(menu,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));

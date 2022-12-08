@@ -73,7 +73,7 @@ public class WishController {
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetWishRes>> getWishes(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetWishRes>> getWishes(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             List<GetWishRes> getWishRes = wishProvider.getWishes(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getWishRes);
@@ -104,7 +104,7 @@ public class WishController {
      */
     @ResponseBody
     @GetMapping("/users/{userIdx}")
-    public BaseResponse<List<GetWishRes>> getWishesByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetWishRes>> getWishesByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){

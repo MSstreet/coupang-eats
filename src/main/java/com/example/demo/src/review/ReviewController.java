@@ -71,7 +71,7 @@ public class ReviewController {
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetReviewRes>> getReviews(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetReviewRes>> getReviews(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             List<GetReviewRes> getReviewsRes = reviewProvider.getReviews(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getReviewsRes);
@@ -102,7 +102,7 @@ public class ReviewController {
      */
     @ResponseBody
     @GetMapping("/users/{userIdx}")
-    public BaseResponse<List<GetReviewRes>> getReviewsByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetReviewRes>> getReviewsByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){
@@ -141,7 +141,7 @@ public class ReviewController {
      */
     @ResponseBody
     @GetMapping("/restaurants/{restIdx}")
-    public BaseResponse<List<GetReviewRes>> getReviewsByRest(@PathVariable("restIdx") int restIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetReviewRes>> getReviewsByRest(@PathVariable("restIdx") int restIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             List<GetReviewRes> getReviewRes = reviewProvider.getReviewsByRest(restIdx, Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
             return new BaseResponse<>(getReviewRes);

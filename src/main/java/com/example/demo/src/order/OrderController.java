@@ -77,7 +77,7 @@ public class OrderController {
      */
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetOrderAll>> getOrders(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetOrderAll>> getOrders(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             List<GetOrderAll> orderAllList = new ArrayList<>();
             List<GetOrderRes> getOrdersRes = orderProvider.getOrders(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
@@ -117,7 +117,7 @@ public class OrderController {
      */
     @ResponseBody
     @GetMapping("/users/{userIdx}")
-    public BaseResponse<List<GetOrderAll>> getOrdersByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetOrderAll>> getOrdersByUser(@PathVariable("userIdx") int userIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "100") String count) {
         try {
             int userIdxByJwt = jwtService.getUserIdx();
             if(userIdx != userIdxByJwt){
