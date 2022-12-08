@@ -59,8 +59,8 @@ public class ReviewDao {
     public List<GetReviewRes> getReviews(int offset, int limit) {
         String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
-                "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
-                "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
+                "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID and REST.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
@@ -84,8 +84,8 @@ public class ReviewDao {
     public GetReviewRes getReview(int reviewIdx) {
         String getReviewsQuery = "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
-                "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
-                "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
+                "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID and REST.DELETE_YN = false " +
                 "where REVIEW.REVIEW_ID = ?";
         return this.jdbcTemplate.queryForObject(getReviewsQuery,
                 (rs, rowNum) -> new GetReviewRes(
@@ -108,8 +108,8 @@ public class ReviewDao {
     public List<GetReviewRes> getReviewsByUser(int userIdx, int offset, int limit) {
         String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
-                "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
-                "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
+                "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID and REST.DELETE_YN = false " +
                 "where ORDERS.USER_ID = ? and REVIEW.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getReviewsQuery,
@@ -140,8 +140,8 @@ public class ReviewDao {
     public List<GetReviewRes> getReviewsByRest(int restIdx, int offset, int limit) {
         String getReviewsQuery =  "select REVIEW.*, IMAGE.IMAGE_PATH, ORDERS.USER_ID, ORDERS.RESTAURANT_ID, REST.BUSINESS_NAME from REVIEW " +
                 "left join IMAGE on REVIEW.REVIEW_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RV' " +
-                "left join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
-                "left join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID " +
+                "join ORDERS on REVIEW.ORDER_ID = ORDERS.ORDER_ID " +
+                "join RESTAURANT REST on REST.RESTAURANT_ID = ORDERS.RESTAURANT_ID and REST.DELETE_YN = false " +
                 "where ORDERS.RESTAURANT_ID = ? and REVIEW.DELETE_YN = false " +
                 "order by REVIEW.CREATION_DATE desc limit ?,?";
         return this.jdbcTemplate.query(getReviewsQuery,
