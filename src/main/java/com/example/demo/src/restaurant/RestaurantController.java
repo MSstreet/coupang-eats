@@ -98,7 +98,7 @@ public class RestaurantController {
 //    }
 
     @ResponseBody
-    @PostMapping("/{userIdx}/join")
+    @PostMapping("/{userIdx}")
     public BaseResponse<PostRestaurantRes> createRestaurant(@PathVariable("userIdx") int userIdx, @RequestBody PostRestaurantReq postRestaurantReq) {
         // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
 
@@ -217,7 +217,7 @@ public class RestaurantController {
 
     //널 값 : 주소, 전화번호, 대표자명, 사업자번호, 운영시간, 배달팁, 최소주문가격, 레스토랑 사진, 치타, 배달, 포장
     @ResponseBody
-    @PatchMapping("/modify/{userIdx}/{restIdx}")
+    @PatchMapping("/{userIdx}/{restIdx}")
     public BaseResponse<String> modifyRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx, @RequestBody PostRestaurantReq postRestaurantReq){
 
         try{
@@ -306,7 +306,7 @@ public class RestaurantController {
 
     //벨러데이션
     @ResponseBody
-    @PatchMapping("/delete/{userIdx}/{restIdx}")
+    @PatchMapping("/{userIdx}/{restIdx}")
     public BaseResponse<Integer> deleteRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx){
 
         try{
