@@ -2,9 +2,8 @@ package com.example.demo.src.menu;
 
 import com.example.demo.src.menu.model.PostMenuReq;
 import com.example.demo.src.menu.model.PostMenuRes;
-import com.example.demo.src.restaurant.model.GetRestaurantRes;
-import com.example.demo.src.restaurant.model.PostRestaurantReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -97,26 +96,29 @@ public class MenuDao {
 
 
     public PostMenuRes getMenuByMenuId(int menuId) {
+        try {
+            String getMenuQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU_ID = ?";
 
-        String getMenuQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU_ID = ?";
-
-        return this.jdbcTemplate.queryForObject(getMenuQuery,
-                (rs,rowNum) -> new PostMenuRes(
-                        rs.getInt("MENU_ID"),
-                        rs.getInt("RESTAURANT_ID"),
-                        rs.getString("GB_CODE"),
-                        rs.getString("NAME"),
-                        rs.getInt("PRICE"),
-                        rs.getString("CONTENT"),
-                        rs.getInt("REF_ID"),
-                        rs.getString("IMAGE_PATH"),
-                        rs.getInt("OPTION_ID")),
-                menuId);
+            return this.jdbcTemplate.queryForObject(getMenuQuery,
+                    (rs, rowNum) -> new PostMenuRes(
+                            rs.getInt("MENU_ID"),
+                            rs.getInt("RESTAURANT_ID"),
+                            rs.getString("GB_CODE"),
+                            rs.getString("NAME"),
+                            rs.getInt("PRICE"),
+                            rs.getString("CONTENT"),
+                            rs.getInt("REF_ID"),
+                            rs.getString("IMAGE_PATH"),
+                            rs.getInt("OPTION_ID")),
+                    menuId);
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
     }
 
-    public List<PostMenuRes> getAllMenus() {
+    public List<PostMenuRes> getAllMenus(int offset, int limit) {
 
-        String getAllMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN'";
+        String getAllMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' order by MENU.CREATION_DATE desc limit ?,?";
 
         return this.jdbcTemplate.query(getAllMenusQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -128,13 +130,14 @@ public class MenuDao {
                         rs.getString("CONTENT"),
                         rs.getInt("REF_ID"),
                         rs.getString("IMAGE_PATH"),
-                        rs.getInt("OPTION_ID")));
+                        rs.getInt("OPTION_ID"))
+        ,offset, limit);
 
     }
 
-    public List<PostMenuRes> getRestaurantMenu(int restaurantId) {
+    public List<PostMenuRes> getRestaurantMenu(int restaurantId,int offset, int limit) {
 
-        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where RESTAURANT_ID = ?";
+        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where RESTAURANT_ID = ? order by MENU.CREATION_DATE desc limit ?,?";
 
         return this.jdbcTemplate.query(getMenusQuery,
                 (rs,rowNum) -> new PostMenuRes(
@@ -147,13 +150,13 @@ public class MenuDao {
                         rs.getInt("REF_ID"),
                         rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID"))
-                ,restaurantId);
+                ,restaurantId,offset,limit);
 
     }
 
-    public List<PostMenuRes> getMenusByName(String MenuName) {
+    public List<PostMenuRes> getMenusByName(String MenuName,int offset, int limit) {
 
-        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU.NAME like ?";
+        String getMenusQuery = "select MENU.*, IMAGE.IMAGE_PATH from MENU join IMAGE on MENU.MENU_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='MN' where MENU.NAME like ? order by MENU.CREATION_DATE desc limit ?,?";
 
         String Param = "%" + MenuName + "%";
 
@@ -168,7 +171,7 @@ public class MenuDao {
                         rs.getInt("REF_ID"),
                         rs.getString("IMAGE_PATH"),
                         rs.getInt("OPTION_ID"))
-                ,Param);
+                ,Param,offset,limit);
 
     }
 

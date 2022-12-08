@@ -29,10 +29,10 @@ public class MenuProvider {
     }
 
 
-    public List<PostMenuRes> getAllMenus() throws BaseException {
+    public List<PostMenuRes> getAllMenus(int offset, int limit) throws BaseException {
 
         try{
-            List<PostMenuRes> getMenuRes = menuDao.getAllMenus();
+            List<PostMenuRes> getMenuRes = menuDao.getAllMenus(offset,limit);
             return getMenuRes;
         }catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
@@ -43,16 +43,17 @@ public class MenuProvider {
 
         try{
             PostMenuRes postMenuRes = menuDao.getMenuByMenuId(menuId);
+
             return postMenuRes;
         }catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public List<PostMenuRes> getRestaurantMenu(int restaurantId) throws  BaseException{
+    public List<PostMenuRes> getRestaurantMenu(int restaurantId,int offset, int limit) throws  BaseException{
 
         try{
-            List<PostMenuRes> postMenuRes = menuDao.getRestaurantMenu(restaurantId);
+            List<PostMenuRes> postMenuRes = menuDao.getRestaurantMenu(restaurantId,offset,limit);
 
             return postMenuRes;
 
@@ -62,10 +63,10 @@ public class MenuProvider {
     }
 
 
-    public List<PostMenuRes> getMenusByMenuName(String menu) throws BaseException {
+    public List<PostMenuRes> getMenusByMenuName(String menu,int offset, int limit) throws BaseException {
 
         try{
-            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(menu);
+            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(menu,offset,limit);
 
             return postMenuRes;
         }

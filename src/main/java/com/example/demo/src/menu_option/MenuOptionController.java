@@ -141,7 +141,7 @@ public class MenuOptionController {
     }
 
     @ResponseBody
-    @GetMapping("/menu-option/{menuOptionIdx}") // (GET) 127.0.0.1:9000/app/users
+    @GetMapping("/{menuOptionIdx}") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<PostMenuOptionRes> getMenuOptionByMenuOptionId(@PathVariable("menuOptionIdx") int menuOptionIdx){
 
         try{
@@ -161,7 +161,7 @@ public class MenuOptionController {
 
 ////////////////////////////////////////
     @ResponseBody
-    @GetMapping("/menu-id/{menuIdx}")
+    @GetMapping("/menu/{menuIdx}")
     public BaseResponse<List<PostMenuOptionRes>> getMenuOptionByMenuId(@PathVariable ("menuIdx") int menuIdx){
 
         try{

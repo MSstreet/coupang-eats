@@ -81,11 +81,12 @@ public class RestaurantProvider {
         }
     }
 
-    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int category,int offset, int limit) throws BaseException {
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(String category,int offset, int limit) throws BaseException {
 
         try{
             List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByCategorySearch(category,offset,limit);
 
+            System.out.println("확인하겠다");
             for(int i = 0; i < getRestaurantRes.size(); i++) {
                 double tmp = reviewDao.getScore(getRestaurantRes.get(i).getRestaurantId());
                 getRestaurantRes.get(i).setScore(tmp);
@@ -98,23 +99,28 @@ public class RestaurantProvider {
         }
     }
 
-    public List<GetRestaurantRes> getRestaurantsByMenuSearch(String menu) throws BaseException {
+    public List<GetRestaurantRes> getRestaurantsByMenuSearch(String menu,int offset, int limit) throws BaseException {
 
         try{
-            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(menu);
-
+            List<PostMenuRes> postMenuRes = menuDao.getMenusByName(menu,offset,limit);
+            System.out.println("확인!!!");
             List<GetRestaurantRes> getRestaurantRes = new ArrayList<>();
 
             for(int i = 0; i < postMenuRes.size(); i++){
                 GetRestaurantRes getRestaurantRes1 = restaurantDao.getRestaurantByRestaurantId(postMenuRes.get(i).getRestaurantId());
                 getRestaurantRes.add(getRestaurantRes1);
             }
+            System.out.println("확인!!!");
 
 
-            for(int i = 0; i < getRestaurantRes.size(); i++) {
-                double tmp = reviewDao.getScore(getRestaurantRes.get(i).getRestaurantId());
-                getRestaurantRes.get(i).setScore(tmp);
-            }
+
+//            for(int i = 0; i < getRestaurantRes.size(); i++) {
+//                double tmp = reviewDao.getScore(getRestaurantRes.get(i).getRestaurantId());
+//                getRestaurantRes.get(i).setScore(tmp);
+//            }
+
+
+
 
             return getRestaurantRes;
         }
@@ -123,11 +129,11 @@ public class RestaurantProvider {
         }
     }
 
-    public List<GetRestaurantRes> getRestaurantsByAddress(String address) throws BaseException {
+    public List<GetRestaurantRes> getRestaurantsByAddress(String address,int offset, int limit) throws BaseException {
 
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByAddress(address);
+            List<GetRestaurantRes> getRestaurantRes = restaurantDao.getRestaurantsByAddress(address,offset,limit);
 
             for(int i = 0; i < getRestaurantRes.size(); i++) {
                 double tmp = reviewDao.getScore(getRestaurantRes.get(i).getRestaurantId());

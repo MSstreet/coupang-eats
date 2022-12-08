@@ -145,10 +145,10 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/list") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<PostMenuRes>> getAllMenus(){
+    public BaseResponse<List<PostMenuRes>> getAllMenus(@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count){
 
         try{
-            List<PostMenuRes> getMenuRes = menuProvider.getAllMenus();
+            List<PostMenuRes> getMenuRes = menuProvider.getAllMenus(Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
 
             if(getMenuRes.size() == 0){
                 return new BaseResponse<>(POST_MENU_EMPTY_MENU);
@@ -183,10 +183,10 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("/res-id/{restaurantIdx}")
-    public BaseResponse<List<PostMenuRes>> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx){
+    public BaseResponse<List<PostMenuRes>> getRestaurantMenu(@PathVariable ("restaurantIdx") int restaurantIdx, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count){
 
         try{
-            List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantIdx);
+            List<PostMenuRes> postMenuRes = menuProvider.getRestaurantMenu(restaurantIdx,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
 
             if(postMenuRes.size() == 0){
                 return new BaseResponse<>(POST_MENU_EMPTY_MENU);
@@ -200,10 +200,10 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<PostMenuRes>> getMenusByNameSearch(@RequestParam String menu) {
+    public BaseResponse<List<PostMenuRes>> getMenusByNameSearch(@RequestParam String menu, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
 
-            List<PostMenuRes> postMenuRes = menuProvider.getMenusByMenuName(menu);
+            List<PostMenuRes> postMenuRes = menuProvider.getMenusByMenuName(menu,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
 
             if(postMenuRes.size() == 0){
                 return new BaseResponse<>(POST_MENU_EMPTY_MENU);

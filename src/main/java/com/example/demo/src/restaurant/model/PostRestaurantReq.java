@@ -23,7 +23,7 @@ public class PostRestaurantReq {
     private String operationTime;
 
     // 가게소게글
-    private String introductionBoard;
+    private String introductionBoard;/////////////////////////
 
     // 배달비
     private String tipDelivery;
@@ -36,8 +36,9 @@ public class PostRestaurantReq {
     // 사업자번호
     private String companyRegistrationNumber;
 
+    //111
     // 카테고리
-    private int categories;
+    private String categories;
 
     // 가게 사진
     private String restaurantImage;

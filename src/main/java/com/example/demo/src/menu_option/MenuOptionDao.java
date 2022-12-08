@@ -3,6 +3,7 @@ package com.example.demo.src.menu_option;
 import com.example.demo.src.menu_option.model.PostMenuOptionReq;
 import com.example.demo.src.menu_option.model.PostMenuOptionRes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -35,15 +36,18 @@ public class MenuOptionDao {
     }
 
     public PostMenuOptionRes getMenuOptionByMenuOptionId(int menuOptionId) {
+        try {
+            String getMenuQuery = "select * from MENU_OPTION where MENU_OPTION_ID = ?";
 
-        String getMenuQuery = "select * from MENU_OPTION where MENU_OPTION_ID = ?";
-
-        return this.jdbcTemplate.queryForObject(getMenuQuery,
-                (rs,rowNum) -> new PostMenuOptionRes(
-                        rs.getInt("MENU_OPTION_ID"),
-                        rs.getInt("MENU_ID"),
-                        rs.getString("OPTION_NAME")),
-                menuOptionId);
+            return this.jdbcTemplate.queryForObject(getMenuQuery,
+                    (rs, rowNum) -> new PostMenuOptionRes(
+                            rs.getInt("MENU_OPTION_ID"),
+                            rs.getInt("MENU_ID"),
+                            rs.getString("OPTION_NAME")),
+                    menuOptionId);
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
     }
 
     public int modifyMenuOption(PostMenuOptionReq postMenuOptionReq){

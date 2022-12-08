@@ -51,8 +51,9 @@ public class GetRestaurantRes {
     // 최소 주문 비용
     private String minDeliveryPrice;
 
+    //123
     // 카테고리
-    private int categories;
+    private String categories;////////////////////////////////
 
     // 삭제 여부
     private Boolean deleteFlag;

@@ -142,7 +142,7 @@ public class RestaurantDao {
                         rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getInt("CATEGORY"),
+                        rs.getString("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
@@ -176,7 +176,7 @@ public class RestaurantDao {
                             rs.getInt("TIME_PICKUP"),
                             rs.getString("TIP_DELIVERY"),
                             rs.getString("MINIMUM_ORDER_PRICE"),
-                            rs.getInt("CATEGORY"),
+                            rs.getString("CATEGORY"),
                             rs.getBoolean("DELIVERY_YN"),
                             rs.getBoolean("FAST_DELIVERY_YN"),
                             rs.getBoolean("PICKUP_YN"),
@@ -216,7 +216,7 @@ public class RestaurantDao {
                         rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getInt("CATEGORY"),
+                        rs.getString("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
@@ -229,9 +229,9 @@ public class RestaurantDao {
                 Param,offset,limit);
     }
 
-    public List<GetRestaurantRes> getRestaurantsByCategorySearch(int searchRestaurantNameReq,int offset, int limit) {
+    public List<GetRestaurantRes> getRestaurantsByCategorySearch(String searchRestaurantNameReq,int offset, int limit) {
 
-        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where CATEGORY like ?";
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where CATEGORY like ? order by RESTAURANT.CREATION_DATE desc limit ?,?";
 
         System.out.println(getRestaurantQuery);
         System.out.println(searchRestaurantNameReq);
@@ -254,7 +254,7 @@ public class RestaurantDao {
                         rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getInt("CATEGORY"),
+                        rs.getString("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
@@ -268,9 +268,9 @@ public class RestaurantDao {
     }
 
 
-    public List<GetRestaurantRes> getRestaurantsByAddress(String address) {
+    public List<GetRestaurantRes> getRestaurantsByAddress(String address,int offset, int limit) {
 
-        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where ADDRESS like ?";
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where ADDRESS like ? order by RESTAURANT.CREATION_DATE desc limit ?,?";
 
         System.out.println(getRestaurantQuery);
         System.out.println(address);
@@ -292,7 +292,7 @@ public class RestaurantDao {
                         rs.getInt("TIME_PICKUP"),
                         rs.getString("TIP_DELIVERY"),
                         rs.getString("MINIMUM_ORDER_PRICE"),
-                        rs.getInt("CATEGORY"),
+                        rs.getString("CATEGORY"),
                         rs.getBoolean("DELIVERY_YN"),
                         rs.getBoolean("FAST_DELIVERY_YN"),
                         rs.getBoolean("PICKUP_YN"),
@@ -302,7 +302,7 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH3"),
                         rs.getDouble("SCORE"),
                         rs.getDouble("DISTANCE")),
-                Param);
+                Param,offset,limit);
     }
 
 

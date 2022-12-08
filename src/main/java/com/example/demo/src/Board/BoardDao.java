@@ -2,9 +2,9 @@ package com.example.demo.src.Board;
 
 import com.example.demo.src.Board.model.PostBoardReq;
 import com.example.demo.src.Board.model.PostBoardRes;
-import com.example.demo.src.menu.model.PostMenuReq;
-import com.example.demo.src.menu.model.PostMenuRes;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,16 +37,19 @@ public class BoardDao {
     }
 
     public PostBoardRes getBoardByBoardId(int boardId) {
+        try {
+            String getBoardQuery = "select * from BOARD where BOARD_ID = ? AND DELETE_YN = 0";
 
-        String getBoardQuery = "select * from BOARD where BOARD_ID = ? AND DELETE_YN = 0";
-
-        return this.jdbcTemplate.queryForObject(getBoardQuery,
-                (rs,rowNum) -> new PostBoardRes(
-                        rs.getInt("BOARD_ID"),
-                        rs.getString("TITLE"),
-                        rs.getString("CONTENT"),
-                        rs.getBoolean("DELETE_YN")),
-                boardId);
+            return this.jdbcTemplate.queryForObject(getBoardQuery,
+                    (rs, rowNum) -> new PostBoardRes(
+                            rs.getInt("BOARD_ID"),
+                            rs.getString("TITLE"),
+                            rs.getString("CONTENT"),
+                            rs.getBoolean("DELETE_YN")),
+                    boardId);
+        }catch (IncorrectResultSizeDataAccessException e){
+            return null;
+        }
     }
 
     public int modifyBoard(PostBoardReq postBoardReq, int boardIdx) {
