@@ -306,7 +306,7 @@ public class RestaurantController {
 
     //벨러데이션
     @ResponseBody
-    @PatchMapping("/{userIdx}/{restIdx}")
+    @PatchMapping("/{userIdx}/{restIdx}/d")
     public BaseResponse<Integer> deleteRestaurant(@PathVariable("userIdx") int userIdx, @PathVariable("restIdx") int restIdx){
 
         try{
