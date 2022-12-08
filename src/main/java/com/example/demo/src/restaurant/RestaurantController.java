@@ -394,7 +394,7 @@ public class RestaurantController {
     //존재하지 않는 카테고리(필요x)
     @ResponseBody
     @GetMapping("/category") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam int category,@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByCategorySearch(@RequestParam String category,@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
 
             List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByCategorySearch(category,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
