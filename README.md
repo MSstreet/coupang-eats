@@ -188,3 +188,7 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - USER, ORDER, REVIEW, WISH 더미 데이터 생성
 - SEARCH API 개발 완료
 - 페이징 기법 적용
+
+### 🗓️ 2022-12-08
+- 주문 내역, 찜, 리뷰 더미데이터 생성
+- api 명세서 정리
