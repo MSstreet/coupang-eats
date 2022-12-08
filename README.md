@@ -191,4 +191,6 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 
 ### 🗓️ 2022-12-08
 - 주문 내역, 찜, 리뷰 더미데이터 생성
+- ORDER, REVIEW, WISH 조회 시 삭제된 가게 데이터는 불러오지 않게끔 수정
 - api 명세서 정리
+- 시연영상 제작
