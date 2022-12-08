@@ -65,7 +65,7 @@ public class AddressController {
         }
     }
 
-    //상세 주소 변경
+    //상세 주소만 변경
     @ResponseBody
     @PatchMapping("/modify/{userIdx}/{addressIdx}")
     public BaseResponse<PostAddressRes> modifyAddress(@PathVariable("userIdx") int userIdx, @PathVariable("addressIdx") int addressId , @RequestBody PostAddressReq postAddressReq){
@@ -81,7 +81,6 @@ public class AddressController {
         }
 
         try{
-
             PostAddressRes postAddressRes = addressService.modifyAddress(postAddressReq);
 
             return new BaseResponse<>(postAddressRes);

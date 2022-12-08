@@ -268,9 +268,9 @@ public class RestaurantDao {
     }
 
 
-    public List<GetRestaurantRes> getRestaurantsByAddress(String address) {
+    public List<GetRestaurantRes> getRestaurantsByAddress(String address,int offset, int limit) {
 
-        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where ADDRESS like ?";
+        String getRestaurantQuery = "select RESTAURANT.*, IMAGE.IMAGE_PATH, IMAGE.IMAGE_PATH2, IMAGE.IMAGE_PATH3 from RESTAURANT  join IMAGE on RESTAURANT.RESTAURANT_ID = IMAGE.TARGET_ID AND IMAGE.TARGET_CODE='RS' where ADDRESS like ? order by RESTAURANT.CREATION_DATE desc limit ?,?";
 
         System.out.println(getRestaurantQuery);
         System.out.println(address);
@@ -302,7 +302,7 @@ public class RestaurantDao {
                         rs.getString("IMAGE_PATH3"),
                         rs.getDouble("SCORE"),
                         rs.getDouble("DISTANCE")),
-                Param);
+                Param,offset,limit);
     }
 
 

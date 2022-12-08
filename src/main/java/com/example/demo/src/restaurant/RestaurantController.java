@@ -414,10 +414,10 @@ public class RestaurantController {
 
     @ResponseBody
     @GetMapping("/menu") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByMenuSearch(@RequestParam String menu) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByMenuSearch(@RequestParam String menu,@RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(menu);
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByMenuSearch(menu,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
 
             if(getRestaurantRes.size() == 0){
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);
@@ -432,10 +432,10 @@ public class RestaurantController {
 
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByAddress(@RequestParam String address) {
+    public BaseResponse<List<GetRestaurantRes>> getRestaurantsByAddress(@RequestParam String address, @RequestParam(required = false, defaultValue = "0") String pageNum, @RequestParam(required = false, defaultValue = "10") String count) {
         try{
 
-            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByAddress(address);
+            List<GetRestaurantRes> getRestaurantRes = restaurantProvider.getRestaurantsByAddress(address,Integer.parseInt(pageNum)*Integer.parseInt(count), Integer.parseInt(count));
 
             if(getRestaurantRes.size() == 0){
                 return new BaseResponse<>(POST_RESTAURANT_EMPTY_RESTAURANT);

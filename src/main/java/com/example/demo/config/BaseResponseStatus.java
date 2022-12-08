@@ -97,13 +97,12 @@ public enum BaseResponseStatus {
     //[POST] / MENU_OPTION
     POST_MENU_OPTION_EMPTY_NAME(false, 2140, "메뉴 옵션 이름을 입력해주세요."),
 
-    POST_MENU_EMPTY_MENU_OPTION(false, 2141, "존재하지 않는 메뉴 옵션입니다."),
+    POST_MENU_OPTION_EMPTY_MENU_OPTION(false, 2142, "존재하지 않는 메뉴옵션 입니다."),
 
-    POST_MENU_OPTION_EMPTY_MENU_OPTION(false, 2142, "존재하지 않는 메뉴입니다."),
+
 
     // [POST] / ADDRESS
     POST_MENU_EMPTY_ADDRESS(false, 2150, "주소를 입력해주세요."),
-
 
     POST_ADDRESS_EMPTY_ADDRESS(false, 2151, "존재하지 않는 주소입니다."),
 

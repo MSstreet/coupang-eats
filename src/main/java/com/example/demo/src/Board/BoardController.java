@@ -122,7 +122,7 @@ public class BoardController {
     }
 
     @ResponseBody
-    @GetMapping("/board-id/{boardIdx}") // (GET) 127.0.0.1:9000/app/users
+    @GetMapping("/{boardIdx}") // (GET) 127.0.0.1:9000/app/users
     public BaseResponse<PostBoardRes> getBoardByBoardId(@PathVariable("boardIdx") int boardIdx){
 
         try{
