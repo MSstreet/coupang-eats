@@ -107,7 +107,7 @@ git branch —set-upstream-to=origin/main main 명령어 실행 후 git pull을 
 - RESTAURANT 조회 시 결과 값에 평점 추가
 - API 테스트
 
-### 2022-12-07
+### 2022-12-08
 - API 서버 테스트 
 - 명세서 최종 수정
 - 시연 영상 제작
